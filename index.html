@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025-26 日本跨年獨旅手冊 (+完整時間軸)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <!-- Marked for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f3f4f6; color: #333; }
+        h1, h2, h3, .japanese-font { font-family: 'Zen Maru Gothic', sans-serif; }
+        .sticky-nav { position: sticky; top: 0; z-index: 50; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .day-card { scroll-margin-top: 120px; }
+        .check-in-alert { border-left: 4px solid #ef4444; background-color: #fef2f2; }
+        .story-container { border-left: 4px solid #8b5cf6; background-color: #f5f3ff; }
+        .food-box { border-left: 4px solid #f59e0b; background-color: #fffbeb; }
+        .transport-box { border-left: 4px solid #3b82f6; background-color: #eff6ff; }
+        .shopping-box { border-left: 4px solid #10b981; background-color: #ecfdf5; }
+        .backup-box { border-left: 4px solid #9ca3af; background-color: #f3f4f6; }
+        
+        .map-link { color: #dc2626; margin-left: 6px; transition: color 0.2s; display: inline-flex; align-items: center; text-decoration: none; }
+        .map-link:hover { color: #991b1b; }
+        .info-link { color: #2563eb; margin-left: 6px; transition: color 0.2s; display: inline-flex; align-items: center; text-decoration: none; }
+        .info-link:hover { color: #1d4ed8; }
+        
+        .smooth-scroll { scroll-behavior: smooth; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Story Details Styling */
+        details > summary { list-style: none; cursor: pointer; position: relative; padding-left: 1.2rem; transition: all 0.2s; }
+        details > summary::-webkit-details-marker { display: none; }
+        details > summary::before { content: '▶'; position: absolute; left: 0; top: 2px; font-size: 0.8rem; color: #8b5cf6; transition: transform 0.2s; }
+        details[open] > summary::before { transform: rotate(90deg); }
+        details[open] > summary { font-weight: bold; color: #6d28d9; }
+        
+        /* AI Modal Styles */
+        .ai-gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .typing-indicator span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #ccc;
+            border-radius: 50%;
+            animation: typing 1s infinite ease-in-out;
+            margin: 0 2px;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: 0s; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.5); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="smooth-scroll relative">
+
+    <!-- Cover -->
+    <header class="bg-indigo-900 text-white p-8 pb-16 text-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/seigaiha.png')]"></div>
+        <div class="relative z-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-2">日本跨年獨旅手冊</h1>
+            <p class="text-indigo-200 text-lg">2025/12/28 — 2026/01/06</p>
+            <div class="mt-4 inline-block bg-white/20 px-4 py-1 rounded-full text-sm backdrop-blur-sm">
+                <i class="fas fa-exclamation-circle mr-1"></i> 最高原則：塞滿但可砍，入住時間是硬限制
+            </div>
+            <div class="mt-3 text-xs text-indigo-200 flex justify-center gap-4">
+                <span><i class="fas fa-map-location-dot text-red-400 mr-1"></i> 導航</span>
+                <span><i class="fas fa-external-link-alt text-blue-400 mr-1"></i> 詳情/菜單</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="sticky-nav overflow-x-auto hide-scrollbar border-b border-gray-200">
+        <div class="flex whitespace-nowrap px-4 py-3 space-x-2 md:justify-center">
+            <a href="#day1" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">12/28 岡山</a>
+            <a href="#day2" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">12/29 奈良</a>
+            <a href="#day3" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">12/30 高野</a>
+            <a href="#day4" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">12/31 和歌</a>
+            <a href="#day5" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">1/1 田邊</a>
+            <a href="#day6" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">1/2 本宮</a>
+            <a href="#day7" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">1/3 新宮</a>
+            <a href="#day8" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">1/4 伊勢</a>
+            <a href="#day9" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">1/5 大阪</a>
+            <a href="#day10" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">1/6 返台</a>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto p-4 space-y-12 pb-24">
+
+        <!-- Day 1: 岡山 -->
+        <section id="day1" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-bold">12/28 (日) 抵達岡山</h2>
+                    <p class="text-sm opacity-90">岡山城 / 後樂園 / 站前採買</p>
+                </div>
+                <div class="text-3xl"><i class="fas fa-plane-arrival"></i></div>
+            </div>
+
+            <div class="p-5 space-y-6">
+                <!-- Check-in Alert -->
+                <div class="check-in-alert p-4 rounded-r-lg">
+                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 住宿資訊</h3>
+                    <p class="font-bold text-lg">岡山後樂酒店 <a href="https://www.google.com/maps/search/?api=1&query=Okayama+Koraku+Hotel" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
+                    <p class="text-sm text-gray-600">岡山市 Kita-ku Heiwa-cho 5-1</p>
+                    <p class="text-sm text-red-600 mt-1 font-bold">建議最晚 22:00 前辦理入住</p>
+                </div>
+
+                <!-- Timeline -->
+                <div>
+                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
+                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">14:35</span> 抵達岡山機場 (OKJ) <a href="https://www.google.com/maps/search/?api=1&query=Okayama+Momotaro+Airport" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">15:30</span> 機場巴士往岡山站 <a href="https://www.google.com/maps/search/?api=1&query=Okayama+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">16:30</span> 飯店 Check-in / 寄放行李
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">17:00</span> 岡山城 <a href="https://www.google.com/maps/search/?api=1&query=Okayama+Castle" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> / 後樂園 <a href="https://www.google.com/maps/search/?api=1&query=Okayama+Korakuen" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">19:00</span> 晚餐 & 超市補給
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Backup Options -->
+                <div class="backup-box p-4 rounded-r-lg text-sm">
+                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (若體力不足)</h4>
+                    <p class="text-gray-600">若剛抵達很累，可直接取消「岡山城/後樂園」散步，改為在「岡山車站商圈」<a href="https://www.google.com/maps/search/?api=1&query=Okayama+Station+Shopping" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 輕鬆採買、吃晚餐並早點休息。</p>
+                </div>
+
+                <!-- Story Expandable -->
+                <div class="story-container p-4 rounded-r-lg text-sm">
+                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
+                    <div class="space-y-2">
+                        <details>
+                            <summary>🏯 岡山城：為什麼是黑色的？</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                岡山城天守外牆覆蓋黑色木板，因此有「烏城 (Crow Castle)」的別名。這不是為了浪漫，而是戰國時代的「存在感宣示」！黑得俐落、有壓迫感，遠遠就讓人知道這裡是權力核心。站在城下看旁邊的旭川，這條河道是被人工改造過的，它是天然的軍事防線（護城河）。
+                            </p>
+                        </details>
+                        <details>
+                            <summary>🌿 後樂園：藩主的私人招待所</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                這裡原本不是公園，而是岡山藩主招待貴客的私人庭園。名字來自「先憂後樂」的思想。想像自己是貴賓，每一個轉角、每一座假山都是經過設計的「儀式感」視角，尤其是把遠處的岡山城當作背景的「借景」手法。
+                            </p>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- Shopping -->
+                <div class="shopping-box p-4 rounded-r-lg text-sm">
+                    <h4 class="text-emerald-700 font-bold mb-1"><i class="fas fa-shopping-cart mr-1"></i> 採買備忘 (最晚關門)</h4>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li><strong>Mont-bell 岡山店:</strong> 南區 <a href="https://maps.app.goo.gl/im46BbJscBbVwQoX7" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (需搭車前往)</li>
+                        <li><strong>Bic Camera:</strong> 岡山站前 <a href="https://www.google.com/maps/search/?api=1&query=Bic+Camera+Okayama+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (至 20:30)</li>
+                        <li><strong>唐吉訶德:</strong> 岡山站前 <a href="https://www.google.com/maps/search/?api=1&query=Don+Quijote+Okayama+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (至 02:00)</li>
+                        <li><strong>AEON MALL:</strong> 岡山站走5分 <a href="https://www.google.com/maps/search/?api=1&query=Aeon+Mall+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                            <ul class="list-disc list-inside ml-4 text-gray-500 text-xs">
+                                <li>UNIQLO (至21:00)</li>
+                                <li>超市 (至23:00)</li>
+                                <li>戶外/運動店</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Survival -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="food-box p-4 rounded-r-lg text-sm">
+                        <h4 class="text-amber-700 font-bold mb-1"><i class="fas fa-utensils mr-1"></i> 晚餐推薦 (獨食OK)</h4>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>
+                                <strong>串焼き のどのばし:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Kushiyaki+Nodonobashi+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://www.hotpepper.jp/strJ001115419/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">離飯店1分，烤串配酒 (至23:00)</span>
+                            </li>
+                            <li>
+                                <strong>カツ丼 野村:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Katsudon+Nomura+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://tabelog.com/okayama/A3301/A330101/33000282/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">デミカツ丼名物，有小份量 (至20:30)</span>
+                            </li>
+                            <li>
+                                <strong>はしや (一番街B1):</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Hashiya+Okayama+Ichibangai" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://shop.create-restaurants.co.jp/1147/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">車站地下定食 (至22:00)</span>
+                            </li>
+                            <li>
+                                <strong>さち福やCAFÉ:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Sachifukuya+Cafe+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <span class="text-xs text-gray-500">さんすて岡山，均衡和定食 (至22:00)</span>
+                            </li>
+                            <li>
+                                <strong>冨士屋 (中華そば):</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Fujiya+Ramen+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://tabelog.com/okayama/A3301/A330101/33000980/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">老派醬油拉麵 (至19:30)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg text-sm">
+                        <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 飯店附近補給</h4>
+                        <p class="text-xs text-gray-500 mb-2">岡山後樂酒店 (北区平和町5-1) 徒步圈</p>
+                        
+                        <p class="text-xs font-bold text-gray-600 mt-2">🏪 便利商店</p>
+                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
+                            <li>Lawson 岡山駅前店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Okayama+Ekimae" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                            <li>7-11 岡山駅中央改札口 <a href="https://www.google.com/maps/search/?api=1&query=7-11+Okayama+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (5:30-24:00)</li>
+                            <li>全家 岡山錦町店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Okayama+Nishikicho" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                        </ul>
+                        
+                        <p class="text-xs font-bold text-gray-600 mt-2">🛒 超市</p>
+                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
+                            <li>YOURS さんすて岡山店 <a href="https://www.google.com/maps/search/?api=1&query=Yours+Sunste+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (7:00-22:00)</li>
+                            <li>天滿屋ハピーズ (ICOTNICOT B1) <a href="https://www.google.com/maps/search/?api=1&query=Tenmaya+Happys+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (10:00-22:00)</li>
+                            <li>AEON Style 岡山 <a href="https://www.google.com/maps/search/?api=1&query=Aeon+Style+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (食品 7:00-23:00)</li>
+                            <li>成城石井 さんすて岡山 <a href="https://www.google.com/maps/search/?api=1&query=Seijo+Ishii+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (10:00-22:00)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Day 2: 倉敷/姬路/明石/奈良 -->
+        <section id="day2" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-bold">12/29 (一) 橫跨四城</h2>
+                    <p class="text-sm opacity-90">倉敷 → 姬路 → 明石 → 奈良</p>
+                </div>
+                <div class="text-3xl"><i class="fas fa-train"></i></div>
+            </div>
+
+            <div class="p-5 space-y-6">
+                <!-- Check-in Alert -->
+                <div class="check-in-alert p-4 rounded-r-lg">
+                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 硬限制：21:00 前入住</h3>
+                    <p class="font-bold text-lg">Yuzan Guesthouse (遊山) <a href="https://www.google.com/maps/search/?api=1&query=Yuzan+Guesthouse+Nara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
+                    <p class="text-sm text-gray-600">奈良市 Aburasakacho 423 (近 JR/近鐵奈良)</p>
+                    <p class="text-sm text-red-600 mt-1 font-bold">若行程延誤，直接砍掉明石/難波，直奔奈良。</p>
+                </div>
+
+                <!-- Timeline -->
+                <div>
+                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
+                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">07:00</span> 岡山出發
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">07:40</span> 倉敷美觀地區 <a href="https://www.google.com/maps/search/?api=1&query=Kurashiki+Bikan+Historical+Quarter" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (早晨散步)
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">11:30</span> 姬路城 <a href="https://www.google.com/maps/search/?api=1&query=Himeji+Castle" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (城外觀/大手前通 + 午餐)
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">14:00</span> 明石魚之棚商店街 <a href="https://www.google.com/maps/search/?api=1&query=Uontana+Shopping+Street+Akashi" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (玉子燒)
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-red-500 rounded-full"></span>
+                            <span class="font-mono text-red-600 font-bold">17:00</span> 移動往奈良 (死線)
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">20:30</span> 抵達奈良 Check-in
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Backup Options -->
+                <div class="backup-box p-4 rounded-r-lg text-sm">
+                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li><strong>明石公園/城跡 <a href="https://www.google.com/maps/search/?api=1&query=Akashi+Park" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>：</strong>時間不夠直接砍。</li>
+                        <li><strong>大阪難波夜逛：</strong>若到大阪已晚，直接轉車去奈良，務必保住 21:00 入住。</li>
+                    </ul>
+                </div>
+
+                <!-- Story Expandable -->
+                <div class="story-container p-4 rounded-r-lg text-sm">
+                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
+                    <div class="space-y-2">
+                        <details>
+                            <summary>🚣 倉敷：運河不是為了浪漫</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                江戶時代，這裡的運河是重要的「米」物流幹線，而不是觀光造景。那些漂亮的白壁建築（倉），其實是富商們為了防火、防盜而建的堅固倉庫（保險箱）。站在石橋上看，你要想像這曾經是繁忙的碼頭街。
+                            </p>
+                        </details>
+                        <details>
+                            <summary>🦅 姬路城：白鷺的心理戰</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                姬路城被稱為「白鷺城」，白得像會飛。從車站出來的大手前通，刻意設計成筆直的大道，讓城在視線盡頭顯得巨大而有壓迫感，這是一種視覺上的權力展示。城內的路線設計是個迷宮，為了消耗進攻者的體力。
+                            </p>
+                        </details>
+                        <details>
+                            <summary>🐙 明石燒：工業副產品的美食？</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                明石燒（在地人叫玉子燒）的起源很有趣。傳說當地生產「明石玉（裝飾品）」需要用到大量蛋白，剩下了超多蛋黃，於是人們把蛋黃混合海裡抓的章魚，做成了這道鬆軟的點心。魚之棚商店街則是當年城下町的廚房，魚販為了保鮮會引水流過攤位。
+                            </p>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- Survival -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="food-box p-4 rounded-r-lg text-sm">
+                        <h4 class="text-amber-700 font-bold mb-1"><i class="fas fa-utensils mr-1"></i> 奈良晚餐 (晚到救星)</h4>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>
+                                <strong>麺屋 龍:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Menya+Ryu+Nara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://tabelog.com/nara/A2901/A290101/29010358/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">油阪附近，開到深夜 03:00</span>
+                            </li>
+                            <li>
+                                <strong>にぼしこいし (煮干系):</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Niboshi+Koishi+Nara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://tabelog.com/nara/A2901/A290101/29010264/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">油阪町460，近鐵奈良站7號出口1分</span>
+                            </li>
+                            <li>
+                                <strong>とんかつ がんこ:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Ganko+Tonkatsu+Nara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://www.gankofood.co.jp/shop/detail/ton-nara" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">炸豬排定食 (至21:00)</span>
+                            </li>
+                            <li>
+                                <strong>若草カレー本舗:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Wakakusa+Curry+Honpo+Nara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://tabelog.com/nara/A2901/A290101/29006593/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">咖哩，商店街內 (至20:30)</span>
+                            </li>
+                            <li>
+                                <strong>柿の葉すし たなか:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Kakinohasushi+Tanaka+Nara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://www.kakinohasushi.co.jp/shop/nara/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">奈良名物，可外帶 (至19:00)</span>
+                            </li>
+                            <li>
+                                <strong>SAKURA BURGER:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Sakura+Burger+Nara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <span class="text-xs text-gray-500">近鐵奈良站旁，輕鬆無壓</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg text-sm">
+                        <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 飯店附近補給</h4>
+                        <p class="text-xs text-gray-500 mb-2">遊山 Guesthouse (油阪町423) 附近</p>
+                        
+                        <p class="text-xs font-bold text-gray-600 mt-2">🛒 超市 (買便當/水果最划算)</p>
+                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
+                            <li>KOHYO JR奈良店 <a href="https://www.google.com/maps/search/?api=1&query=KOHYO+JR+Nara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (ビエラ奈良1F, 7:00-24:00)</li>
+                            <li>関西スーパー 奈良三条店 <a href="https://www.google.com/maps/search/?api=1&query=Kansai+Super+Nara+Sanjo" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (9:00-22:00)</li>
+                        </ul>
+                        
+                        <p class="text-xs font-bold text-gray-600 mt-2">🏪 便利商店</p>
+                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
+                            <li>Lawson JR奈良駅前 (24H) <a href="https://www.google.com/maps/search/?api=1&query=Lawson+JR+Nara+Ekimae" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                            <li>7-11 JR奈良駅前 (24H) <a href="https://www.google.com/maps/search/?api=1&query=7-11+JR+Nara+Ekimae" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                            <li>全家 近鉄奈良駅改札内店 <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Kintetsu+Nara+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (5:45-23:15)</li>
+                            <li>7-11 奈良三条町店 <a href="https://www.google.com/maps/search/?api=1&query=7-11+Nara+Sanjo" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Day 3: 奈良/法隆寺/高野山 -->
+        <section id="day3" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-bold">12/30 (二) 古都與聖山</h2>
+                    <p class="text-sm opacity-90">奈良 → 法隆寺 → 上高野山</p>
+                </div>
+                <div class="text-3xl"><i class="fas fa-om"></i></div>
+            </div>
+
+            <div class="p-5 space-y-6">
+                <!-- Check-in Alert -->
+                <div class="check-in-alert p-4 rounded-r-lg">
+                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 硬限制：21:00</h3>
+                    <p class="font-bold text-lg">Koyasan Guest House Laugh Tale <a href="https://www.google.com/maps/search/?api=1&query=Koyasan+Guest+House+Laugh+Tale" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
+                    <p class="text-sm text-gray-600">和歌山縣橋本市清水 556-8 (近紀伊清水站)</p>
+                    <p class="text-sm text-red-600 mt-1 font-bold">注意：住宿在山下的橋本市，不是高野山頂！</p>
+                </div>
+
+                <!-- Timeline -->
+                <div>
+                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
+                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">08:00</span> 東大寺 (大佛殿) <a href="https://www.google.com/maps/search/?api=1&query=Todaiji+Temple" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">11:00</span> 春日大社 <a href="https://www.google.com/maps/search/?api=1&query=Kasuga+Taisha" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">13:30</span> 法隆寺 <a href="https://www.google.com/maps/search/?api=1&query=Horyuji+Temple" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (世界遺產)
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-red-500 rounded-full"></span>
+                            <span class="font-mono text-red-600 font-bold">17:00</span> 離開奈良，經難波轉南海高野線
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">20:30</span> 抵達橋本/紀伊清水 Check-in
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Backup Options -->
+                <div class="backup-box p-4 rounded-r-lg text-sm">
+                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li><strong>唐招提寺 <a href="https://www.google.com/maps/search/?api=1&query=Toshodaiji" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> / 藥師寺 <a href="https://www.google.com/maps/search/?api=1&query=Yakushiji" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>：</strong>只有在時間充裕時才加入，否則全砍。</li>
+                    </ul>
+                </div>
+
+                <!-- Story Expandable -->
+                <div class="story-container p-4 rounded-r-lg text-sm">
+                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
+                    <div class="space-y-2">
+                        <details>
+                            <summary>🦌 奈良鹿：神的使者</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                在奈良，鹿不是單純的觀光動物，而是「神的使者」。傳說春日大社的神明是騎著白鹿降臨的。當你在參道上看到鹿，請把它們當成帶領你進入神域的嚮導。
+                            </p>
+                        </details>
+                        <details>
+                            <summary>🙏 東大寺：國家級的宣言</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                東大寺的大佛是奈良時代「國家工程」的象徵，為了祈求國家安定而建。別只看大佛的臉，回頭看看大佛殿巨大的木造空間，那是當時日本向世界（主要是唐朝）展示國力的宣言。
+                            </p>
+                        </details>
+                        <details>
+                            <summary>🏯 法隆寺：時間膠囊</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                你正在看的是世界上最古老的木造建築群。請站遠一點，把「金堂＋五重塔＋迴廊」當成一個整體來看，這是日本佛教建築最早期、最完美的宇宙縮影。
+                            </p>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- Survival -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="food-box p-4 rounded-r-lg text-sm">
+                        <h4 class="text-amber-700 font-bold mb-1"><i class="fas fa-utensils mr-1"></i> 晚餐：紀伊清水 vs 橋本</h4>
+                        
+                        <p class="text-xs font-bold text-gray-500 mt-2">📍 紀伊清水 (走路就到)</p>
+                        <ul class="list-disc list-inside text-gray-700 mb-2 space-y-1">
+                            <li>
+                                <strong>御食事居酒屋 柿善:</strong>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Kakizen+Hashimoto" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://tabelog.com/wakayama/A3001/A300103/30011625/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">清水513-2，步行約4分 (週三休)</span>
+                            </li>
+                            <li>
+                                <strong>食事処 かず:</strong>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Shokujidokoro+Kazu+Hashimoto" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://tabelog.com/wakayama/A3001/A300103/30010122/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">吧台/丼飯 (至19:30)</span>
+                            </li>
+                        </ul>
+
+                        <p class="text-xs font-bold text-gray-500 mt-3">🚉 橋本站 (搭車1站/較熱鬧)</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>
+                                <strong>やきとり大吉:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Yakitori+Daikichi+Hashimoto" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://www.daikichi.co.jp/shop/wakayama/shop-949/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">站前串燒 (17:00起)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg text-sm">
+                        <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 補給站</h4>
+                        <p class="text-xs text-gray-500 mb-2">橋本市清水周邊</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1">
+                            <li>全家 橋本清水店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Hashimoto+Shimizu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                            <li>Lawson 橋本清水店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Hashimoto+Shimizu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                            <li>スーパーセンターオークワ <a href="https://www.google.com/maps/search/?api=1&query=Okuwa+Hashimoto" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (至23:00)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Day 4: 高野山/和歌山 -->
+        <section id="day4" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-bold">12/31 (三) 跨年夜</h2>
+                    <p class="text-sm opacity-90">高野山 → 和歌山站前採買 → 跨年</p>
+                </div>
+                <div class="text-3xl"><i class="fas fa-torii-gate"></i></div>
+            </div>
+
+            <div class="p-5 space-y-6">
+                <!-- Check-in Alert -->
+                <div class="check-in-alert p-4 rounded-r-lg">
+                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 硬限制：22:00</h3>
+                    <p class="font-bold text-lg">瑞克旅館 (Guesthouse RICO) <a href="https://www.google.com/maps/search/?api=1&query=Guesthouse+RICO+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
+                    <p class="text-sm text-gray-600">和歌山市 Shintori 5-6 (近和歌山站)</p>
+                    <p class="text-sm text-red-600 mt-1 font-bold">跨年夜店家早關，務必 21:30 前回飯店區域。</p>
+                </div>
+
+                <!-- Timeline -->
+                <div>
+                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
+                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">07:30</span> 奧之院 <a href="https://www.google.com/maps/search/?api=1&query=Okunoin+Temple+Koyasan" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (晨間散步/弘法大師御廟)
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">09:30</span> 壇上伽藍 <a href="https://www.google.com/maps/search/?api=1&query=Danjo+Garan+Koyasan" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> / 金剛峯寺
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">12:30</span> 下山 (纜車+電車) 往和歌山
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-red-500 rounded-full"></span>
+                            <span class="font-mono text-red-600 font-bold">16:30</span> 抵達和歌山站 (採買衝刺)
+                        </li>
+                    </ul>
+                </div>
+
+                 <!-- Bus Schedule Toggle -->
+                 <details class="transport-box p-3 rounded-lg cursor-pointer">
+                    <summary class="font-bold text-blue-700">🚌 高野山巴士時刻 (平日/年末參考)</summary>
+                    <div class="mt-2 text-xs text-gray-700">
+                        <p class="font-bold">高野山駅前 → 奥の院前</p>
+                        <p>06:35, 06:59, 07:33, 08:21, 08:45, 09:17</p>
+                        <p class="font-bold mt-2">奥の院前 → 高野山駅前</p>
+                        <p>11:01, 11:20, 11:45, 12:18, 13:00</p>
+                        <p class="mt-2 text-red-500">*年末可能改為土休日班表，班次會變多但請提早候車。</p>
+                    </div>
+                </details>
+
+                <!-- Shopping Mission -->
+                <div class="shopping-box p-4 rounded-r-lg text-sm">
+                    <h4 class="text-emerald-700 font-bold mb-1"><i class="fas fa-running mr-1"></i> 和歌山 5點鐘採買任務</h4>
+                    <ol class="list-decimal list-inside text-gray-700 space-y-1">
+                        <li><strong>近鐵百貨/MIO:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Kintetsu+Department+Store+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 車站直結，先逛 (至18:30/19:00)</li>
+                        <li><strong>好日山荘:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Kojitusanso+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 近鐵百貨4F</li>
+                        <li><strong>UNIQLO:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Uniqlo+Wakayama+Kokutai+Road" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 國體道路店 (需移動)</li>
+                        <li><strong>Mont-bell:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Mont-bell+Aeon+Mall+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> Aeon Mall 和歌山 (需移動)</li>
+                        <li><strong>Don Quijote (ぶらくり丁店):</strong> <a href="https://www.google.com/maps/search/?api=1&query=Don+Quijote+Burakuricho" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 營業至 03:00 (最後防線)</li>
+                    </ol>
+                </div>
+
+                <!-- Backup Options -->
+                <div class="backup-box p-4 rounded-r-lg text-sm">
+                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li><strong>Montbell / Uniqlo (國體道路/Aeon Mall)：</strong>這些店距離車站較遠，若 16:30 還沒到和歌山站，直接放棄，專攻站前與 Donki。</li>
+                        <li><strong>近鐵百貨：</strong>如果到站太晚，百貨已關，直接去 Donki。</li>
+                    </ul>
+                </div>
+
+                <!-- Story Expandable -->
+                <div class="story-container p-4 rounded-r-lg text-sm">
+                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
+                    <div class="space-y-2">
+                        <details>
+                            <summary>🙏 奧之院：大師仍在修行</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                這是日本最神聖的墓地，長達2公里的參道有20萬座墓碑，包括戰國大名們（生前打得要死，死後都想擠在這）。最深處的御廟，人們相信弘法大師空海並沒有「過世」，而是正在進行永恆的禪定修行，為眾生祈福。所以直到今天，僧侶每天兩次都會送熱騰騰的飯菜去御廟供養。
+                            </p>
+                        </details>
+                        <details>
+                            <summary>☸️ 壇上伽藍：3D 曼荼羅</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                這裡的建築佈局是為了將密教的「曼荼羅」世界觀立體化。朱紅色的根本大塔代表宇宙的中心（大日如來）。
+                            </p>
+                        </details>
+                    </div>
+                </div>
+
+                 <!-- Dinner -->
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="food-box p-4 rounded-r-lg text-sm">
+                        <h4 class="text-amber-700 font-bold mb-1"><i class="fas fa-glass-cheers mr-1"></i> 跨年晚餐 (新通周邊)</h4>
+                        <p class="text-xs text-red-600 mb-2">⚠️ 跨年夜店家可能提早打烊，請提前確認</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>
+                                <strong>Una rama de RICO:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Una+rama+de+RICO+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://tabelog.com/wakayama/C30201/C90153/rstLst/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">新通5-6，住宿同地址小酒館</span>
+                            </li>
+                            <li>
+                                <strong>グリル三笠:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Grill+Mikasa+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <span class="text-xs text-gray-500">新通5-25，洋食館/漢堡排</span>
+                            </li>
+                            <li>
+                                <strong>富士 (食堂):</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Fuji+Shokudo+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <span class="text-xs text-gray-500">新通5-36，丼飯/烏龍麵快速</span>
+                            </li>
+                            <li>
+                                <strong>斗里屋 (燒鳥):</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Toriya+Yakitori+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <span class="text-xs text-gray-500">新通3-19，吧台適合獨食</span>
+                            </li>
+                            <li>
+                                <strong>井出商店 (拉麵名店):</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Ide+Shoten+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://tabelog.com/wakayama/A3001/A300101/30000031/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">田中町4-84，JR站西口7分 (至22:00)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg text-sm">
+                        <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 補給站 (新通周邊)</h4>
+                        <p class="text-xs text-gray-500 mb-2">瑞克旅館 (新通5-6) 附近</p>
+                        
+                        <p class="text-xs font-bold text-gray-600 mt-2">🛒 超市</p>
+                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
+                            <li>近鐵百貨 和歌山店 <a href="https://www.google.com/maps/search/?api=1&query=Kintetsu+Department+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (JR站直結, B1/1F 10:00-19:00)</li>
+                            <li>和歌山MIO <a href="https://www.google.com/maps/search/?api=1&query=Wakayama+MIO" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (車站直結)</li>
+                        </ul>
+                        
+                        <p class="text-xs font-bold text-gray-600 mt-2">🏪 便利商店</p>
+                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
+                            <li>Lawson 和歌山站前 (24H) <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Wakayama+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                            <li>7-11 和歌山站 (24H) <a href="https://www.google.com/maps/search/?api=1&query=7-11+Wakayama+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                            <li>全家 和歌山站周邊 <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Wakayama+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                        </ul>
+                        
+                        <p class="text-xs font-bold text-red-600 mt-2">⚠️ 重要提醒</p>
+                        <p class="text-xs text-gray-700">跨年夜店家可能提早打烊，建議提前在車站便利商店買好跨年宵夜！</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Day 5: 和歌山/田邊 -->
+        <section id="day5" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-bold">1/1 (四) 元旦．紀伊路</h2>
+                    <p class="text-sm opacity-90">紀三井寺纜車 → 田邊 → 熊野準備</p>
+                </div>
+                <div class="text-3xl"><i class="fas fa-torii-gate"></i></div>
+            </div>
+
+            <div class="p-5 space-y-6">
+                <!-- Check-in Alert -->
+                <div class="check-in-alert p-4 rounded-r-lg">
+                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 硬限制：22:00</h3>
+                    <p class="font-bold text-lg">DJANGO Hostel & Lounge <a href="https://www.google.com/maps/search/?api=1&query=DJANGO+Hostel+%26+Lounge+Tanabe" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
+                    <p class="text-sm text-gray-600">田邊市 Minato 41-33 (近紀伊田邊站 步行2-3分)</p>
+                    <p class="text-sm text-red-600 mt-1 font-bold">元旦餐廳少，建議往「味光路」覓食或依賴便利商店。</p>
+                </div>
+
+                <!-- Cable Car Info Box -->
+                <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 rounded-lg text-sm border-l-4 border-amber-500">
+                    <h4 class="font-bold text-amber-800 mb-2"><i class="fas fa-cable-car mr-1"></i> 紀三井寺ケーブルカー 資訊</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                        <div>
+                            <p class="font-bold text-gray-700">⏰ 運行時間</p>
+                            <p class="text-gray-600">8:30-16:30 (最後上行 16:30)</p>
+                            <p class="text-red-600 text-xs mt-1">※元旦可能有特別時間，建議出發前再確認</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-700">💰 票價 (含參拜料)</p>
+                            <p class="text-gray-600">上行 600円 + 下行 200円 = 往返 800円</p>
+                            <p class="text-gray-500 text-xs mt-1">上行票已含參拜料400円</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-600 mt-2">
+                        <i class="fas fa-info-circle mr-1"></i> 
+                        纜車約1分鐘到達山上站，再搭電梯到本堂附近。可選擇上山搭纜車、下山走231階石段。
+                    </p>
+                </div>
+
+                <!-- Timeline -->
+                <div>
+                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
+                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">08:00-09:00</span> 起床退房，步行至JR和歌山駅
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">09:30</span> JR和歌山駅 → 紀三井寺駅 (約6分・190円) <a href="https://www.google.com/maps/search/?api=1&query=Kimiidera+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-amber-500 rounded-full"></span>
+                            <span class="font-mono text-amber-600 font-bold">09:50-11:30</span> 紀三井寺參拜＋纜車 <a href="https://www.google.com/maps/search/?api=1&query=Kimiidera+Temple" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                            <p class="text-xs text-gray-600 mt-1 ml-4">→ 搭ケーブルカー上山 → 本堂參拜 → 眺望和歌浦灣</p>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">12:00-13:00</span> 回JR和歌山駅，車站周邊午餐 (和歌山拉麵等)
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-blue-500 rounded-full"></span>
+                            <span class="font-mono text-blue-600 font-bold">13:18-14:29</span> 特急黑潮號 → 紀伊田邊 <a href="https://www.google.com/maps/search/?api=1&query=Kii-Tanabe+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                            <p class="text-xs text-gray-600 mt-1 ml-4">車資約1,690円+特急券1,730円 (或搭普通車約2小時)</p>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-green-500 rounded-full"></span>
+                            <span class="font-mono text-green-600 font-bold">15:00-16:00</span> 田邊觀光案內所 <a href="https://www.google.com/maps/search/?api=1&query=Tanabe+Tourist+Information+Center" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                            <p class="text-xs text-gray-600 mt-1 ml-4">確認明天巴士時刻 / 車站超市買明後天行動糧</p>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">16:00+</span> 辦理入住 DJANGO，晚餐後早點休息
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Transport Info -->
+                <div class="transport-box p-4 rounded-lg text-sm">
+                    <h4 class="font-bold text-blue-800 mb-2"><i class="fas fa-train mr-1"></i> JR紀勢本線 (和歌山⇄紀三井寺)</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                        <div>
+                            <p class="font-bold text-gray-700">去程參考班次</p>
+                            <p class="text-gray-600">和歌山發：09:00前後班次較多</p>
+                            <p class="text-gray-600">車程：約6分鐘・單程190円</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-700">回程參考班次</p>
+                            <p class="text-gray-600">紀三井寺發：約每30分鐘一班</p>
+                            <p class="text-gray-600">12:00前後可順利回和歌山駅用餐</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">
+                        <i class="fas fa-info-circle mr-1"></i> 
+                        JR紀勢本線（きのくに線）普通車，可使用ICOCA/Suica等IC卡
+                    </p>
+                </div>
+
+                <!-- Backup Options -->
+                <div class="backup-box p-4 rounded-r-lg text-sm">
+                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li><strong>下山方式：</strong>可選擇搭纜車下山（200円）或走231階石段（免費＋運動）。建議上山搭纜車省體力，下山走石段體驗參道氛圍。</li>
+                        <li><strong>和歌山城 <a href="https://www.google.com/maps/search/?api=1&query=Wakayama+Castle" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>：</strong>若時間充裕可在回和歌山駅後快速參訪（約30-40分鐘），但會壓縮午餐與搭車緩衝時間。</li>
+                        <li><strong>貴志站 (貓站長) <a href="https://www.google.com/maps/search/?api=1&query=Kishi+Station+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>：</strong>建議放棄，保留體力給明天的熊野古道徒步。</li>
+                    </ul>
+                </div>
+
+                <!-- Story Expandable -->
+                <div class="story-container p-4 rounded-r-lg text-sm">
+                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
+                    <div class="space-y-2">
+                        <details>
+                            <summary>⛩️ 紀三井寺：770年的信仰與231階的修行</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                紀三井寺創建於770年，由唐僧為光上人開創，後來成為「紀州德川家」祈願昌隆之地。寺名來自境內三口名井（吉祥水、清淨水、楊柳水），是「日本名水百選」。傳統上需爬231階石段上山，但現在有纜車讓參拜變得輕鬆。登上本堂後可俯瞰和歌浦灣，把「詩的風景」與「信仰的高度」直接連結起來。
+                            </p>
+                        </details>
+                        <details>
+                            <summary>🌸 櫻花名所：關西最早開花的春之使者</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                紀三井寺是關西地區最早開花的櫻花名所之一，約有500株染井吉野櫻。每年3月下旬至4月上旬，參道兩側櫻花盛開，吸引無數賞花遊客。雖然元旦看不到櫻花，但可以想像春天時這231階石段被櫻花包圍的浪漫景象。
+                            </p>
+                        </details>
+                        <details>
+                            <summary>🌊 和歌之浦：萬葉詩人的風景</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                從紀三井寺山上眺望的和歌浦灣，自古就是詩歌名所。和歌山深受黑潮（暖流）影響，漁獲豐富。和歌之浦的風景因為潮汐變化多端，自古就被萬葉集詩人反覆歌詠，有一種「時間在風景上流動」的美感。站在山上10分鐘，你會懂為什麼詩人會一直寫它。
+                            </p>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- Dinner -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="food-box p-4 rounded-r-lg text-sm">
+                        <h4 class="text-amber-700 font-bold mb-1"><i class="fas fa-utensils mr-1"></i> 田邊覓食 (味光路)</h4>
+                        <p class="text-gray-600 mb-2 text-xs">元旦很多店休，建議去「味光路」<a href="https://www.google.com/maps/search/?api=1&query=Ajikoji+Tanabe" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 找有開的居酒屋/吧台。</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>
+                                <strong>どさん子 (拉麵):</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Dosanko+Ramen+Tanabe" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://hitosara.com/wakayama/T30005/lst/5/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">田邊市湊，快速解決</span>
+                            </li>
+                            <li>
+                                <strong>海鮮れすとらん 勘八屋:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Kanpachiya+Tanabe" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://r.gnavi.co.jp/city/wakayama/cwtav6460000/izakaya/kods00147/rs/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">紀伊田邊站步行約2分</span>
+                            </li>
+                            <li>
+                                <strong>味光路吧台店:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Ajikoji+Tanabe" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <span class="text-xs text-gray-500">現場挑有開的居酒屋最穩</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg text-sm">
+                        <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 補給站 (田邊湊)</h4>
+                        <p class="text-xs text-gray-500 mb-2">田邊市 Minato 41-33 附近</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1">
+                            <li>7-11 JR紀伊田辺駅前 <a href="https://www.google.com/maps/search/?api=1&query=7-11+Kii-Tanabe+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                            <li>全家 田辺つぶり坂店 <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Tanabe+Tsuburizaka" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                            <li>Lawson 田辺宝来店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Tanabe+Horai" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                            <li>マツゲン田辺店 (超市) <a href="https://www.google.com/maps/search/?api=1&query=Matsugen+Tanabe" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (至21:00)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Alert & Supplies -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-yellow-100 p-4 rounded-lg text-sm border-l-4 border-yellow-500">
+                        <h4 class="font-bold text-yellow-800"><i class="fas fa-exclamation-triangle mr-1"></i> 重要任務</h4>
+                        <p class="text-gray-700 mb-2">明天本宮/發心門王子沿路**沒有便利商店**。</p>
+                        <p class="text-xs font-bold text-gray-700">必買清單：</p>
+                        <ul class="list-disc list-inside text-gray-700 text-xs space-y-0.5">
+                            <li>飯糰 x2-3 (明天早餐+午餐)</li>
+                            <li>麵包/能量棒</li>
+                            <li>飲用水 1.5L以上</li>
+                            <li>泡麵/即食品 (本宮晚餐用)</li>
+                            <li>零食/補給品</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-100 p-4 rounded-lg text-sm">
+                        <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 本宮補給站 (極少)</h4>
+                        <p class="text-xs text-red-600 mb-2">⚠️ 本宮幾乎沒有便利商店，多數店16:00就關</p>
+                        
+                        <p class="text-xs font-bold text-gray-600 mt-2">📍 本宮大社周邊</p>
+                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
+                            <li>Yショップ 本宮尾野商店 <a href="https://www.google.com/maps/search/?api=1&query=Y+Shop+Hongu+Onoshoten" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (7:30-19:00，週日休)</li>
+                            <li>樹の里 (土產/飲料) <a href="https://www.google.com/maps/search/?api=1&query=Ki+no+Sato+Hongu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (9:00-17:00)</li>
+                            <li>八屋 (食料品店) <a href="https://www.google.com/maps/search/?api=1&query=Hachiya+Hongu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (9:00-18:30，週三休)</li>
+                        </ul>
+                        
+                        <p class="text-xs font-bold text-gray-600 mt-2">📍 請川 (搭巴士可到)</p>
+                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
+                            <li>Yショップ しもじ本宮店 <a href="https://www.google.com/maps/search/?api=1&query=Y+Shop+Shimoji+Hongu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (8:00-19:00，週三休)</li>
+                        </ul>
+                        
+                        <p class="text-xs font-bold text-red-600 mt-2">💡 對策</p>
+                        <p class="text-xs text-gray-700">Kumano Backpackers 有公共廚房，依靠昨晚在田邊買的存糧！</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Day 6: 中邊路/本宮 -->
+        <section id="day6" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-bold">1/2 (五) 熊野古道</h2>
+                    <p class="text-sm opacity-90">發心門王子 → 本宮大社 (7km徒步)</p>
+                </div>
+                <div class="text-3xl"><i class="fas fa-hiking"></i></div>
+            </div>
+
+            <div class="p-5 space-y-6">
+                <!-- Check-in Alert -->
+                <div class="check-in-alert p-4 rounded-r-lg">
+                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 硬限制：20:00 (需現金)</h3>
+                    <p class="font-bold text-lg">Kumano Backpackers <a href="https://www.google.com/maps/search/?api=1&query=Kumano+Backpackers+Hongu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
+                    <p class="text-sm text-gray-600">本宮町 Hongu 159-1 (近本宮大社)</p>
+                    <p class="text-sm text-red-600 mt-1 font-bold">鄉下入夜全黑，務必 18:30 前回到本宮區域。</p>
+                </div>
+
+                <!-- Bus Table -->
+                <div class="transport-box p-4 rounded-lg">
+                    <h4 class="font-bold text-blue-800 mb-2"><i class="fas fa-bus mr-1"></i> 關鍵巴士時刻 (紀伊田邊→本宮)</h4>
+                    <table class="w-full text-sm text-left">
+                        <tr class="border-b border-blue-200"><th class="py-1">紀伊田邊發</th><th class="py-1">本宮大社到</th></tr>
+                        <tr class="bg-blue-50"><td class="py-1">06:50</td><td>08:20 (接08:20上山車)</td></tr>
+                        <tr><td class="py-1">08:32</td><td>10:12</td></tr>
+                        <tr class="bg-blue-50"><td class="py-1">08:37</td><td>10:30 (接10:30上山車)</td></tr>
+                    </table>
+                    <div class="mt-2 text-xs text-gray-600">
+                        <span class="font-bold">轉乘發心門王子(上山)：</span>本宮發 08:20, 09:20, 10:30
+                    </div>
+                </div>
+
+                <!-- Timeline -->
+                <div>
+                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
+                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">07:00</span> 搭龍神巴士往本宮
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">10:30</span> 寄放行李，轉巴士往「發心門王子」 <a href="https://www.google.com/maps/search/?api=1&query=Hosshinmon+Oji" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-green-500 rounded-full"></span>
+                            <span class="font-mono text-green-600 font-bold">11:00</span> 開始徒步 (約3小時)
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">14:30</span> 抵達熊野本宮大社 <a href="https://www.google.com/maps/search/?api=1&query=Kumano+Hongu+Taisha" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> / 大齋原(巨鳥居) <a href="https://www.google.com/maps/search/?api=1&query=Oyunohara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Backup Options -->
+                <div class="backup-box p-4 rounded-r-lg text-sm">
+                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li><strong>湯之峰溫泉 <a href="https://www.google.com/maps/search/?api=1&query=Yunomine+Onsen" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>：</strong>若徒步太累，今天先不去，留到明天早上。</li>
+                    </ul>
+                </div>
+
+                <!-- Story Expandable -->
+                <div class="story-container p-4 rounded-r-lg text-sm">
+                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
+                    <div class="space-y-2">
+                        <details>
+                            <summary>⛩️ 大齋原：人神界線</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                本宮大社原本是在河邊沙洲上的，後來被洪水沖毀才遷到山上，原址就是「大齋原」。那座巨大的鋼製鳥居標示著「俗世」與「神域」的絕對分界。穿過去之前請回頭看一眼，用身體感覺那種結界的切換。
+                            </p>
+                        </details>
+                        <details>
+                            <summary>🚶‍♂️ 發心門王子→本宮：千年參拜路</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                你不是在健行，而是在走「平安時代貴族走過的路」。這條路設計得讓你一步步靠近神域，沿途的「王子社」就是古代的休息站與遙拜所。
+                            </p>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- Food Crisis -->
+                <div class="bg-red-50 p-4 rounded-lg text-sm border-l-4 border-red-500">
+                    <h4 class="font-bold text-red-800"><i class="fas fa-utensils mr-1"></i> 本宮晚餐警報</h4>
+                    <p class="text-gray-700 mb-2 font-bold">本宮晚上幾乎沒店開，便利商店(Y shop)很早就關。務必提前準備！</p>
+                    
+                    <p class="text-xs font-bold text-gray-700 mt-3">午餐/下午選擇 (多數至16:00)</p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>
+                            <strong>お食事しもじ:</strong> 
+                            <a href="https://www.google.com/maps/search/?api=1&query=Shimoji+Hongu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                            <a href="https://www.kumano-area.jp/facility/1883/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                            <span class="text-xs text-gray-500">定食/鄉土料理 (9:00-16:00，週三休)</span>
+                        </li>
+                        <li>
+                            <strong>Kitchen (きっちん):</strong> 
+                            <a href="https://www.google.com/maps/search/?api=1&query=Kitchen+Hongu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                            <span class="text-xs text-gray-500">炸雞/めはり寿司 (9:00-16:00)</span>
+                        </li>
+                        <li>
+                            <strong>cafe alma:</strong> 
+                            <a href="https://www.google.com/maps/search/?api=1&query=Cafe+Alma+Hongu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                            <span class="text-xs text-gray-500">本宮大社瑞鳳殿內 (10:00-16:00)</span>
+                        </li>
+                        <li>
+                            <strong>鹿六 本宮店 (うなぎ):</strong> 
+                            <a href="https://www.google.com/maps/search/?api=1&query=Shika Roku+Hongu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                            <span class="text-xs text-gray-500">午餐限定 (11:00-14:00，週一休)</span>
+                        </li>
+                    </ul>
+                    
+                    <p class="text-xs font-bold text-gray-700 mt-3">晚餐唯一選擇 (需搭車)</p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>
+                            <strong>Otonashi no Sato (渡瀬):</strong> 
+                            <a href="https://www.google.com/maps/search/?api=1&query=Otonashi+no+Sato+Wataze" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                            <a href="https://hongu-otonashi.com/restaurant/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                            <span class="text-xs text-gray-500">週五~日 17:00-22:00 (車程約10分)</span>
+                        </li>
+                    </ul>
+                    
+                    <p class="text-xs font-bold text-red-700 mt-3">📌 最穩對策：</p>
+                    <p class="text-xs text-gray-700">依靠昨晚在田邊買的泡麵/飯糰/存糧 (Kumano Backpackers 有公共廚房可用)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Day 7: 新宮 -->
+        <section id="day7" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-bold">1/3 (六) 川之參拜路</h2>
+                    <p class="text-sm opacity-90">湯之峰溫泉 → 大日越 → 新宮</p>
+                </div>
+                <div class="text-3xl"><i class="fas fa-water"></i></div>
+            </div>
+
+            <div class="p-5 space-y-6">
+                 <!-- Check-in Alert -->
+                 <div class="check-in-alert p-4 rounded-r-lg">
+                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 硬限制：21:00</h3>
+                    <p class="font-bold text-lg">Guesthouse 柚 (Yuzu) <a href="https://www.google.com/maps/search/?api=1&query=Guesthouse+Yuzu+Shingu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
+                    <p class="text-sm text-gray-600">新宮市上本町 1-1-4</p>
+                </div>
+
+                <!-- Timeline -->
+                <div>
+                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
+                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">08:00</span> 湯之峰溫泉 (體驗世界遺產「壺湯」) <a href="https://www.google.com/maps/search/?api=1&query=Yunomine+Onsen+Tsuboyu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-green-500 rounded-full"></span>
+                            <span class="font-mono text-green-600 font-bold">09:00</span> 徒步：大日越 (Dainichi-goe) <a href="https://www.google.com/maps/search/?api=1&query=Dainichigoe+Kumano+Kodo" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 往本宮 (約2km, 1.5hr)
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">11:00</span> 抵達本宮 (午餐)
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">12:15</span> 搭巴士前往新宮 (車程約1.5hr)
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">15:00</span> 新宮 Check-in / 休息
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">17:00</span> 新宮晚餐
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Bus Table -->
+                <details class="transport-box p-3 rounded-lg cursor-pointer">
+                    <summary class="font-bold text-blue-700">🚌 本宮 → 新宮 巴士時刻</summary>
+                    <div class="mt-2 text-sm text-gray-700">
+                        <table class="w-full">
+                            <tr class="border-b"><th class="text-left">本宮大社發</th><th class="text-left">新宮駅到</th></tr>
+                            <tr><td>12:15</td><td>13:14</td></tr>
+                            <tr class="bg-blue-50"><td>13:25</td><td>14:24</td></tr>
+                            <tr><td>14:45</td><td>15:44</td></tr>
+                        </table>
+                    </div>
+                </details>
+
+                <!-- Backup Options -->
+                <div class="backup-box p-4 rounded-r-lg text-sm">
+                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li><strong>新宮市區神社：</strong>若抵達新宮已晚，所有神社行程移至明天早上，今天專注晚餐與休息。</li>
+                        <li><strong>大日越徒步：</strong>若昨天太累，可取消徒步，直接在湯之峰泡湯後搭巴士回本宮。</li>
+                    </ul>
+                </div>
+
+                <!-- Story Expandable -->
+                <div class="story-container p-4 rounded-r-lg text-sm">
+                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
+                    <div class="space-y-2">
+                        <details>
+                            <summary>♨️ 湯之峰溫泉：最古老的重生之湯</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                擁有1800年歷史，被認為是日本最古老的溫泉。其中的「壺湯」是世界遺產，傳說能讓瀕死的人起死回生。古代朝聖者在參拜本宮前，會先在這裡「湯垢離」（潔淨身心）。
+                            </p>
+                        </details>
+                        <details>
+                            <summary>🪨 神倉神社：神明降臨的大石</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                傳說中熊野的神明最早是降臨在這顆巨岩（ゴトビキ岩）上的。這裡才是信仰的「原點」。爬上陡峭的石階，想像古代人對自然的敬畏。
+                            </p>
+                        </details>
+                        <details>
+                            <summary>🌊 速玉大社：水路參拜的終點</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                熊野川在這裡流向太平洋。古代的朝聖者除了走路（中邊路），也會利用水路參拜。速玉大社就位於這個水陸交通的節點，象徵著「重生」。
+                            </p>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- Food -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="food-box p-4 rounded-r-lg text-sm">
+                        <h4 class="text-amber-700 font-bold mb-1"><i class="fas fa-utensils mr-1"></i> 新宮晚餐</h4>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>
+                                <strong>総本家 めはりや:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Mehariya+Shingu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://www.shinguu.jp/spots/detail/C0078" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">新宮名物めはり寿司 (可外帶)</span>
+                            </li>
+                            <li>
+                                <strong>徐福壽司 (駅前店):</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Jofuku+Sushi+Shingu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://www.shinguu.jp/spots/detail/C0046" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">さんま姿寿司，有吧台席</span>
+                            </li>
+                            <li>
+                                <strong>速水 (和歌山拉麵):</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Hayami+Ramen+Shingu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://tabelog.com/wakayama/A3005/A300501/30000916/dtlrvwlst/B514632903/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">井出商店系譜中華そば</span>
+                            </li>
+                            <li>
+                                <strong>居酒屋 カッポウ 壱樂:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Izakaya+Kappou+Ichiraku+Shingu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://tabelog.com/wakayama/A3005/A300501/30010795/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">割烹居酒屋 (17:00-23:00)</span>
+                            </li>
+                            <li>
+                                <strong>禅家 (ぜんか):</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Zenka+Yakitori+Shingu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://tabelog.com/wakayama/A3005/A300501/30001217/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">焼鳥，新宮站步行約10分</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg text-sm">
+                        <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 補給站 (新宮)</h4>
+                        <p class="text-xs text-gray-500 mb-2">Guesthouse 柚 (上本町1-1-4) 附近</p>
+                        
+                        <p class="text-xs font-bold text-gray-600 mt-2">🏪 便利商店</p>
+                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
+                            <li>Lawson 新宮站周邊 <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Shingu+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                            <li>7-11 新宮站周邊 <a href="https://www.google.com/maps/search/?api=1&query=7-11+Shingu+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                            <li>全家 新宮市內 <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Shingu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                        </ul>
+                        
+                        <p class="text-xs font-bold text-gray-600 mt-2">🛒 超市/商店</p>
+                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
+                            <li>はやたま門前 (速玉大社周邊) <a href="https://www.google.com/maps/search/?api=1&query=Hayatama+Monzen+Shingu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                            <li>新宮站前商店街 <a href="https://www.google.com/maps/search/?api=1&query=Shingu+Station+Shopping" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                        </ul>
+                        
+                        <p class="text-xs font-bold text-blue-600 mt-2">💡 提醒</p>
+                        <p class="text-xs text-gray-700">明天往那智瀑布路上補給有限，建議今晚先買好明天午餐和飲水。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Day 8: 那智/伊勢 -->
+        <section id="day8" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-bold">1/4 (日) 瀑布與長移動</h2>
+                    <p class="text-sm opacity-90">新宮 → 那智瀑布 → 紀伊勝浦 → 伊勢</p>
+                </div>
+                <div class="text-3xl"><i class="fas fa-train"></i></div>
+            </div>
+
+            <div class="p-5 space-y-6">
+                <!-- Check-in Alert -->
+                <div class="check-in-alert p-4 rounded-r-lg">
+                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 硬限制：21:30</h3>
+                    <p class="font-bold text-lg">伊勢風見賓館 (Ise Guesthouse Kazami) <a href="https://www.google.com/maps/search/?api=1&query=Ise+Guesthouse+Kazami" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
+                    <p class="text-sm text-gray-600">伊勢市 Fukiage 1-6-36 (近伊勢市站)</p>
+                    <p class="text-sm text-red-600 mt-1 font-bold">今天是大移動日，請緊盯 JR 時刻表。</p>
+                </div>
+
+                 <!-- Timeline -->
+                 <div>
+                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
+                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">08:00</span> 速玉大社 / 神倉神社
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">11:00</span> 火車往紀伊勝浦，轉巴士上那智山
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">12:30</span> 那智瀑布 <a href="https://www.google.com/maps/search/?api=1&query=Nachi+Falls" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> / 青岸渡寺 <a href="https://www.google.com/maps/search/?api=1&query=Seigantoji" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-red-500 rounded-full"></span>
+                            <span class="font-mono text-red-600 font-bold">16:30</span> 勝浦發車 (移動死線) → 新宮 → 多氣 → 伊勢
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">21:00</span> 抵達伊勢
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Backup Options -->
+                <div class="backup-box p-4 rounded-r-lg text-sm">
+                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li><strong>神倉神社：</strong>若下雨路滑，直接砍掉（石階危險）。</li>
+                        <li><strong>大門坂 <a href="https://www.google.com/maps/search/?api=1&query=Daimonzaka" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>：</strong>若時間趕，不走步道，直接搭巴士到瀑布前。</li>
+                        <li><strong>おかげ横丁 <a href="https://www.google.com/maps/search/?api=1&query=Okage+Yokocho" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>：</strong>除非超早抵達伊勢，否則直接改到 1/5。</li>
+                    </ul>
+                </div>
+
+                <!-- Bus Table -->
+                <details class="transport-box p-3 rounded-lg cursor-pointer">
+                    <summary class="font-bold text-blue-700">🚌 紀伊勝浦 ↔ 那智山 巴士</summary>
+                    <div class="mt-2 text-sm text-gray-700">
+                        <p class="font-bold">去程 (勝浦發)</p>
+                        <p>11:05, 11:50, 12:20</p>
+                        <p class="font-bold mt-2">回程 (那智瀑布前發)</p>
+                        <p>13:59, 14:34, 15:09, 15:44</p>
+                        <p class="text-xs text-red-500 mt-1">*務必搭上 15:44 前的車下山，才能接上 16:30 往伊勢的火車。</p>
+                    </div>
+                </details>
+
+                 <!-- Food -->
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="food-box p-4 rounded-r-lg text-sm">
+                        <h4 class="text-amber-700 font-bold mb-1"><i class="fas fa-utensils mr-1"></i> 伊勢晚餐 (晚到備案)</h4>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>
+                                <strong>居酒屋ぐぅ:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Izakaya+Guu+Ise" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://www.izakaya-guuu.com/p/3/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">伊勢市站北口1分 (17:00-22:30)</span>
+                            </li>
+                            <li>
+                                <strong>寿司居酒屋 や台ずし:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Yataizushi+Ise+Fukiage" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <span class="text-xs text-gray-500">吹上1-8-36，離住宿近</span>
+                            </li>
+                            <li>
+                                <strong>魚民 (伊勢市南口):</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Uotami+Ise+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <span class="text-xs text-gray-500">吹上1-8-39，連鎖保險</span>
+                            </li>
+                            <li>
+                                <strong>名代伊勢うどん 山口屋:</strong>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Yamaguchiya+Ise+Udon" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://tabelog.com/mie/A2403/A240301/24020255/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">伊勢名物 (10:00-18:30)</span>
+                            </li>
+                            <li>
+                                <strong>手こね茶屋 本店:</strong>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Tekone+Chaya+Ise" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://tekonechaya-honten.gorp.jp/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">手こね寿司 (至20:00，年中無休)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg text-sm">
+                        <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 補給站 (伊勢吹上)</h4>
+                        <p class="text-xs text-gray-500 mb-2">伊勢風見賓館 (吹上1-6-36) 附近</p>
+                        
+                        <p class="text-xs font-bold text-gray-600 mt-2">🛒 超市 (買便當/水果)</p>
+                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
+                            <li>ぎゅーとら TRY mart 八間通店 <a href="https://www.google.com/maps/search/?api=1&query=Gyutora+Ise+Hachikendori" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (吹上2-5-3, 9:00-21:00)</li>
+                            <li>AEON 伊勢店 <a href="https://www.google.com/maps/search/?api=1&query=Aeon+Ise" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (楠部町, 食品 8:00-22:00)</li>
+                        </ul>
+                        
+                        <p class="text-xs font-bold text-gray-600 mt-2">🏪 便利商店</p>
+                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
+                            <li>全家 近鉄伊勢市駅4番ホーム <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Kintetsu+Ise+Platform" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (6:00-20:00)</li>
+                            <li>Lawson 伊勢一之木店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Ise+Ichinoki" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                            <li>Lawson 伊勢岩渕店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Ise+Iwabuchi" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                            <li>7-11 伊勢市岩渕2丁目店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=7-11+Ise+Iwabuchi" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                            <li>全家 伊勢一之木北店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Ise+Ichinoki+North" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Day 9: 伊勢/大阪 -->
+        <section id="day9" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-bold">1/5 (一) 神宮與繁華街</h2>
+                    <p class="text-sm opacity-90">伊勢神宮 → 大阪難波 → 採買</p>
+                </div>
+                <div class="text-3xl"><i class="fas fa-city"></i></div>
+            </div>
+
+            <div class="p-5 space-y-6">
+                <!-- Check-in Alert -->
+                <div class="check-in-alert p-4 rounded-r-lg">
+                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 硬限制：22:00</h3>
+                    <p class="font-bold text-lg">BAKURO (西成區) <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Bakuro+Osaka" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
+                    <p class="text-sm text-gray-600">大阪市西成區萩之茶屋 2-8-12</p>
+                </div>
+
+                <!-- Timeline (Added Back) -->
+                <div>
+                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
+                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">09:00</span> 外宮 (豐受大神宮) <a href="https://www.google.com/maps/search/?api=1&query=Ise+Jingu+Geku" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">10:30</span> 內宮 (皇大神宮) <a href="https://www.google.com/maps/search/?api=1&query=Ise+Jingu+Naiku" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">12:00</span> おかげ横丁 <a href="https://www.google.com/maps/search/?api=1&query=Okage+Yokocho" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (午餐)
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">14:30</span> 移動往大阪 (近鐵特急) <a href="https://www.google.com/maps/search/?api=1&query=Ise+City+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">17:30</span> 抵達難波 <a href="https://www.google.com/maps/search/?api=1&query=Osaka+Namba+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 開始採買
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">21:30</span> 回西成住宿 Check-in
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Story Expandable -->
+                <div class="story-container p-4 rounded-r-lg text-sm">
+                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
+                    <div class="space-y-2">
+                        <details>
+                            <summary>⛩️ 伊勢神宮：每20年的重生</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                伊勢神宮最震撼的傳統是「式年遷宮」：每20年將神殿完全重建一次。這不是為了「修復」，而是為了讓建築技術、工藝、以及神的居所永遠保持「年輕、嶄新」的狀態。你看到的是古代的樣式，卻是全新的木頭。
+                            </p>
+                        </details>
+                        <details>
+                            <summary>🍚 外宮先，內宮後</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                外宮祭祀的是掌管食物與產業的豐受大神（神的廚師）。內宮則是祭祀天照大御神（皇室祖神）。每天早晚，外宮都會進行供餐給神明的儀式，已經持續了1500年。這告訴我們：神聖不是遠離生活，而是把「吃飯」這件小事提升到極致。
+                            </p>
+                        </details>
+                        <details>
+                            <summary>🌉 宇治橋：過橋就是神域</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                踏上宇治橋的那一刻，你就離開了俗世。過橋前和過橋後回頭看一眼，你會發現氣氛完全不同。
+                            </p>
+                        </details>
+                        <details>
+                            <summary>🎉 難波：浪花與魚庭</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                大阪古稱「難波(Naniwa)」，意思是「魚之庭院」，因為古代這裡是漁獲豐富的海灣。現在的道頓堀霓虹燈海，其實是古代港口繁榮的現代版。
+                            </p>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- Backup Options -->
+                <div class="backup-box p-4 rounded-r-lg text-sm">
+                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li><strong>猿田彥神社 <a href="https://www.google.com/maps/search/?api=1&query=Sarutahiko+Shrine" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>：</strong>時間不夠就砍，優先保住內宮與參道午餐。</li>
+                        <li><strong>Alpen Outdoors / Sports Depo：</strong>難波購物點二選一，不要貪多，以免影響入住。</li>
+                    </ul>
+                </div>
+
+                <!-- Shopping & Food -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="shopping-box p-4 rounded-r-lg text-sm">
+                        <h4 class="text-emerald-700 font-bold mb-1"><i class="fas fa-shopping-bag mr-1"></i> 難波採買地圖</h4>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li><strong>EDION 難波本店:</strong> <a href="https://www.google.com/maps/search/?api=1&query=EDION+Namba+Main+Store" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 電器 (至21:00)</li>
+                            <li><strong>UNIQLO Namba CITY:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Uniqlo+Namba+City" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> B2F (至21:00)</li>
+                            <li><strong>Mont-bell Namba CITY:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Mont-bell+Namba+City" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 南館B1F (至21:00)</li>
+                            <li><strong>Alpen Outdoors:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Alpen+Outdoors+Namba+Parks" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> Namba Parks 4F (至21:00)</li>
+                            <li><strong>唐吉訶德 道頓堀:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Don+Quijote+Dotonbori" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> <strong>24H 營業</strong></li>
+                        </ul>
+                    </div>
+                    <div class="food-box p-4 rounded-r-lg text-sm">
+                        <h4 class="text-amber-700 font-bold mb-1"><i class="fas fa-utensils mr-1"></i> 西成/新世界 晚餐</h4>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>
+                                <strong>親子寿し (立食):</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Oyako+Sushi+Shin-Imamiya" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <span class="text-xs text-gray-500">新今宮站前，快速無壓</span>
+                            </li>
+                            <li>
+                                <strong>串カツ (新世界):</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Kushikatsu+Shinsekai" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <span class="text-xs text-gray-500">ジャンジャン横丁，吧台超多</span>
+                            </li>
+                            <li>
+                                <strong>日本一の串かつ 横綱:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Yokozuna+Kushikatsu+Shinsekai" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <a href="https://tabelog.com/osaka/A2701/A270206/R5064/rstLst/RC010203/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
+                                <span class="text-xs text-gray-500">新世界本館</span>
+                            </li>
+                            <li>
+                                <strong>ラーメン (新今宮周邊):</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Ramen+Shin-Imamiya" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <span class="text-xs text-gray-500">現場挑有開的</span>
+                            </li>
+                            <li>
+                                <strong>つけ鴨うどん 鴨錦:</strong> 
+                                <a href="https://www.google.com/maps/search/?api=1&query=Kamonishiki+Ebisucho" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
+                                <span class="text-xs text-gray-500">鴨汁沾麵/烏龍</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Supplies -->
+                <div class="bg-gray-100 p-4 rounded-lg text-sm mt-4">
+                    <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 補給站 (西成/新今宮)</h4>
+                    <p class="text-xs text-gray-500 mb-2">BAKURO Hotel (萩之茶屋2-8-12) 附近</p>
+                    
+                    <p class="text-xs font-bold text-gray-600 mt-2">🏪 便利商店 (徒步圈)</p>
+                    <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
+                        <li>Lawson 新今宮站前 (24H) <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Shin-Imamiya" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                        <li>7-11 動物園前 (24H) <a href="https://www.google.com/maps/search/?api=1&query=7-11+Dobutsuen-mae" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                        <li>全家 新世界周邊 <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Shinsekai" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
+                    </ul>
+                    
+                    <p class="text-xs font-bold text-gray-600 mt-2">🛒 難波採買區 (晚上行程同時補給)</p>
+                    <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
+                        <li>唐吉訶德 道頓堀店 <a href="https://www.google.com/maps/search/?api=1&query=Don+Quijote+Dotonbori" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> <strong>24H營業</strong> (零食/藥妝/雜貨)</li>
+                        <li>難波站周邊超多便利商店 (24H)</li>
+                    </ul>
+                    
+                    <p class="text-xs font-bold text-blue-600 mt-2">💡 提醒</p>
+                    <p class="text-xs text-gray-700">明天要趕飛機，今晚記得買好明天早餐和飲用水！</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Day 10: 返台 -->
+        <section id="day10" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-bold">1/6 (二) 大阪半日 & 返台</h2>
+                    <p class="text-sm opacity-90">四天王寺 → 住吉大社 → KIX</p>
+                </div>
+                <div class="text-3xl"><i class="fas fa-plane-departure"></i></div>
+            </div>
+
+            <div class="p-5 space-y-6">
+                <!-- Flight Info -->
+                <div class="bg-blue-50 p-4 rounded-lg text-sm border-l-4 border-blue-500">
+                    <h4 class="font-bold text-blue-800"><i class="fas fa-ticket-alt mr-1"></i> 航班資訊 IT213</h4>
+                    <p class="text-lg font-bold">KIX 18:55 起飛 → TPE 21:15 抵達 <a href="https://www.google.com/maps/search/?api=1&query=Kansai+International+Airport" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
+                    <p class="text-gray-600 mt-1">建議 16:30 前抵達關西機場。</p>
+                </div>
+
+                <!-- Timeline -->
+                <div>
+                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">最後衝刺</h3>
+                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">09:00</span> 四天王寺 <a href="https://www.google.com/maps/search/?api=1&query=Shitennoji" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (日本最早官寺)
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">11:00</span> 住吉大社 <a href="https://www.google.com/maps/search/?api=1&query=Sumiyoshi+Taisha" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (海之守護神，祈求回程平安)
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
+                            <span class="font-mono text-indigo-600 font-bold">14:30</span> 回西成拿行李，前往機場
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Backup Options -->
+                <div class="backup-box p-4 rounded-r-lg text-sm">
+                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li><strong>四天王寺：</strong>如果太累或想多逛難波/住吉大社，可直接砍掉，專注最後採買。</li>
+                    </ul>
+                </div>
+
+                <!-- Story Expandable -->
+                <div class="story-container p-4 rounded-r-lg text-sm">
+                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
+                    <div class="space-y-2">
+                        <details>
+                            <summary>🏯 四天王寺：日本最早的官辦寺</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                西元593年由聖德太子建立。這是日本佛教「國家工程」的起點。站在這裡，你可以看到古老的五重塔，背景卻是現代最高的阿倍野 Harukas 大樓，一眼看盡1400年的時光。
+                            </p>
+                        </details>
+                        <details>
+                            <summary>⛩️ 住吉大社：海的守護神</summary>
+                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
+                                在佛教傳入之前，這裡就守護著出海的人。那座紅色的太鼓橋（反橋），象徵著跨過它就能淨化身心。你即將搭飛機回台灣，在這裡祈求旅途平安最適合不過。
+                            </p>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Floating Action Button for AI -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <button onclick="toggleAiModal()" class="ai-gradient-bg text-white rounded-full p-4 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center gap-2">
+            <i class="fas fa-robot text-xl"></i>
+            <span class="font-bold pr-1 hidden md:inline">AI 助手</span>
+        </button>
+    </div>
+
+    <!-- AI Modal -->
+    <div id="aiModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="toggleAiModal()"></div>
+        <div class="absolute bottom-0 md:bottom-20 md:right-6 w-full md:w-96 bg-white rounded-t-2xl md:rounded-2xl shadow-2xl flex flex-col h-[80vh] md:h-[600px] transition-transform duration-300 transform translate-y-full" id="aiModalContent">
+            
+            <!-- Modal Header -->
+            <div class="ai-gradient-bg p-4 rounded-t-2xl flex justify-between items-center text-white">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-sparkles"></i>
+                    <h3 class="font-bold">旅途 AI 夥伴</h3>
+                </div>
+                <button onclick="toggleAiModal()" class="hover:bg-white/20 rounded-full p-1 w-8 h-8 flex items-center justify-center transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Chat Area -->
+            <div id="chatContainer" class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+                <!-- Welcome Message -->
+                <div class="flex items-start gap-2">
+                    <div class="w-8 h-8 rounded-full ai-gradient-bg flex items-center justify-center text-white flex-shrink-0">
+                        <i class="fas fa-robot text-xs"></i>
+                    </div>
+                    <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm text-sm border border-gray-100">
+                        <p>嗨！我是你的獨旅 AI 助手。我可以幫你：</p>
+                        <ul class="list-disc list-inside mt-2 text-gray-600">
+                            <li>🇯🇵 翻譯對話 (說給店員聽)</li>
+                            <li>🆘 緊急求救指南</li>
+                            <li>🍱 解讀菜單或文化</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="px-4 py-2 bg-white border-t border-gray-100 flex gap-2 overflow-x-auto hide-scrollbar">
+                <button onclick="setPrompt('請幫我翻譯這句話成日文（給店員）：')" class="whitespace-nowrap px-3 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-xs font-medium border border-indigo-100 hover:bg-indigo-100 transition">
+                    <i class="fas fa-language mr-1"></i> 翻譯
+                </button>
+                <button onclick="setPrompt('我遇到緊急狀況：')" class="whitespace-nowrap px-3 py-1.5 bg-red-50 text-red-600 rounded-full text-xs font-medium border border-red-100 hover:bg-red-100 transition">
+                    <i class="fas fa-ambulance mr-1"></i> 求救
+                </button>
+                <button onclick="setPrompt('請問這個日文菜單/地名是什麼意思：')" class="whitespace-nowrap px-3 py-1.5 bg-amber-50 text-amber-600 rounded-full text-xs font-medium border border-amber-100 hover:bg-amber-100 transition">
+                    <i class="fas fa-book mr-1"></i> 解惑
+                </button>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-4 bg-white border-t border-gray-100 rounded-b-2xl">
+                <div class="flex gap-2 relative">
+                    <textarea id="userInput" rows="1" class="flex-1 bg-gray-100 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 resize-none" placeholder="輸入問題..."></textarea>
+                    <button onclick="sendMessage()" id="sendBtn" class="bg-indigo-600 text-white rounded-xl w-12 flex items-center justify-center hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="text-[10px] text-center text-gray-400 mt-2">Powered by Google Gemini</div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-gray-400 text-center p-8 text-sm">
+        <p>旅途平安 Safe Travels.</p>
+        <p class="mt-2 text-xs">Based on user itinerary. Information subject to change.</p>
+    </footer>
+
+    <script>
+        // AI Logic
+        const API_KEY = ''; // IMPORTANT: Put your Gemini API Key here
+        const chatContainer = document.getElementById('chatContainer');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const modalContent = document.getElementById('aiModalContent');
+        const modal = document.getElementById('aiModal');
+
+        function toggleAiModal() {
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                // Small delay to allow display:block to apply before transform
+                setTimeout(() => {
+                    modalContent.classList.remove('translate-y-full');
+                }, 10);
+            } else {
+                modalContent.classList.add('translate-y-full');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        function setPrompt(text) {
+            userInput.value = text;
+            userInput.focus();
+        }
+
+        function addMessage(text, isUser) {
+            const div = document.createElement('div');
+            div.className = isUser ? 'flex justify-end' : 'flex items-start gap-2';
+            
+            if (isUser) {
+                div.innerHTML = `
+                    <div class="bg-indigo-600 text-white p-3 rounded-2xl rounded-tr-none shadow-sm text-sm max-w-[80%]">
+                        ${text}
+                    </div>
+                `;
+            } else {
+                // Parse Markdown for AI response
+                const parsedText = marked.parse(text);
+                div.innerHTML = `
+                    <div class="w-8 h-8 rounded-full ai-gradient-bg flex items-center justify-center text-white flex-shrink-0">
+                        <i class="fas fa-robot text-xs"></i>
+                    </div>
+                    <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm text-sm border border-gray-100 max-w-[90%] prose prose-sm prose-indigo">
+                        ${parsedText}
+                    </div>
+                `;
+            }
+            chatContainer.appendChild(div);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function showTyping() {
+            const div = document.createElement('div');
+            div.id = 'typingIndicator';
+            div.className = 'flex items-start gap-2';
+            div.innerHTML = `
+                <div class="w-8 h-8 rounded-full ai-gradient-bg flex items-center justify-center text-white flex-shrink-0">
+                    <i class="fas fa-robot text-xs"></i>
+                </div>
+                <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border border-gray-100">
+                    <div class="typing-indicator">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            `;
+            chatContainer.appendChild(div);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function removeTyping() {
+            const el = document.getElementById('typingIndicator');
+            if (el) el.remove();
+        }
+
+        async function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            if (!API_KEY) {
+                alert('請先在程式碼中填入您的 Google Gemini API Key 才能使用此功能！');
+                return;
+            }
+
+            addMessage(text, true);
+            userInput.value = '';
+            userInput.style.height = 'auto';
+            sendBtn.disabled = true;
+            showTyping();
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: `你是一位專業的日本旅遊助手。使用者正在日本獨旅。
+                                請根據使用者的輸入提供簡短、實用的協助。
+                                如果是翻譯請求，請提供日文原文、羅馬拼音(Romaji)和中文意思。
+                                如果是緊急狀況，請優先提供日文求助短句。
+                                使用繁體中文回答。
+                                
+                                使用者輸入: ${text}`
+                            }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                removeTyping();
+
+                if (data.candidates && data.candidates[0].content) {
+                    const aiResponse = data.candidates[0].content.parts[0].text;
+                    addMessage(aiResponse, false);
+                } else {
+                    addMessage('抱歉，我現在無法連線。請檢查網路或稍後再試。', false);
+                }
+            } catch (error) {
+                removeTyping();
+                addMessage('發生錯誤，請稍後再試。', false);
+                console.error('Error:', error);
+            } finally {
+                sendBtn.disabled = false;
+                userInput.focus();
+            }
+        }
+
+        // Auto-resize textarea
+        userInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+            if(this.value === '') this.style.height = 'auto';
+        });
+
+        // Enter to send
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    </script>
+
+</body>
+</html>
