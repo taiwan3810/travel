@@ -1,1736 +1,1938 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2025-26 日本跨年獨旅手冊 (+完整時間軸)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-    <!-- Marked for Markdown parsing -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f3f4f6; color: #333; }
-        h1, h2, h3, .japanese-font { font-family: 'Zen Maru Gothic', sans-serif; }
-        .sticky-nav { position: sticky; top: 0; z-index: 50; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .day-card { scroll-margin-top: 120px; }
-        .check-in-alert { border-left: 4px solid #ef4444; background-color: #fef2f2; }
-        .story-container { border-left: 4px solid #8b5cf6; background-color: #f5f3ff; }
-        .food-box { border-left: 4px solid #f59e0b; background-color: #fffbeb; }
-        .transport-box { border-left: 4px solid #3b82f6; background-color: #eff6ff; }
-        .shopping-box { border-left: 4px solid #10b981; background-color: #ecfdf5; }
-        .backup-box { border-left: 4px solid #9ca3af; background-color: #f3f4f6; }
-        
-        .map-link { color: #dc2626; margin-left: 6px; transition: color 0.2s; display: inline-flex; align-items: center; text-decoration: none; }
-        .map-link:hover { color: #991b1b; }
-        .info-link { color: #2563eb; margin-left: 6px; transition: color 0.2s; display: inline-flex; align-items: center; text-decoration: none; }
-        .info-link:hover { color: #1d4ed8; }
-        
-        .smooth-scroll { scroll-behavior: smooth; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Story Details Styling */
-        details > summary { list-style: none; cursor: pointer; position: relative; padding-left: 1.2rem; transition: all 0.2s; }
-        details > summary::-webkit-details-marker { display: none; }
-        details > summary::before { content: '▶'; position: absolute; left: 0; top: 2px; font-size: 0.8rem; color: #8b5cf6; transition: transform 0.2s; }
-        details[open] > summary::before { transform: rotate(90deg); }
-        details[open] > summary { font-weight: bold; color: #6d28d9; }
-        
-        /* AI Modal Styles */
-        .ai-gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .typing-indicator span {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            background-color: #ccc;
-            border-radius: 50%;
-            animation: typing 1s infinite ease-in-out;
-            margin: 0 2px;
-        }
-        .typing-indicator span:nth-child(1) { animation-delay: 0s; }
-        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes typing {
-            0% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.5); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.5; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>易經卦象輸入與支卦顯示</title>
+  <!-- 響應式設定 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- ??? lunar-javascript (CDN + local fallback), Vue.js ??html2canvas -->
+  <script src="https://cdn.jsdelivr.net/npm/lunar-javascript@1.7.7/dist/lunar.min.js"
+          onerror="this.onerror=null;var s=document.createElement('script');s.src='./lunar.min.js';document.head.appendChild(s);"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: "KaiTi", "STKaiti", "BiauKai", "Georgia", serif;
+      background-color: #f9f7f2;
+      color: #2c2c2c;
+      margin: 20px;
+    }
+    h1, h2, h3 {
+      text-align: center;
+      font-weight: normal;
+    }
+    /* 提示訊息 */
+    .hint {
+      text-align: center;
+      font-size: 0.95em;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    /* 今天時刻輸入區 */
+    .time-input {
+      margin: 20px auto;
+      text-align: center;
+    }
+    .time-input select {
+      width: 50px;
+      text-align: center;
+      margin: 0 5px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid #555;
+      font-family: inherit;
+      font-size: 1em;
+      border-radius: 0;
+    }
+    .time-input span {
+      margin: 0 5px;
+      font-weight: bold;
+    }
+    .kongwang {
+      margin-top: 5px;
+      font-size: 0.9em;
+      color: #2c3e50;
+    }
+    /* 核對選項 */
+    .options {
+      text-align: center;
+      margin: 10px 0;
+      font-size: 0.9em;
+    }
+    .options label {
+      margin: 0 10px;
+    }
+    /* 按鈕 */
+    .btn-save {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 24px;
+      font-size: 1.1em;
+      cursor: pointer;
+      background-color: #b22222;
+      color: #fff;
+      border: none;
+      border-radius: 2px;
+      font-family: inherit;
+    }
+    /* 外層容器 */
+    .hexagrams-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: flex-start;
+      margin-top: 20px;
+    }
+    .hexagram {
+      padding: 20px;
+      border: 2px solid #4a4a4a;
+      background-color: #fff;
+      box-shadow: 5px 5px 0px rgba(0,0,0,0.1);
+      min-width: 320px;
+      flex: 1 1 320px;
+      margin: 10px;
+    }
+    /* 共同爻容器 */
+    .lines-container {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+    .line, .support-line {
+      display: flex;
+      align-items: center;
+      margin: 5px 0;
+      height: 50px;
+    }
+    /* 六獸標籤 */
+    .beast-label {
+      width: 60px;
+      text-align: left;
+      margin-right: 10px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    .line-label {
+      width: 60px;
+      text-align: right;
+      margin-right: 10px;
+      font-weight: bold;
+    }
+    /* 小圓圈 */
+    .circle {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background-color: transparent;
+      cursor: pointer;
+      border: 2px solid #555;
+      margin-right: 10px;
+    }
+    .circle.active {
+      background-color: #b22222;
+      border-color: #b22222;
+    }
+    /* 爻形狀 */
+    .line-shape {
+      cursor: pointer;
+      position: relative;
+      color: #2c2c2c;
+    }
+    .line-shape.is-moving {
+      color: #b22222;
+    }
+    .yang-line {
+      width: 60px;
+      height: 10px;
+      background-color: currentColor;
+      margin-bottom: 2px;
+    }
+    .yin-line-container {
+      width: 60px;
+      height: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2px;
+    }
+    .yin-line-rect {
+      width: 20px;
+      height: 10px;
+      background-color: currentColor;
+    }
+    /* 判定描述：空亡與沖／建及五行判定 */
+    .empty-label {
+      margin-left: 10px;
+      font-size: 0.85em;
+      color: #b22222;
+      display: block;
+    }
+    .month-empty-label {
+      margin-left: 10px;
+      font-size: 0.85em;
+      color: #cd5c5c;
+      display: block;
+    }
+    .chongjian-label {
+      margin-left: 10px;
+      font-size: 0.85em;
+      color: #8b8b00;
+      display: block;
+    }
+    .liuQin-container {
+      margin-left: 10px;
+      font-size: 0.85em;
+      color: #444;
+      white-space: nowrap;
+    }
+    .fuShen {
+      font-size: 0.75em;
+      color: #2c3e50;
+      margin-top: 2px;
+    }
+    .shiYing {
+      font-size: 0.8em;
+      color: #b22222;
+    }
+    /* Prompt 容器 */
+    .prompt-container {
+      padding: 20px;
+      border: 2px solid #4a4a4a;
+      background-color: #fff;
+      box-shadow: 5px 5px 0px rgba(0,0,0,0.1);
+      margin: 20px auto;
+      max-width: 90%;
+    }
+    .prompt-textarea {
+      width: 100%;
+      min-height: 200px;
+      padding: 15px;
+      font-family: "KaiTi", "STKaiti", "BiauKai", "Georgia", serif;
+      font-size: 0.95em;
+      line-height: 1.8;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #f9f7f2;
+      color: #2c2c2c;
+      resize: vertical;
+      cursor: text;
+    }
+    .prompt-textarea:focus {
+      outline: 2px solid #b22222;
+      background-color: #fff;
+    }
+    .btn-copy {
+      display: block;
+      margin: 15px auto 0;
+      padding: 10px 24px;
+      font-size: 1.1em;
+      cursor: pointer;
+      background-color: #2c3e50;
+      color: #fff;
+      border: none;
+      border-radius: 2px;
+      font-family: inherit;
+    }
+    .btn-copy:hover {
+      background-color: #34495e;
+    }
+    .btn-copy:active {
+      background-color: #1a252f;
+    }
+    /* 平板直向 */
+    @media screen and (max-width: 768px) {
+      .hexagrams-wrapper {
+        flex-direction: column;
+      }
+      .hexagram {
+        width: 100%;
+        margin: 10px 0;
+      }
+    }
+
+    /* 大手機 */
+    @media screen and (max-width: 600px) {
+      body {
+        margin: 15px;
+        font-size: 14px;
+      }
+
+      /* 時間輸入區改為垂直排列 */
+      .time-input {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+      }
+      .time-input > div {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .time-input select {
+        width: 60px;
+        font-size: 16px;
+        padding: 5px;
+      }
+      .time-input span {
+        font-size: 16px;
+      }
+
+      /* 核對選項改為兩欄 grid */
+      .options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        text-align: left;
+        padding: 0 10px;
+        max-width: 400px;
+        margin: 10px auto;
+      }
+      .options label {
+        margin: 5px 0;
+        font-size: 14px;
+      }
+
+      /* 卦象區塊全寬顯示 */
+      .hexagram {
+        min-width: unset;
+        width: 100%;
+        padding: 15px;
+        margin: 10px 0;
+      }
+
+      /* 爻線資訊重新排版為多行堆疊 */
+      .line, .support-line {
+        flex-wrap: wrap;
+        height: auto;
+        min-height: 60px;
+        padding: 8px 0;
+        position: relative;
+      }
+
+      /* 第一行：六獸 + 爻位 + 動爻圓圈 + 爻線 */
+      .beast-label {
+        width: 50px;
+        font-size: 14px;
+        order: 1;
+      }
+      .line-label {
+        width: 50px;
+        font-size: 14px;
+        order: 2;
+      }
+      .circle {
+        order: 3;
+        width: 40px;
+        height: 40px;
+        margin-right: 5px;
+      }
+      .line-shape {
+        order: 4;
+        margin-right: auto;
+      }
+
+      /* 第二行：六親 + 世應 + 伏神 */
+      .liuQin-container {
+        order: 5;
+        width: 100%;
+        margin-left: 105px;
+        margin-top: 5px;
+        font-size: 13px;
+      }
+      .shiYing {
+        font-size: 13px;
+      }
+      .fuShen {
+        order: 6;
+        width: 100%;
+        margin-left: 105px;
+        margin-top: 2px;
+        font-size: 12px;
+      }
+
+      /* 第三行：判定標籤 */
+      .empty-label, .month-empty-label, .chongjian-label {
+        order: 7;
+        width: 100%;
+        margin-left: 105px;
+        margin-top: 3px;
+        font-size: 12px;
+        display: inline-block;
+      }
+
+      /* 增大觸控目標 */
+      .yang-line {
+        width: 70px;
+        height: 12px;
+      }
+      .yin-line-container {
+        width: 70px;
+        height: 12px;
+      }
+      .yin-line-rect {
+        width: 25px;
+        height: 12px;
+      }
+
+      /* 標題字體優化 */
+      h1 {
+        font-size: 22px;
+        margin: 10px 0;
+      }
+      h2 {
+        font-size: 18px;
+        margin: 10px 0;
+      }
+      h3 {
+        font-size: 16px;
+        margin: 8px 0;
+      }
+
+      .hint {
+        font-size: 13px;
+        padding: 0 10px;
+      }
+
+      /* 日期選擇器在手機上的優化 */
+      .time-input input[type="date"] {
+        width: 100%;
+        max-width: 300px;
+        font-size: 16px; /* 防止 iOS 自動縮放 */
+        padding: 10px;
+      }
+
+      .time-input label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .btn-save {
+        font-size: 16px;
+        padding: 12px 20px;
+        margin: 15px auto;
+      }
+
+      .prompt-container {
+        max-width: 100%;
+        padding: 15px;
+        margin: 15px 0;
+      }
+
+      .prompt-textarea {
+        font-size: 13px;
+        min-height: 180px;
+        padding: 12px;
+      }
+
+      .btn-copy {
+        font-size: 16px;
+        padding: 12px 20px;
+      }
+    }
+
+    /* 小手機 */
+    @media screen and (max-width: 480px) {
+      body {
+        margin: 10px;
+        font-size: 13px;
+      }
+
+      .time-input select {
+        width: 55px;
+        font-size: 15px;
+      }
+
+      .hexagram {
+        padding: 10px;
+      }
+
+      .line, .support-line {
+        min-height: 55px;
+      }
+
+      .beast-label,
+      .line-label {
+        width: 45px;
+        font-size: 13px;
+      }
+
+      .circle {
+        width: 36px;
+        height: 36px;
+      }
+
+      .liuQin-container,
+      .fuShen {
+        margin-left: 90px;
+        font-size: 12px;
+      }
+
+      .empty-label,
+      .month-empty-label,
+      .chongjian-label {
+        margin-left: 90px;
+        font-size: 11px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+      h2 {
+        font-size: 16px;
+      }
+      h3 {
+        font-size: 15px;
+      }
+
+      .prompt-container {
+        padding: 10px;
+      }
+
+      .prompt-textarea {
+        font-size: 12px;
+        min-height: 160px;
+        padding: 10px;
+      }
+
+      .btn-copy {
+        font-size: 15px;
+        padding: 10px 18px;
+      }
+    }
+  </style>
 </head>
-<body class="smooth-scroll relative">
-
-    <!-- Cover -->
-    <header class="bg-indigo-900 text-white p-8 pb-16 text-center relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/seigaiha.png')]"></div>
-        <div class="relative z-10">
-            <h1 class="text-4xl md:text-5xl font-bold mb-2">日本跨年獨旅手冊</h1>
-            <p class="text-indigo-200 text-lg">2025/12/28 — 2026/01/06</p>
-            <div class="mt-4 inline-block bg-white/20 px-4 py-1 rounded-full text-sm backdrop-blur-sm">
-                <i class="fas fa-exclamation-circle mr-1"></i> 最高原則：塞滿但可砍，入住時間是硬限制
-            </div>
-            <div class="mt-3 text-xs text-indigo-200 flex justify-center gap-4">
-                <span><i class="fas fa-map-location-dot text-red-400 mr-1"></i> 導航</span>
-                <span><i class="fas fa-external-link-alt text-blue-400 mr-1"></i> 詳情/菜單</span>
-            </div>
-        </div>
-    </header>
-
-    <!-- Navigation -->
-    <nav class="sticky-nav overflow-x-auto hide-scrollbar border-b border-gray-200">
-        <div class="flex whitespace-nowrap px-4 py-3 space-x-2 md:justify-center">
-            <a href="#day1" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">12/28 岡山</a>
-            <a href="#day2" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">12/29 奈良</a>
-            <a href="#day3" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">12/30 高野</a>
-            <a href="#day4" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">12/31 和歌</a>
-            <a href="#day5" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">1/1 田邊</a>
-            <a href="#day6" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">1/2 本宮</a>
-            <a href="#day7" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">1/3 新宮</a>
-            <a href="#day8" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">1/4 伊勢</a>
-            <a href="#day9" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">1/5 大阪</a>
-            <a href="#day10" class="px-3 py-1 bg-gray-100 hover:bg-indigo-600 hover:text-white rounded-full text-sm font-medium transition">1/6 返台</a>
-        </div>
-    </nav>
-
-    <main class="max-w-4xl mx-auto p-4 space-y-12 pb-24">
-
-        <!-- Day 1: 岡山 -->
-        <section id="day1" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
-                <div>
-                    <h2 class="text-xl font-bold">12/28 (日) 抵達岡山</h2>
-                    <p class="text-sm opacity-90">岡山城 / 後樂園 / 站前採買</p>
-                </div>
-                <div class="text-3xl"><i class="fas fa-plane-arrival"></i></div>
-            </div>
-
-            <div class="p-5 space-y-6">
-                <!-- Check-in Alert -->
-                <div class="check-in-alert p-4 rounded-r-lg">
-                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 住宿資訊</h3>
-                    <p class="font-bold text-lg">岡山後樂酒店 <a href="https://www.google.com/maps/search/?api=1&query=Okayama+Koraku+Hotel" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
-                    <p class="text-sm text-gray-600">岡山市 Kita-ku Heiwa-cho 5-1</p>
-                    <p class="text-sm text-red-600 mt-1 font-bold">建議最晚 22:00 前辦理入住</p>
-                </div>
-
-                <!-- Timeline -->
-                <div>
-                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
-                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">14:35</span> 抵達岡山機場 (OKJ) <a href="https://www.google.com/maps/search/?api=1&query=Okayama+Momotaro+Airport" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">15:30</span> 機場巴士往岡山站 <a href="https://www.google.com/maps/search/?api=1&query=Okayama+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">16:30</span> 飯店 Check-in / 寄放行李
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">17:00</span> 岡山城 <a href="https://www.google.com/maps/search/?api=1&query=Okayama+Castle" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> / 後樂園 <a href="https://www.google.com/maps/search/?api=1&query=Okayama+Korakuen" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">19:00</span> 晚餐 & 超市補給
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Backup Options -->
-                <div class="backup-box p-4 rounded-r-lg text-sm">
-                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (若體力不足)</h4>
-                    <p class="text-gray-600">若剛抵達很累，可直接取消「岡山城/後樂園」散步，改為在「岡山車站商圈」<a href="https://www.google.com/maps/search/?api=1&query=Okayama+Station+Shopping" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 輕鬆採買、吃晚餐並早點休息。</p>
-                </div>
-
-                <!-- Story Expandable -->
-                <div class="story-container p-4 rounded-r-lg text-sm">
-                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
-                    <div class="space-y-2">
-                        <details>
-                            <summary>🏯 岡山城：為什麼是黑色的？</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                岡山城天守外牆覆蓋黑色木板，因此有「烏城 (Crow Castle)」的別名。這不是為了浪漫，而是戰國時代的「存在感宣示」！黑得俐落、有壓迫感，遠遠就讓人知道這裡是權力核心。站在城下看旁邊的旭川，這條河道是被人工改造過的，它是天然的軍事防線（護城河）。
-                            </p>
-                        </details>
-                        <details>
-                            <summary>🌿 後樂園：藩主的私人招待所</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                這裡原本不是公園，而是岡山藩主招待貴客的私人庭園。名字來自「先憂後樂」的思想。想像自己是貴賓，每一個轉角、每一座假山都是經過設計的「儀式感」視角，尤其是把遠處的岡山城當作背景的「借景」手法。
-                            </p>
-                        </details>
-                    </div>
-                </div>
-
-                <!-- Shopping -->
-                <div class="shopping-box p-4 rounded-r-lg text-sm">
-                    <h4 class="text-emerald-700 font-bold mb-1"><i class="fas fa-shopping-cart mr-1"></i> 採買備忘 (最晚關門)</h4>
-                    <ul class="list-disc list-inside text-gray-700 space-y-1">
-                        <li><strong>Mont-bell 岡山店:</strong> 南區 <a href="https://maps.app.goo.gl/im46BbJscBbVwQoX7" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (需搭車前往)</li>
-                        <li><strong>Bic Camera:</strong> 岡山站前 <a href="https://www.google.com/maps/search/?api=1&query=Bic+Camera+Okayama+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (至 20:30)</li>
-                        <li><strong>唐吉訶德:</strong> 岡山站前 <a href="https://www.google.com/maps/search/?api=1&query=Don+Quijote+Okayama+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (至 02:00)</li>
-                        <li><strong>AEON MALL:</strong> 岡山站走5分 <a href="https://www.google.com/maps/search/?api=1&query=Aeon+Mall+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                            <ul class="list-disc list-inside ml-4 text-gray-500 text-xs">
-                                <li>UNIQLO (至21:00)</li>
-                                <li>超市 (至23:00)</li>
-                                <li>戶外/運動店</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Survival -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="food-box p-4 rounded-r-lg text-sm">
-                        <h4 class="text-amber-700 font-bold mb-1"><i class="fas fa-utensils mr-1"></i> 晚餐推薦 (獨食OK)</h4>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1">
-                            <li>
-                                <strong>串焼き のどのばし:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Kushiyaki+Nodonobashi+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://www.hotpepper.jp/strJ001115419/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">離飯店1分，烤串配酒 (至23:00)</span>
-                            </li>
-                            <li>
-                                <strong>カツ丼 野村:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Katsudon+Nomura+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://tabelog.com/okayama/A3301/A330101/33000282/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">デミカツ丼名物，有小份量 (至20:30)</span>
-                            </li>
-                            <li>
-                                <strong>はしや (一番街B1):</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Hashiya+Okayama+Ichibangai" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://shop.create-restaurants.co.jp/1147/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">車站地下定食 (至22:00)</span>
-                            </li>
-                            <li>
-                                <strong>さち福やCAFÉ:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Sachifukuya+Cafe+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <span class="text-xs text-gray-500">さんすて岡山，均衡和定食 (至22:00)</span>
-                            </li>
-                            <li>
-                                <strong>冨士屋 (中華そば):</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Fujiya+Ramen+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://tabelog.com/okayama/A3301/A330101/33000980/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">老派醬油拉麵 (至19:30)</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="bg-gray-100 p-4 rounded-lg text-sm">
-                        <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 飯店附近補給</h4>
-                        <p class="text-xs text-gray-500 mb-2">岡山後樂酒店 (北区平和町5-1) 徒步圈</p>
-                        
-                        <p class="text-xs font-bold text-gray-600 mt-2">🏪 便利商店</p>
-                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
-                            <li>Lawson 岡山駅前店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Okayama+Ekimae" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                            <li>7-11 岡山駅中央改札口 <a href="https://www.google.com/maps/search/?api=1&query=7-11+Okayama+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (5:30-24:00)</li>
-                            <li>全家 岡山錦町店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Okayama+Nishikicho" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                        </ul>
-                        
-                        <p class="text-xs font-bold text-gray-600 mt-2">🛒 超市</p>
-                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
-                            <li>YOURS さんすて岡山店 <a href="https://www.google.com/maps/search/?api=1&query=Yours+Sunste+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (7:00-22:00)</li>
-                            <li>天滿屋ハピーズ (ICOTNICOT B1) <a href="https://www.google.com/maps/search/?api=1&query=Tenmaya+Happys+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (10:00-22:00)</li>
-                            <li>AEON Style 岡山 <a href="https://www.google.com/maps/search/?api=1&query=Aeon+Style+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (食品 7:00-23:00)</li>
-                            <li>成城石井 さんすて岡山 <a href="https://www.google.com/maps/search/?api=1&query=Seijo+Ishii+Okayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (10:00-22:00)</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Day 2: 倉敷/姬路/明石/奈良 -->
-        <section id="day2" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
-                <div>
-                    <h2 class="text-xl font-bold">12/29 (一) 橫跨四城</h2>
-                    <p class="text-sm opacity-90">倉敷 → 姬路 → 明石 → 奈良</p>
-                </div>
-                <div class="text-3xl"><i class="fas fa-train"></i></div>
-            </div>
-
-            <div class="p-5 space-y-6">
-                <!-- Check-in Alert -->
-                <div class="check-in-alert p-4 rounded-r-lg">
-                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 硬限制：21:00 前入住</h3>
-                    <p class="font-bold text-lg">Yuzan Guesthouse (遊山) <a href="https://www.google.com/maps/search/?api=1&query=Yuzan+Guesthouse+Nara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
-                    <p class="text-sm text-gray-600">奈良市 Aburasakacho 423 (近 JR/近鐵奈良)</p>
-                    <p class="text-sm text-red-600 mt-1 font-bold">若行程延誤，直接砍掉明石/難波，直奔奈良。</p>
-                </div>
-
-                <!-- Timeline -->
-                <div>
-                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
-                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">07:00</span> 岡山出發
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">07:40</span> 倉敷美觀地區 <a href="https://www.google.com/maps/search/?api=1&query=Kurashiki+Bikan+Historical+Quarter" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (早晨散步)
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">11:30</span> 姬路城 <a href="https://www.google.com/maps/search/?api=1&query=Himeji+Castle" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (城外觀/大手前通 + 午餐)
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">14:00</span> 明石魚之棚商店街 <a href="https://www.google.com/maps/search/?api=1&query=Uontana+Shopping+Street+Akashi" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (玉子燒)
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-red-500 rounded-full"></span>
-                            <span class="font-mono text-red-600 font-bold">17:00</span> 移動往奈良 (死線)
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">20:30</span> 抵達奈良 Check-in
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Backup Options -->
-                <div class="backup-box p-4 rounded-r-lg text-sm">
-                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
-                    <ul class="list-disc list-inside text-gray-600 space-y-1">
-                        <li><strong>明石公園/城跡 <a href="https://www.google.com/maps/search/?api=1&query=Akashi+Park" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>：</strong>時間不夠直接砍。</li>
-                        <li><strong>大阪難波夜逛：</strong>若到大阪已晚，直接轉車去奈良，務必保住 21:00 入住。</li>
-                    </ul>
-                </div>
-
-                <!-- Story Expandable -->
-                <div class="story-container p-4 rounded-r-lg text-sm">
-                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
-                    <div class="space-y-2">
-                        <details>
-                            <summary>🚣 倉敷：運河不是為了浪漫</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                江戶時代，這裡的運河是重要的「米」物流幹線，而不是觀光造景。那些漂亮的白壁建築（倉），其實是富商們為了防火、防盜而建的堅固倉庫（保險箱）。站在石橋上看，你要想像這曾經是繁忙的碼頭街。
-                            </p>
-                        </details>
-                        <details>
-                            <summary>🦅 姬路城：白鷺的心理戰</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                姬路城被稱為「白鷺城」，白得像會飛。從車站出來的大手前通，刻意設計成筆直的大道，讓城在視線盡頭顯得巨大而有壓迫感，這是一種視覺上的權力展示。城內的路線設計是個迷宮，為了消耗進攻者的體力。
-                            </p>
-                        </details>
-                        <details>
-                            <summary>🐙 明石燒：工業副產品的美食？</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                明石燒（在地人叫玉子燒）的起源很有趣。傳說當地生產「明石玉（裝飾品）」需要用到大量蛋白，剩下了超多蛋黃，於是人們把蛋黃混合海裡抓的章魚，做成了這道鬆軟的點心。魚之棚商店街則是當年城下町的廚房，魚販為了保鮮會引水流過攤位。
-                            </p>
-                        </details>
-                    </div>
-                </div>
-
-                <!-- Survival -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="food-box p-4 rounded-r-lg text-sm">
-                        <h4 class="text-amber-700 font-bold mb-1"><i class="fas fa-utensils mr-1"></i> 奈良晚餐 (晚到救星)</h4>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1">
-                            <li>
-                                <strong>麺屋 龍:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Menya+Ryu+Nara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://tabelog.com/nara/A2901/A290101/29010358/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">油阪附近，開到深夜 03:00</span>
-                            </li>
-                            <li>
-                                <strong>にぼしこいし (煮干系):</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Niboshi+Koishi+Nara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://tabelog.com/nara/A2901/A290101/29010264/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">油阪町460，近鐵奈良站7號出口1分</span>
-                            </li>
-                            <li>
-                                <strong>とんかつ がんこ:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Ganko+Tonkatsu+Nara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://www.gankofood.co.jp/shop/detail/ton-nara" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">炸豬排定食 (至21:00)</span>
-                            </li>
-                            <li>
-                                <strong>若草カレー本舗:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Wakakusa+Curry+Honpo+Nara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://tabelog.com/nara/A2901/A290101/29006593/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">咖哩，商店街內 (至20:30)</span>
-                            </li>
-                            <li>
-                                <strong>柿の葉すし たなか:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Kakinohasushi+Tanaka+Nara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://www.kakinohasushi.co.jp/shop/nara/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">奈良名物，可外帶 (至19:00)</span>
-                            </li>
-                            <li>
-                                <strong>SAKURA BURGER:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Sakura+Burger+Nara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <span class="text-xs text-gray-500">近鐵奈良站旁，輕鬆無壓</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="bg-gray-100 p-4 rounded-lg text-sm">
-                        <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 飯店附近補給</h4>
-                        <p class="text-xs text-gray-500 mb-2">遊山 Guesthouse (油阪町423) 附近</p>
-                        
-                        <p class="text-xs font-bold text-gray-600 mt-2">🛒 超市 (買便當/水果最划算)</p>
-                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
-                            <li>KOHYO JR奈良店 <a href="https://www.google.com/maps/search/?api=1&query=KOHYO+JR+Nara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (ビエラ奈良1F, 7:00-24:00)</li>
-                            <li>関西スーパー 奈良三条店 <a href="https://www.google.com/maps/search/?api=1&query=Kansai+Super+Nara+Sanjo" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (9:00-22:00)</li>
-                        </ul>
-                        
-                        <p class="text-xs font-bold text-gray-600 mt-2">🏪 便利商店</p>
-                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
-                            <li>Lawson JR奈良駅前 (24H) <a href="https://www.google.com/maps/search/?api=1&query=Lawson+JR+Nara+Ekimae" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                            <li>7-11 JR奈良駅前 (24H) <a href="https://www.google.com/maps/search/?api=1&query=7-11+JR+Nara+Ekimae" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                            <li>全家 近鉄奈良駅改札内店 <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Kintetsu+Nara+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (5:45-23:15)</li>
-                            <li>7-11 奈良三条町店 <a href="https://www.google.com/maps/search/?api=1&query=7-11+Nara+Sanjo" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Day 3: 奈良/法隆寺/高野山 -->
-        <section id="day3" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
-                <div>
-                    <h2 class="text-xl font-bold">12/30 (二) 古都與聖山</h2>
-                    <p class="text-sm opacity-90">奈良 → 法隆寺 → 上高野山</p>
-                </div>
-                <div class="text-3xl"><i class="fas fa-om"></i></div>
-            </div>
-
-            <div class="p-5 space-y-6">
-                <!-- Check-in Alert -->
-                <div class="check-in-alert p-4 rounded-r-lg">
-                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 硬限制：21:00</h3>
-                    <p class="font-bold text-lg">Koyasan Guest House Laugh Tale <a href="https://www.google.com/maps/search/?api=1&query=Koyasan+Guest+House+Laugh+Tale" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
-                    <p class="text-sm text-gray-600">和歌山縣橋本市清水 556-8 (近紀伊清水站)</p>
-                    <p class="text-sm text-red-600 mt-1 font-bold">注意：住宿在山下的橋本市，不是高野山頂！</p>
-                </div>
-
-                <!-- Timeline -->
-                <div>
-                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
-                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">08:00</span> 東大寺 (大佛殿) <a href="https://www.google.com/maps/search/?api=1&query=Todaiji+Temple" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">11:00</span> 春日大社 <a href="https://www.google.com/maps/search/?api=1&query=Kasuga+Taisha" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">13:30</span> 法隆寺 <a href="https://www.google.com/maps/search/?api=1&query=Horyuji+Temple" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (世界遺產)
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-red-500 rounded-full"></span>
-                            <span class="font-mono text-red-600 font-bold">17:00</span> 離開奈良，經難波轉南海高野線
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">20:30</span> 抵達橋本/紀伊清水 Check-in
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Backup Options -->
-                <div class="backup-box p-4 rounded-r-lg text-sm">
-                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
-                    <ul class="list-disc list-inside text-gray-600 space-y-1">
-                        <li><strong>唐招提寺 <a href="https://www.google.com/maps/search/?api=1&query=Toshodaiji" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> / 藥師寺 <a href="https://www.google.com/maps/search/?api=1&query=Yakushiji" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>：</strong>只有在時間充裕時才加入，否則全砍。</li>
-                    </ul>
-                </div>
-
-                <!-- Story Expandable -->
-                <div class="story-container p-4 rounded-r-lg text-sm">
-                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
-                    <div class="space-y-2">
-                        <details>
-                            <summary>🦌 奈良鹿：神的使者</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                在奈良，鹿不是單純的觀光動物，而是「神的使者」。傳說春日大社的神明是騎著白鹿降臨的。當你在參道上看到鹿，請把它們當成帶領你進入神域的嚮導。
-                            </p>
-                        </details>
-                        <details>
-                            <summary>🙏 東大寺：國家級的宣言</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                東大寺的大佛是奈良時代「國家工程」的象徵，為了祈求國家安定而建。別只看大佛的臉，回頭看看大佛殿巨大的木造空間，那是當時日本向世界（主要是唐朝）展示國力的宣言。
-                            </p>
-                        </details>
-                        <details>
-                            <summary>🏯 法隆寺：時間膠囊</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                你正在看的是世界上最古老的木造建築群。請站遠一點，把「金堂＋五重塔＋迴廊」當成一個整體來看，這是日本佛教建築最早期、最完美的宇宙縮影。
-                            </p>
-                        </details>
-                    </div>
-                </div>
-
-                <!-- Survival -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="food-box p-4 rounded-r-lg text-sm">
-                        <h4 class="text-amber-700 font-bold mb-1"><i class="fas fa-utensils mr-1"></i> 晚餐：紀伊清水 vs 橋本</h4>
-                        
-                        <p class="text-xs font-bold text-gray-500 mt-2">📍 紀伊清水 (走路就到)</p>
-                        <ul class="list-disc list-inside text-gray-700 mb-2 space-y-1">
-                            <li>
-                                <strong>御食事居酒屋 柿善:</strong>
-                                <a href="https://www.google.com/maps/search/?api=1&query=Kakizen+Hashimoto" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://tabelog.com/wakayama/A3001/A300103/30011625/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">清水513-2，步行約4分 (週三休)</span>
-                            </li>
-                            <li>
-                                <strong>食事処 かず:</strong>
-                                <a href="https://www.google.com/maps/search/?api=1&query=Shokujidokoro+Kazu+Hashimoto" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://tabelog.com/wakayama/A3001/A300103/30010122/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">吧台/丼飯 (至19:30)</span>
-                            </li>
-                        </ul>
-
-                        <p class="text-xs font-bold text-gray-500 mt-3">🚉 橋本站 (搭車1站/較熱鬧)</p>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1">
-                            <li>
-                                <strong>やきとり大吉:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Yakitori+Daikichi+Hashimoto" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://www.daikichi.co.jp/shop/wakayama/shop-949/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">站前串燒 (17:00起)</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="bg-gray-100 p-4 rounded-lg text-sm">
-                        <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 補給站</h4>
-                        <p class="text-xs text-gray-500 mb-2">橋本市清水周邊</p>
-                        <ul class="list-disc list-inside text-gray-600 space-y-1">
-                            <li>全家 橋本清水店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Hashimoto+Shimizu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                            <li>Lawson 橋本清水店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Hashimoto+Shimizu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                            <li>スーパーセンターオークワ <a href="https://www.google.com/maps/search/?api=1&query=Okuwa+Hashimoto" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (至23:00)</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Day 4: 高野山/和歌山 -->
-        <section id="day4" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
-                <div>
-                    <h2 class="text-xl font-bold">12/31 (三) 跨年夜</h2>
-                    <p class="text-sm opacity-90">高野山 → 和歌山站前採買 → 跨年</p>
-                </div>
-                <div class="text-3xl"><i class="fas fa-torii-gate"></i></div>
-            </div>
-
-            <div class="p-5 space-y-6">
-                <!-- Check-in Alert -->
-                <div class="check-in-alert p-4 rounded-r-lg">
-                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 硬限制：22:00</h3>
-                    <p class="font-bold text-lg">瑞克旅館 (Guesthouse RICO) <a href="https://www.google.com/maps/search/?api=1&query=Guesthouse+RICO+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
-                    <p class="text-sm text-gray-600">和歌山市 Shintori 5-6 (近和歌山站)</p>
-                    <p class="text-sm text-red-600 mt-1 font-bold">跨年夜店家早關，務必 21:30 前回飯店區域。</p>
-                </div>
-
-                <!-- Timeline -->
-                <div>
-                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
-                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">07:30</span> 奧之院 <a href="https://www.google.com/maps/search/?api=1&query=Okunoin+Temple+Koyasan" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (晨間散步/弘法大師御廟)
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">09:30</span> 壇上伽藍 <a href="https://www.google.com/maps/search/?api=1&query=Danjo+Garan+Koyasan" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> / 金剛峯寺
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">12:30</span> 下山 (纜車+電車) 往和歌山
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-red-500 rounded-full"></span>
-                            <span class="font-mono text-red-600 font-bold">16:30</span> 抵達和歌山站 (採買衝刺)
-                        </li>
-                    </ul>
-                </div>
-
-                 <!-- Bus Schedule Toggle -->
-                 <details class="transport-box p-3 rounded-lg cursor-pointer">
-                    <summary class="font-bold text-blue-700">🚌 高野山巴士時刻 (平日/年末參考)</summary>
-                    <div class="mt-2 text-xs text-gray-700">
-                        <p class="font-bold">高野山駅前 → 奥の院前</p>
-                        <p>06:35, 06:59, 07:33, 08:21, 08:45, 09:17</p>
-                        <p class="font-bold mt-2">奥の院前 → 高野山駅前</p>
-                        <p>11:01, 11:20, 11:45, 12:18, 13:00</p>
-                        <p class="mt-2 text-red-500">*年末可能改為土休日班表，班次會變多但請提早候車。</p>
-                    </div>
-                </details>
-
-                <!-- Shopping Mission -->
-                <div class="shopping-box p-4 rounded-r-lg text-sm">
-                    <h4 class="text-emerald-700 font-bold mb-1"><i class="fas fa-running mr-1"></i> 和歌山 5點鐘採買任務</h4>
-                    <ol class="list-decimal list-inside text-gray-700 space-y-1">
-                        <li><strong>近鐵百貨/MIO:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Kintetsu+Department+Store+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 車站直結，先逛 (至18:30/19:00)</li>
-                        <li><strong>好日山荘:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Kojitusanso+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 近鐵百貨4F</li>
-                        <li><strong>UNIQLO:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Uniqlo+Wakayama+Kokutai+Road" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 國體道路店 (需移動)</li>
-                        <li><strong>Mont-bell:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Mont-bell+Aeon+Mall+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> Aeon Mall 和歌山 (需移動)</li>
-                        <li><strong>Don Quijote (ぶらくり丁店):</strong> <a href="https://www.google.com/maps/search/?api=1&query=Don+Quijote+Burakuricho" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 營業至 03:00 (最後防線)</li>
-                    </ol>
-                </div>
-
-                <!-- Backup Options -->
-                <div class="backup-box p-4 rounded-r-lg text-sm">
-                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
-                    <ul class="list-disc list-inside text-gray-600 space-y-1">
-                        <li><strong>Montbell / Uniqlo (國體道路/Aeon Mall)：</strong>這些店距離車站較遠，若 16:30 還沒到和歌山站，直接放棄，專攻站前與 Donki。</li>
-                        <li><strong>近鐵百貨：</strong>如果到站太晚，百貨已關，直接去 Donki。</li>
-                    </ul>
-                </div>
-
-                <!-- Story Expandable -->
-                <div class="story-container p-4 rounded-r-lg text-sm">
-                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
-                    <div class="space-y-2">
-                        <details>
-                            <summary>🙏 奧之院：大師仍在修行</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                這是日本最神聖的墓地，長達2公里的參道有20萬座墓碑，包括戰國大名們（生前打得要死，死後都想擠在這）。最深處的御廟，人們相信弘法大師空海並沒有「過世」，而是正在進行永恆的禪定修行，為眾生祈福。所以直到今天，僧侶每天兩次都會送熱騰騰的飯菜去御廟供養。
-                            </p>
-                        </details>
-                        <details>
-                            <summary>☸️ 壇上伽藍：3D 曼荼羅</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                這裡的建築佈局是為了將密教的「曼荼羅」世界觀立體化。朱紅色的根本大塔代表宇宙的中心（大日如來）。
-                            </p>
-                        </details>
-                    </div>
-                </div>
-
-                 <!-- Dinner -->
-                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="food-box p-4 rounded-r-lg text-sm">
-                        <h4 class="text-amber-700 font-bold mb-1"><i class="fas fa-glass-cheers mr-1"></i> 跨年晚餐 (新通周邊)</h4>
-                        <p class="text-xs text-red-600 mb-2">⚠️ 跨年夜店家可能提早打烊，請提前確認</p>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1">
-                            <li>
-                                <strong>Una rama de RICO:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Una+rama+de+RICO+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://tabelog.com/wakayama/C30201/C90153/rstLst/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">新通5-6，住宿同地址小酒館</span>
-                            </li>
-                            <li>
-                                <strong>グリル三笠:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Grill+Mikasa+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <span class="text-xs text-gray-500">新通5-25，洋食館/漢堡排</span>
-                            </li>
-                            <li>
-                                <strong>富士 (食堂):</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Fuji+Shokudo+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <span class="text-xs text-gray-500">新通5-36，丼飯/烏龍麵快速</span>
-                            </li>
-                            <li>
-                                <strong>斗里屋 (燒鳥):</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Toriya+Yakitori+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <span class="text-xs text-gray-500">新通3-19，吧台適合獨食</span>
-                            </li>
-                            <li>
-                                <strong>井出商店 (拉麵名店):</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Ide+Shoten+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://tabelog.com/wakayama/A3001/A300101/30000031/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">田中町4-84，JR站西口7分 (至22:00)</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="bg-gray-100 p-4 rounded-lg text-sm">
-                        <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 補給站 (新通周邊)</h4>
-                        <p class="text-xs text-gray-500 mb-2">瑞克旅館 (新通5-6) 附近</p>
-                        
-                        <p class="text-xs font-bold text-gray-600 mt-2">🛒 超市</p>
-                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
-                            <li>近鐵百貨 和歌山店 <a href="https://www.google.com/maps/search/?api=1&query=Kintetsu+Department+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (JR站直結, B1/1F 10:00-19:00)</li>
-                            <li>和歌山MIO <a href="https://www.google.com/maps/search/?api=1&query=Wakayama+MIO" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (車站直結)</li>
-                        </ul>
-                        
-                        <p class="text-xs font-bold text-gray-600 mt-2">🏪 便利商店</p>
-                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
-                            <li>Lawson 和歌山站前 (24H) <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Wakayama+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                            <li>7-11 和歌山站 (24H) <a href="https://www.google.com/maps/search/?api=1&query=7-11+Wakayama+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                            <li>全家 和歌山站周邊 <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Wakayama+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                        </ul>
-                        
-                        <p class="text-xs font-bold text-red-600 mt-2">⚠️ 重要提醒</p>
-                        <p class="text-xs text-gray-700">跨年夜店家可能提早打烊，建議提前在車站便利商店買好跨年宵夜！</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Day 5: 和歌山/田邊 -->
-        <section id="day5" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
-                <div>
-                    <h2 class="text-xl font-bold">1/1 (四) 元旦．紀伊路</h2>
-                    <p class="text-sm opacity-90">紀三井寺纜車 → 田邊 → 熊野準備</p>
-                </div>
-                <div class="text-3xl"><i class="fas fa-torii-gate"></i></div>
-            </div>
-
-            <div class="p-5 space-y-6">
-                <!-- Check-in Alert -->
-                <div class="check-in-alert p-4 rounded-r-lg">
-                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 硬限制：22:00</h3>
-                    <p class="font-bold text-lg">DJANGO Hostel & Lounge <a href="https://www.google.com/maps/search/?api=1&query=DJANGO+Hostel+%26+Lounge+Tanabe" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
-                    <p class="text-sm text-gray-600">田邊市 Minato 41-33 (近紀伊田邊站 步行2-3分)</p>
-                    <p class="text-sm text-red-600 mt-1 font-bold">元旦餐廳少，建議往「味光路」覓食或依賴便利商店。</p>
-                </div>
-
-                <!-- Cable Car Info Box -->
-                <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 rounded-lg text-sm border-l-4 border-amber-500">
-                    <h4 class="font-bold text-amber-800 mb-2"><i class="fas fa-cable-car mr-1"></i> 紀三井寺ケーブルカー 資訊</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                        <div>
-                            <p class="font-bold text-gray-700">⏰ 運行時間</p>
-                            <p class="text-gray-600">8:30-16:30 (最後上行 16:30)</p>
-                            <p class="text-red-600 text-xs mt-1">※元旦可能有特別時間，建議出發前再確認</p>
-                        </div>
-                        <div>
-                            <p class="font-bold text-gray-700">💰 票價 (含參拜料)</p>
-                            <p class="text-gray-600">上行 600円 + 下行 200円 = 往返 800円</p>
-                            <p class="text-gray-500 text-xs mt-1">上行票已含參拜料400円</p>
-                        </div>
-                    </div>
-                    <p class="text-xs text-gray-600 mt-2">
-                        <i class="fas fa-info-circle mr-1"></i> 
-                        纜車約1分鐘到達山上站，再搭電梯到本堂附近。可選擇上山搭纜車、下山走231階石段。
-                    </p>
-                </div>
-
-                <!-- Timeline -->
-                <div>
-                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
-                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">08:00-09:00</span> 起床退房，步行至JR和歌山駅
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">09:30</span> JR和歌山駅 → 紀三井寺駅 (約6分・190円) <a href="https://www.google.com/maps/search/?api=1&query=Kimiidera+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-amber-500 rounded-full"></span>
-                            <span class="font-mono text-amber-600 font-bold">09:50-11:30</span> 紀三井寺參拜＋纜車 <a href="https://www.google.com/maps/search/?api=1&query=Kimiidera+Temple" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                            <p class="text-xs text-gray-600 mt-1 ml-4">→ 搭ケーブルカー上山 → 本堂參拜 → 眺望和歌浦灣</p>
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">12:00-13:00</span> 回JR和歌山駅，車站周邊午餐 (和歌山拉麵等)
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-blue-500 rounded-full"></span>
-                            <span class="font-mono text-blue-600 font-bold">13:18-14:29</span> 特急黑潮號 → 紀伊田邊 <a href="https://www.google.com/maps/search/?api=1&query=Kii-Tanabe+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                            <p class="text-xs text-gray-600 mt-1 ml-4">車資約1,690円+特急券1,730円 (或搭普通車約2小時)</p>
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-green-500 rounded-full"></span>
-                            <span class="font-mono text-green-600 font-bold">15:00-16:00</span> 田邊觀光案內所 <a href="https://www.google.com/maps/search/?api=1&query=Tanabe+Tourist+Information+Center" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                            <p class="text-xs text-gray-600 mt-1 ml-4">確認明天巴士時刻 / 車站超市買明後天行動糧</p>
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">16:00+</span> 辦理入住 DJANGO，晚餐後早點休息
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Transport Info -->
-                <div class="transport-box p-4 rounded-lg text-sm">
-                    <h4 class="font-bold text-blue-800 mb-2"><i class="fas fa-train mr-1"></i> JR紀勢本線 (和歌山⇄紀三井寺)</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                        <div>
-                            <p class="font-bold text-gray-700">去程參考班次</p>
-                            <p class="text-gray-600">和歌山發：09:00前後班次較多</p>
-                            <p class="text-gray-600">車程：約6分鐘・單程190円</p>
-                        </div>
-                        <div>
-                            <p class="font-bold text-gray-700">回程參考班次</p>
-                            <p class="text-gray-600">紀三井寺發：約每30分鐘一班</p>
-                            <p class="text-gray-600">12:00前後可順利回和歌山駅用餐</p>
-                        </div>
-                    </div>
-                    <p class="text-xs text-gray-500 mt-2">
-                        <i class="fas fa-info-circle mr-1"></i> 
-                        JR紀勢本線（きのくに線）普通車，可使用ICOCA/Suica等IC卡
-                    </p>
-                </div>
-
-                <!-- Backup Options -->
-                <div class="backup-box p-4 rounded-r-lg text-sm">
-                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
-                    <ul class="list-disc list-inside text-gray-600 space-y-1">
-                        <li><strong>下山方式：</strong>可選擇搭纜車下山（200円）或走231階石段（免費＋運動）。建議上山搭纜車省體力，下山走石段體驗參道氛圍。</li>
-                        <li><strong>和歌山城 <a href="https://www.google.com/maps/search/?api=1&query=Wakayama+Castle" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>：</strong>若時間充裕可在回和歌山駅後快速參訪（約30-40分鐘），但會壓縮午餐與搭車緩衝時間。</li>
-                        <li><strong>貴志站 (貓站長) <a href="https://www.google.com/maps/search/?api=1&query=Kishi+Station+Wakayama" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>：</strong>建議放棄，保留體力給明天的熊野古道徒步。</li>
-                    </ul>
-                </div>
-
-                <!-- Story Expandable -->
-                <div class="story-container p-4 rounded-r-lg text-sm">
-                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
-                    <div class="space-y-2">
-                        <details>
-                            <summary>⛩️ 紀三井寺：770年的信仰與231階的修行</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                紀三井寺創建於770年，由唐僧為光上人開創，後來成為「紀州德川家」祈願昌隆之地。寺名來自境內三口名井（吉祥水、清淨水、楊柳水），是「日本名水百選」。傳統上需爬231階石段上山，但現在有纜車讓參拜變得輕鬆。登上本堂後可俯瞰和歌浦灣，把「詩的風景」與「信仰的高度」直接連結起來。
-                            </p>
-                        </details>
-                        <details>
-                            <summary>🌸 櫻花名所：關西最早開花的春之使者</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                紀三井寺是關西地區最早開花的櫻花名所之一，約有500株染井吉野櫻。每年3月下旬至4月上旬，參道兩側櫻花盛開，吸引無數賞花遊客。雖然元旦看不到櫻花，但可以想像春天時這231階石段被櫻花包圍的浪漫景象。
-                            </p>
-                        </details>
-                        <details>
-                            <summary>🌊 和歌之浦：萬葉詩人的風景</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                從紀三井寺山上眺望的和歌浦灣，自古就是詩歌名所。和歌山深受黑潮（暖流）影響，漁獲豐富。和歌之浦的風景因為潮汐變化多端，自古就被萬葉集詩人反覆歌詠，有一種「時間在風景上流動」的美感。站在山上10分鐘，你會懂為什麼詩人會一直寫它。
-                            </p>
-                        </details>
-                    </div>
-                </div>
-
-                <!-- Dinner -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="food-box p-4 rounded-r-lg text-sm">
-                        <h4 class="text-amber-700 font-bold mb-1"><i class="fas fa-utensils mr-1"></i> 田邊覓食 (味光路)</h4>
-                        <p class="text-gray-600 mb-2 text-xs">元旦很多店休，建議去「味光路」<a href="https://www.google.com/maps/search/?api=1&query=Ajikoji+Tanabe" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 找有開的居酒屋/吧台。</p>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1">
-                            <li>
-                                <strong>どさん子 (拉麵):</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Dosanko+Ramen+Tanabe" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://hitosara.com/wakayama/T30005/lst/5/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">田邊市湊，快速解決</span>
-                            </li>
-                            <li>
-                                <strong>海鮮れすとらん 勘八屋:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Kanpachiya+Tanabe" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://r.gnavi.co.jp/city/wakayama/cwtav6460000/izakaya/kods00147/rs/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">紀伊田邊站步行約2分</span>
-                            </li>
-                            <li>
-                                <strong>味光路吧台店:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Ajikoji+Tanabe" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <span class="text-xs text-gray-500">現場挑有開的居酒屋最穩</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="bg-gray-100 p-4 rounded-lg text-sm">
-                        <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 補給站 (田邊湊)</h4>
-                        <p class="text-xs text-gray-500 mb-2">田邊市 Minato 41-33 附近</p>
-                        <ul class="list-disc list-inside text-gray-600 space-y-1">
-                            <li>7-11 JR紀伊田辺駅前 <a href="https://www.google.com/maps/search/?api=1&query=7-11+Kii-Tanabe+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                            <li>全家 田辺つぶり坂店 <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Tanabe+Tsuburizaka" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                            <li>Lawson 田辺宝来店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Tanabe+Horai" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                            <li>マツゲン田辺店 (超市) <a href="https://www.google.com/maps/search/?api=1&query=Matsugen+Tanabe" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (至21:00)</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Alert & Supplies -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-yellow-100 p-4 rounded-lg text-sm border-l-4 border-yellow-500">
-                        <h4 class="font-bold text-yellow-800"><i class="fas fa-exclamation-triangle mr-1"></i> 重要任務</h4>
-                        <p class="text-gray-700 mb-2">明天本宮/發心門王子沿路**沒有便利商店**。</p>
-                        <p class="text-xs font-bold text-gray-700">必買清單：</p>
-                        <ul class="list-disc list-inside text-gray-700 text-xs space-y-0.5">
-                            <li>飯糰 x2-3 (明天早餐+午餐)</li>
-                            <li>麵包/能量棒</li>
-                            <li>飲用水 1.5L以上</li>
-                            <li>泡麵/即食品 (本宮晚餐用)</li>
-                            <li>零食/補給品</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="bg-gray-100 p-4 rounded-lg text-sm">
-                        <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 本宮補給站 (極少)</h4>
-                        <p class="text-xs text-red-600 mb-2">⚠️ 本宮幾乎沒有便利商店，多數店16:00就關</p>
-                        
-                        <p class="text-xs font-bold text-gray-600 mt-2">📍 本宮大社周邊</p>
-                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
-                            <li>Yショップ 本宮尾野商店 <a href="https://www.google.com/maps/search/?api=1&query=Y+Shop+Hongu+Onoshoten" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (7:30-19:00，週日休)</li>
-                            <li>樹の里 (土產/飲料) <a href="https://www.google.com/maps/search/?api=1&query=Ki+no+Sato+Hongu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (9:00-17:00)</li>
-                            <li>八屋 (食料品店) <a href="https://www.google.com/maps/search/?api=1&query=Hachiya+Hongu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (9:00-18:30，週三休)</li>
-                        </ul>
-                        
-                        <p class="text-xs font-bold text-gray-600 mt-2">📍 請川 (搭巴士可到)</p>
-                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
-                            <li>Yショップ しもじ本宮店 <a href="https://www.google.com/maps/search/?api=1&query=Y+Shop+Shimoji+Hongu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (8:00-19:00，週三休)</li>
-                        </ul>
-                        
-                        <p class="text-xs font-bold text-red-600 mt-2">💡 對策</p>
-                        <p class="text-xs text-gray-700">Kumano Backpackers 有公共廚房，依靠昨晚在田邊買的存糧！</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Day 6: 中邊路/本宮 -->
-        <section id="day6" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
-                <div>
-                    <h2 class="text-xl font-bold">1/2 (五) 熊野古道</h2>
-                    <p class="text-sm opacity-90">發心門王子 → 本宮大社 (7km徒步)</p>
-                </div>
-                <div class="text-3xl"><i class="fas fa-hiking"></i></div>
-            </div>
-
-            <div class="p-5 space-y-6">
-                <!-- Check-in Alert -->
-                <div class="check-in-alert p-4 rounded-r-lg">
-                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 硬限制：20:00 (需現金)</h3>
-                    <p class="font-bold text-lg">Kumano Backpackers <a href="https://www.google.com/maps/search/?api=1&query=Kumano+Backpackers+Hongu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
-                    <p class="text-sm text-gray-600">本宮町 Hongu 159-1 (近本宮大社)</p>
-                    <p class="text-sm text-red-600 mt-1 font-bold">鄉下入夜全黑，務必 18:30 前回到本宮區域。</p>
-                </div>
-
-                <!-- Bus Table -->
-                <div class="transport-box p-4 rounded-lg">
-                    <h4 class="font-bold text-blue-800 mb-2"><i class="fas fa-bus mr-1"></i> 關鍵巴士時刻 (紀伊田邊→本宮)</h4>
-                    <table class="w-full text-sm text-left">
-                        <tr class="border-b border-blue-200"><th class="py-1">紀伊田邊發</th><th class="py-1">本宮大社到</th></tr>
-                        <tr class="bg-blue-50"><td class="py-1">06:50</td><td>08:20 (接08:20上山車)</td></tr>
-                        <tr><td class="py-1">08:32</td><td>10:12</td></tr>
-                        <tr class="bg-blue-50"><td class="py-1">08:37</td><td>10:30 (接10:30上山車)</td></tr>
-                    </table>
-                    <div class="mt-2 text-xs text-gray-600">
-                        <span class="font-bold">轉乘發心門王子(上山)：</span>本宮發 08:20, 09:20, 10:30
-                    </div>
-                </div>
-
-                <!-- Timeline -->
-                <div>
-                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
-                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">07:00</span> 搭龍神巴士往本宮
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">10:30</span> 寄放行李，轉巴士往「發心門王子」 <a href="https://www.google.com/maps/search/?api=1&query=Hosshinmon+Oji" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-green-500 rounded-full"></span>
-                            <span class="font-mono text-green-600 font-bold">11:00</span> 開始徒步 (約3小時)
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">14:30</span> 抵達熊野本宮大社 <a href="https://www.google.com/maps/search/?api=1&query=Kumano+Hongu+Taisha" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> / 大齋原(巨鳥居) <a href="https://www.google.com/maps/search/?api=1&query=Oyunohara" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Backup Options -->
-                <div class="backup-box p-4 rounded-r-lg text-sm">
-                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
-                    <ul class="list-disc list-inside text-gray-600 space-y-1">
-                        <li><strong>湯之峰溫泉 <a href="https://www.google.com/maps/search/?api=1&query=Yunomine+Onsen" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>：</strong>若徒步太累，今天先不去，留到明天早上。</li>
-                    </ul>
-                </div>
-
-                <!-- Story Expandable -->
-                <div class="story-container p-4 rounded-r-lg text-sm">
-                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
-                    <div class="space-y-2">
-                        <details>
-                            <summary>⛩️ 大齋原：人神界線</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                本宮大社原本是在河邊沙洲上的，後來被洪水沖毀才遷到山上，原址就是「大齋原」。那座巨大的鋼製鳥居標示著「俗世」與「神域」的絕對分界。穿過去之前請回頭看一眼，用身體感覺那種結界的切換。
-                            </p>
-                        </details>
-                        <details>
-                            <summary>🚶‍♂️ 發心門王子→本宮：千年參拜路</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                你不是在健行，而是在走「平安時代貴族走過的路」。這條路設計得讓你一步步靠近神域，沿途的「王子社」就是古代的休息站與遙拜所。
-                            </p>
-                        </details>
-                    </div>
-                </div>
-
-                <!-- Food Crisis -->
-                <div class="bg-red-50 p-4 rounded-lg text-sm border-l-4 border-red-500">
-                    <h4 class="font-bold text-red-800"><i class="fas fa-utensils mr-1"></i> 本宮晚餐警報</h4>
-                    <p class="text-gray-700 mb-2 font-bold">本宮晚上幾乎沒店開，便利商店(Y shop)很早就關。務必提前準備！</p>
-                    
-                    <p class="text-xs font-bold text-gray-700 mt-3">午餐/下午選擇 (多數至16:00)</p>
-                    <ul class="list-disc list-inside text-gray-700 space-y-1">
-                        <li>
-                            <strong>お食事しもじ:</strong> 
-                            <a href="https://www.google.com/maps/search/?api=1&query=Shimoji+Hongu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                            <a href="https://www.kumano-area.jp/facility/1883/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                            <span class="text-xs text-gray-500">定食/鄉土料理 (9:00-16:00，週三休)</span>
-                        </li>
-                        <li>
-                            <strong>Kitchen (きっちん):</strong> 
-                            <a href="https://www.google.com/maps/search/?api=1&query=Kitchen+Hongu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                            <span class="text-xs text-gray-500">炸雞/めはり寿司 (9:00-16:00)</span>
-                        </li>
-                        <li>
-                            <strong>cafe alma:</strong> 
-                            <a href="https://www.google.com/maps/search/?api=1&query=Cafe+Alma+Hongu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                            <span class="text-xs text-gray-500">本宮大社瑞鳳殿內 (10:00-16:00)</span>
-                        </li>
-                        <li>
-                            <strong>鹿六 本宮店 (うなぎ):</strong> 
-                            <a href="https://www.google.com/maps/search/?api=1&query=Shika Roku+Hongu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                            <span class="text-xs text-gray-500">午餐限定 (11:00-14:00，週一休)</span>
-                        </li>
-                    </ul>
-                    
-                    <p class="text-xs font-bold text-gray-700 mt-3">晚餐唯一選擇 (需搭車)</p>
-                    <ul class="list-disc list-inside text-gray-700 space-y-1">
-                        <li>
-                            <strong>Otonashi no Sato (渡瀬):</strong> 
-                            <a href="https://www.google.com/maps/search/?api=1&query=Otonashi+no+Sato+Wataze" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                            <a href="https://hongu-otonashi.com/restaurant/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                            <span class="text-xs text-gray-500">週五~日 17:00-22:00 (車程約10分)</span>
-                        </li>
-                    </ul>
-                    
-                    <p class="text-xs font-bold text-red-700 mt-3">📌 最穩對策：</p>
-                    <p class="text-xs text-gray-700">依靠昨晚在田邊買的泡麵/飯糰/存糧 (Kumano Backpackers 有公共廚房可用)</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Day 7: 新宮 -->
-        <section id="day7" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
-                <div>
-                    <h2 class="text-xl font-bold">1/3 (六) 川之參拜路</h2>
-                    <p class="text-sm opacity-90">湯之峰溫泉 → 大日越 → 新宮</p>
-                </div>
-                <div class="text-3xl"><i class="fas fa-water"></i></div>
-            </div>
-
-            <div class="p-5 space-y-6">
-                 <!-- Check-in Alert -->
-                 <div class="check-in-alert p-4 rounded-r-lg">
-                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 硬限制：21:00</h3>
-                    <p class="font-bold text-lg">Guesthouse 柚 (Yuzu) <a href="https://www.google.com/maps/search/?api=1&query=Guesthouse+Yuzu+Shingu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
-                    <p class="text-sm text-gray-600">新宮市上本町 1-1-4</p>
-                </div>
-
-                <!-- Timeline -->
-                <div>
-                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
-                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">08:00</span> 湯之峰溫泉 (體驗世界遺產「壺湯」) <a href="https://www.google.com/maps/search/?api=1&query=Yunomine+Onsen+Tsuboyu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-green-500 rounded-full"></span>
-                            <span class="font-mono text-green-600 font-bold">09:00</span> 徒步：大日越 (Dainichi-goe) <a href="https://www.google.com/maps/search/?api=1&query=Dainichigoe+Kumano+Kodo" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 往本宮 (約2km, 1.5hr)
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">11:00</span> 抵達本宮 (午餐)
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">12:15</span> 搭巴士前往新宮 (車程約1.5hr)
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">15:00</span> 新宮 Check-in / 休息
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">17:00</span> 新宮晚餐
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Bus Table -->
-                <details class="transport-box p-3 rounded-lg cursor-pointer">
-                    <summary class="font-bold text-blue-700">🚌 本宮 → 新宮 巴士時刻</summary>
-                    <div class="mt-2 text-sm text-gray-700">
-                        <table class="w-full">
-                            <tr class="border-b"><th class="text-left">本宮大社發</th><th class="text-left">新宮駅到</th></tr>
-                            <tr><td>12:15</td><td>13:14</td></tr>
-                            <tr class="bg-blue-50"><td>13:25</td><td>14:24</td></tr>
-                            <tr><td>14:45</td><td>15:44</td></tr>
-                        </table>
-                    </div>
-                </details>
-
-                <!-- Backup Options -->
-                <div class="backup-box p-4 rounded-r-lg text-sm">
-                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
-                    <ul class="list-disc list-inside text-gray-600 space-y-1">
-                        <li><strong>新宮市區神社：</strong>若抵達新宮已晚，所有神社行程移至明天早上，今天專注晚餐與休息。</li>
-                        <li><strong>大日越徒步：</strong>若昨天太累，可取消徒步，直接在湯之峰泡湯後搭巴士回本宮。</li>
-                    </ul>
-                </div>
-
-                <!-- Story Expandable -->
-                <div class="story-container p-4 rounded-r-lg text-sm">
-                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
-                    <div class="space-y-2">
-                        <details>
-                            <summary>♨️ 湯之峰溫泉：最古老的重生之湯</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                擁有1800年歷史，被認為是日本最古老的溫泉。其中的「壺湯」是世界遺產，傳說能讓瀕死的人起死回生。古代朝聖者在參拜本宮前，會先在這裡「湯垢離」（潔淨身心）。
-                            </p>
-                        </details>
-                        <details>
-                            <summary>🪨 神倉神社：神明降臨的大石</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                傳說中熊野的神明最早是降臨在這顆巨岩（ゴトビキ岩）上的。這裡才是信仰的「原點」。爬上陡峭的石階，想像古代人對自然的敬畏。
-                            </p>
-                        </details>
-                        <details>
-                            <summary>🌊 速玉大社：水路參拜的終點</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                熊野川在這裡流向太平洋。古代的朝聖者除了走路（中邊路），也會利用水路參拜。速玉大社就位於這個水陸交通的節點，象徵著「重生」。
-                            </p>
-                        </details>
-                    </div>
-                </div>
-
-                <!-- Food -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="food-box p-4 rounded-r-lg text-sm">
-                        <h4 class="text-amber-700 font-bold mb-1"><i class="fas fa-utensils mr-1"></i> 新宮晚餐</h4>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1">
-                            <li>
-                                <strong>総本家 めはりや:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Mehariya+Shingu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://www.shinguu.jp/spots/detail/C0078" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">新宮名物めはり寿司 (可外帶)</span>
-                            </li>
-                            <li>
-                                <strong>徐福壽司 (駅前店):</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Jofuku+Sushi+Shingu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://www.shinguu.jp/spots/detail/C0046" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">さんま姿寿司，有吧台席</span>
-                            </li>
-                            <li>
-                                <strong>速水 (和歌山拉麵):</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Hayami+Ramen+Shingu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://tabelog.com/wakayama/A3005/A300501/30000916/dtlrvwlst/B514632903/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">井出商店系譜中華そば</span>
-                            </li>
-                            <li>
-                                <strong>居酒屋 カッポウ 壱樂:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Izakaya+Kappou+Ichiraku+Shingu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://tabelog.com/wakayama/A3005/A300501/30010795/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">割烹居酒屋 (17:00-23:00)</span>
-                            </li>
-                            <li>
-                                <strong>禅家 (ぜんか):</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Zenka+Yakitori+Shingu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://tabelog.com/wakayama/A3005/A300501/30001217/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">焼鳥，新宮站步行約10分</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="bg-gray-100 p-4 rounded-lg text-sm">
-                        <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 補給站 (新宮)</h4>
-                        <p class="text-xs text-gray-500 mb-2">Guesthouse 柚 (上本町1-1-4) 附近</p>
-                        
-                        <p class="text-xs font-bold text-gray-600 mt-2">🏪 便利商店</p>
-                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
-                            <li>Lawson 新宮站周邊 <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Shingu+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                            <li>7-11 新宮站周邊 <a href="https://www.google.com/maps/search/?api=1&query=7-11+Shingu+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                            <li>全家 新宮市內 <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Shingu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                        </ul>
-                        
-                        <p class="text-xs font-bold text-gray-600 mt-2">🛒 超市/商店</p>
-                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
-                            <li>はやたま門前 (速玉大社周邊) <a href="https://www.google.com/maps/search/?api=1&query=Hayatama+Monzen+Shingu" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                            <li>新宮站前商店街 <a href="https://www.google.com/maps/search/?api=1&query=Shingu+Station+Shopping" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                        </ul>
-                        
-                        <p class="text-xs font-bold text-blue-600 mt-2">💡 提醒</p>
-                        <p class="text-xs text-gray-700">明天往那智瀑布路上補給有限，建議今晚先買好明天午餐和飲水。</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Day 8: 那智/伊勢 -->
-        <section id="day8" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
-                <div>
-                    <h2 class="text-xl font-bold">1/4 (日) 瀑布與長移動</h2>
-                    <p class="text-sm opacity-90">新宮 → 那智瀑布 → 紀伊勝浦 → 伊勢</p>
-                </div>
-                <div class="text-3xl"><i class="fas fa-train"></i></div>
-            </div>
-
-            <div class="p-5 space-y-6">
-                <!-- Check-in Alert -->
-                <div class="check-in-alert p-4 rounded-r-lg">
-                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 硬限制：21:30</h3>
-                    <p class="font-bold text-lg">伊勢風見賓館 (Ise Guesthouse Kazami) <a href="https://www.google.com/maps/search/?api=1&query=Ise+Guesthouse+Kazami" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
-                    <p class="text-sm text-gray-600">伊勢市 Fukiage 1-6-36 (近伊勢市站)</p>
-                    <p class="text-sm text-red-600 mt-1 font-bold">今天是大移動日，請緊盯 JR 時刻表。</p>
-                </div>
-
-                 <!-- Timeline -->
-                 <div>
-                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
-                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">08:00</span> 速玉大社 / 神倉神社
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">11:00</span> 火車往紀伊勝浦，轉巴士上那智山
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">12:30</span> 那智瀑布 <a href="https://www.google.com/maps/search/?api=1&query=Nachi+Falls" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> / 青岸渡寺 <a href="https://www.google.com/maps/search/?api=1&query=Seigantoji" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-red-500 rounded-full"></span>
-                            <span class="font-mono text-red-600 font-bold">16:30</span> 勝浦發車 (移動死線) → 新宮 → 多氣 → 伊勢
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">21:00</span> 抵達伊勢
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Backup Options -->
-                <div class="backup-box p-4 rounded-r-lg text-sm">
-                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
-                    <ul class="list-disc list-inside text-gray-600 space-y-1">
-                        <li><strong>神倉神社：</strong>若下雨路滑，直接砍掉（石階危險）。</li>
-                        <li><strong>大門坂 <a href="https://www.google.com/maps/search/?api=1&query=Daimonzaka" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>：</strong>若時間趕，不走步道，直接搭巴士到瀑布前。</li>
-                        <li><strong>おかげ横丁 <a href="https://www.google.com/maps/search/?api=1&query=Okage+Yokocho" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>：</strong>除非超早抵達伊勢，否則直接改到 1/5。</li>
-                    </ul>
-                </div>
-
-                <!-- Bus Table -->
-                <details class="transport-box p-3 rounded-lg cursor-pointer">
-                    <summary class="font-bold text-blue-700">🚌 紀伊勝浦 ↔ 那智山 巴士</summary>
-                    <div class="mt-2 text-sm text-gray-700">
-                        <p class="font-bold">去程 (勝浦發)</p>
-                        <p>11:05, 11:50, 12:20</p>
-                        <p class="font-bold mt-2">回程 (那智瀑布前發)</p>
-                        <p>13:59, 14:34, 15:09, 15:44</p>
-                        <p class="text-xs text-red-500 mt-1">*務必搭上 15:44 前的車下山，才能接上 16:30 往伊勢的火車。</p>
-                    </div>
-                </details>
-
-                 <!-- Food -->
-                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="food-box p-4 rounded-r-lg text-sm">
-                        <h4 class="text-amber-700 font-bold mb-1"><i class="fas fa-utensils mr-1"></i> 伊勢晚餐 (晚到備案)</h4>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1">
-                            <li>
-                                <strong>居酒屋ぐぅ:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Izakaya+Guu+Ise" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://www.izakaya-guuu.com/p/3/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">伊勢市站北口1分 (17:00-22:30)</span>
-                            </li>
-                            <li>
-                                <strong>寿司居酒屋 や台ずし:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Yataizushi+Ise+Fukiage" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <span class="text-xs text-gray-500">吹上1-8-36，離住宿近</span>
-                            </li>
-                            <li>
-                                <strong>魚民 (伊勢市南口):</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Uotami+Ise+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <span class="text-xs text-gray-500">吹上1-8-39，連鎖保險</span>
-                            </li>
-                            <li>
-                                <strong>名代伊勢うどん 山口屋:</strong>
-                                <a href="https://www.google.com/maps/search/?api=1&query=Yamaguchiya+Ise+Udon" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://tabelog.com/mie/A2403/A240301/24020255/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">伊勢名物 (10:00-18:30)</span>
-                            </li>
-                            <li>
-                                <strong>手こね茶屋 本店:</strong>
-                                <a href="https://www.google.com/maps/search/?api=1&query=Tekone+Chaya+Ise" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://tekonechaya-honten.gorp.jp/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">手こね寿司 (至20:00，年中無休)</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="bg-gray-100 p-4 rounded-lg text-sm">
-                        <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 補給站 (伊勢吹上)</h4>
-                        <p class="text-xs text-gray-500 mb-2">伊勢風見賓館 (吹上1-6-36) 附近</p>
-                        
-                        <p class="text-xs font-bold text-gray-600 mt-2">🛒 超市 (買便當/水果)</p>
-                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
-                            <li>ぎゅーとら TRY mart 八間通店 <a href="https://www.google.com/maps/search/?api=1&query=Gyutora+Ise+Hachikendori" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (吹上2-5-3, 9:00-21:00)</li>
-                            <li>AEON 伊勢店 <a href="https://www.google.com/maps/search/?api=1&query=Aeon+Ise" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (楠部町, 食品 8:00-22:00)</li>
-                        </ul>
-                        
-                        <p class="text-xs font-bold text-gray-600 mt-2">🏪 便利商店</p>
-                        <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
-                            <li>全家 近鉄伊勢市駅4番ホーム <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Kintetsu+Ise+Platform" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (6:00-20:00)</li>
-                            <li>Lawson 伊勢一之木店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Ise+Ichinoki" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                            <li>Lawson 伊勢岩渕店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Ise+Iwabuchi" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                            <li>7-11 伊勢市岩渕2丁目店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=7-11+Ise+Iwabuchi" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                            <li>全家 伊勢一之木北店 (24H) <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Ise+Ichinoki+North" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Day 9: 伊勢/大阪 -->
-        <section id="day9" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
-                <div>
-                    <h2 class="text-xl font-bold">1/5 (一) 神宮與繁華街</h2>
-                    <p class="text-sm opacity-90">伊勢神宮 → 大阪難波 → 採買</p>
-                </div>
-                <div class="text-3xl"><i class="fas fa-city"></i></div>
-            </div>
-
-            <div class="p-5 space-y-6">
-                <!-- Check-in Alert -->
-                <div class="check-in-alert p-4 rounded-r-lg">
-                    <h3 class="text-red-700 font-bold text-sm uppercase mb-1"><i class="fas fa-bell mr-1"></i> 硬限制：22:00</h3>
-                    <p class="font-bold text-lg">BAKURO (西成區) <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Bakuro+Osaka" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
-                    <p class="text-sm text-gray-600">大阪市西成區萩之茶屋 2-8-12</p>
-                </div>
-
-                <!-- Timeline (Added Back) -->
-                <div>
-                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">行程時間軸</h3>
-                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">09:00</span> 外宮 (豐受大神宮) <a href="https://www.google.com/maps/search/?api=1&query=Ise+Jingu+Geku" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">10:30</span> 內宮 (皇大神宮) <a href="https://www.google.com/maps/search/?api=1&query=Ise+Jingu+Naiku" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">12:00</span> おかげ横丁 <a href="https://www.google.com/maps/search/?api=1&query=Okage+Yokocho" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (午餐)
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">14:30</span> 移動往大阪 (近鐵特急) <a href="https://www.google.com/maps/search/?api=1&query=Ise+City+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">17:30</span> 抵達難波 <a href="https://www.google.com/maps/search/?api=1&query=Osaka+Namba+Station" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 開始採買
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">21:30</span> 回西成住宿 Check-in
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Story Expandable -->
-                <div class="story-container p-4 rounded-r-lg text-sm">
-                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
-                    <div class="space-y-2">
-                        <details>
-                            <summary>⛩️ 伊勢神宮：每20年的重生</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                伊勢神宮最震撼的傳統是「式年遷宮」：每20年將神殿完全重建一次。這不是為了「修復」，而是為了讓建築技術、工藝、以及神的居所永遠保持「年輕、嶄新」的狀態。你看到的是古代的樣式，卻是全新的木頭。
-                            </p>
-                        </details>
-                        <details>
-                            <summary>🍚 外宮先，內宮後</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                外宮祭祀的是掌管食物與產業的豐受大神（神的廚師）。內宮則是祭祀天照大御神（皇室祖神）。每天早晚，外宮都會進行供餐給神明的儀式，已經持續了1500年。這告訴我們：神聖不是遠離生活，而是把「吃飯」這件小事提升到極致。
-                            </p>
-                        </details>
-                        <details>
-                            <summary>🌉 宇治橋：過橋就是神域</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                踏上宇治橋的那一刻，你就離開了俗世。過橋前和過橋後回頭看一眼，你會發現氣氛完全不同。
-                            </p>
-                        </details>
-                        <details>
-                            <summary>🎉 難波：浪花與魚庭</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                大阪古稱「難波(Naniwa)」，意思是「魚之庭院」，因為古代這裡是漁獲豐富的海灣。現在的道頓堀霓虹燈海，其實是古代港口繁榮的現代版。
-                            </p>
-                        </details>
-                    </div>
-                </div>
-
-                <!-- Backup Options -->
-                <div class="backup-box p-4 rounded-r-lg text-sm">
-                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
-                    <ul class="list-disc list-inside text-gray-600 space-y-1">
-                        <li><strong>猿田彥神社 <a href="https://www.google.com/maps/search/?api=1&query=Sarutahiko+Shrine" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>：</strong>時間不夠就砍，優先保住內宮與參道午餐。</li>
-                        <li><strong>Alpen Outdoors / Sports Depo：</strong>難波購物點二選一，不要貪多，以免影響入住。</li>
-                    </ul>
-                </div>
-
-                <!-- Shopping & Food -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="shopping-box p-4 rounded-r-lg text-sm">
-                        <h4 class="text-emerald-700 font-bold mb-1"><i class="fas fa-shopping-bag mr-1"></i> 難波採買地圖</h4>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1">
-                            <li><strong>EDION 難波本店:</strong> <a href="https://www.google.com/maps/search/?api=1&query=EDION+Namba+Main+Store" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 電器 (至21:00)</li>
-                            <li><strong>UNIQLO Namba CITY:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Uniqlo+Namba+City" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> B2F (至21:00)</li>
-                            <li><strong>Mont-bell Namba CITY:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Mont-bell+Namba+City" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> 南館B1F (至21:00)</li>
-                            <li><strong>Alpen Outdoors:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Alpen+Outdoors+Namba+Parks" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> Namba Parks 4F (至21:00)</li>
-                            <li><strong>唐吉訶德 道頓堀:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Don+Quijote+Dotonbori" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> <strong>24H 營業</strong></li>
-                        </ul>
-                    </div>
-                    <div class="food-box p-4 rounded-r-lg text-sm">
-                        <h4 class="text-amber-700 font-bold mb-1"><i class="fas fa-utensils mr-1"></i> 西成/新世界 晚餐</h4>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1">
-                            <li>
-                                <strong>親子寿し (立食):</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Oyako+Sushi+Shin-Imamiya" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <span class="text-xs text-gray-500">新今宮站前，快速無壓</span>
-                            </li>
-                            <li>
-                                <strong>串カツ (新世界):</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Kushikatsu+Shinsekai" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <span class="text-xs text-gray-500">ジャンジャン横丁，吧台超多</span>
-                            </li>
-                            <li>
-                                <strong>日本一の串かつ 横綱:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Yokozuna+Kushikatsu+Shinsekai" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <a href="https://tabelog.com/osaka/A2701/A270206/R5064/rstLst/RC010203/" target="_blank" class="info-link"><i class="fas fa-external-link-alt"></i></a>
-                                <span class="text-xs text-gray-500">新世界本館</span>
-                            </li>
-                            <li>
-                                <strong>ラーメン (新今宮周邊):</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Ramen+Shin-Imamiya" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <span class="text-xs text-gray-500">現場挑有開的</span>
-                            </li>
-                            <li>
-                                <strong>つけ鴨うどん 鴨錦:</strong> 
-                                <a href="https://www.google.com/maps/search/?api=1&query=Kamonishiki+Ebisucho" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a>
-                                <span class="text-xs text-gray-500">鴨汁沾麵/烏龍</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Supplies -->
-                <div class="bg-gray-100 p-4 rounded-lg text-sm mt-4">
-                    <h4 class="font-bold mb-1 text-gray-700"><i class="fas fa-store mr-1"></i> 補給站 (西成/新今宮)</h4>
-                    <p class="text-xs text-gray-500 mb-2">BAKURO Hotel (萩之茶屋2-8-12) 附近</p>
-                    
-                    <p class="text-xs font-bold text-gray-600 mt-2">🏪 便利商店 (徒步圈)</p>
-                    <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
-                        <li>Lawson 新今宮站前 (24H) <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Shin-Imamiya" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                        <li>7-11 動物園前 (24H) <a href="https://www.google.com/maps/search/?api=1&query=7-11+Dobutsuen-mae" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                        <li>全家 新世界周邊 <a href="https://www.google.com/maps/search/?api=1&query=FamilyMart+Shinsekai" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></li>
-                    </ul>
-                    
-                    <p class="text-xs font-bold text-gray-600 mt-2">🛒 難波採買區 (晚上行程同時補給)</p>
-                    <ul class="list-disc list-inside text-gray-600 text-xs space-y-0.5">
-                        <li>唐吉訶德 道頓堀店 <a href="https://www.google.com/maps/search/?api=1&query=Don+Quijote+Dotonbori" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> <strong>24H營業</strong> (零食/藥妝/雜貨)</li>
-                        <li>難波站周邊超多便利商店 (24H)</li>
-                    </ul>
-                    
-                    <p class="text-xs font-bold text-blue-600 mt-2">💡 提醒</p>
-                    <p class="text-xs text-gray-700">明天要趕飛機，今晚記得買好明天早餐和飲用水！</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Day 10: 返台 -->
-        <section id="day10" class="day-card bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
-                <div>
-                    <h2 class="text-xl font-bold">1/6 (二) 大阪半日 & 返台</h2>
-                    <p class="text-sm opacity-90">四天王寺 → 住吉大社 → KIX</p>
-                </div>
-                <div class="text-3xl"><i class="fas fa-plane-departure"></i></div>
-            </div>
-
-            <div class="p-5 space-y-6">
-                <!-- Flight Info -->
-                <div class="bg-blue-50 p-4 rounded-lg text-sm border-l-4 border-blue-500">
-                    <h4 class="font-bold text-blue-800"><i class="fas fa-ticket-alt mr-1"></i> 航班資訊 IT213</h4>
-                    <p class="text-lg font-bold">KIX 18:55 起飛 → TPE 21:15 抵達 <a href="https://www.google.com/maps/search/?api=1&query=Kansai+International+Airport" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a></p>
-                    <p class="text-gray-600 mt-1">建議 16:30 前抵達關西機場。</p>
-                </div>
-
-                <!-- Timeline -->
-                <div>
-                    <h3 class="text-lg font-bold border-b pb-2 mb-3 text-gray-700">最後衝刺</h3>
-                    <ul class="space-y-3 relative border-l-2 border-gray-200 ml-2 pl-4">
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-gray-400 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">09:00</span> 四天王寺 <a href="https://www.google.com/maps/search/?api=1&query=Shitennoji" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (日本最早官寺)
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">11:00</span> 住吉大社 <a href="https://www.google.com/maps/search/?api=1&query=Sumiyoshi+Taisha" target="_blank" class="map-link"><i class="fas fa-map-location-dot"></i></a> (海之守護神，祈求回程平安)
-                        </li>
-                        <li class="relative">
-                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-indigo-500 rounded-full"></span>
-                            <span class="font-mono text-indigo-600 font-bold">14:30</span> 回西成拿行李，前往機場
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Backup Options -->
-                <div class="backup-box p-4 rounded-r-lg text-sm">
-                    <h4 class="text-gray-700 font-bold mb-1"><i class="fas fa-cut mr-1"></i> 備選方案 (可調整)</h4>
-                    <ul class="list-disc list-inside text-gray-600 space-y-1">
-                        <li><strong>四天王寺：</strong>如果太累或想多逛難波/住吉大社，可直接砍掉，專注最後採買。</li>
-                    </ul>
-                </div>
-
-                <!-- Story Expandable -->
-                <div class="story-container p-4 rounded-r-lg text-sm">
-                    <h4 class="text-purple-700 font-bold mb-3"><i class="fas fa-book-open mr-1"></i> 景點故事集 (點擊展開)</h4>
-                    <div class="space-y-2">
-                        <details>
-                            <summary>🏯 四天王寺：日本最早的官辦寺</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                西元593年由聖德太子建立。這是日本佛教「國家工程」的起點。站在這裡，你可以看到古老的五重塔，背景卻是現代最高的阿倍野 Harukas 大樓，一眼看盡1400年的時光。
-                            </p>
-                        </details>
-                        <details>
-                            <summary>⛩️ 住吉大社：海的守護神</summary>
-                            <p class="mt-2 text-gray-700 leading-relaxed pl-4 border-l-2 border-purple-200">
-                                在佛教傳入之前，這裡就守護著出海的人。那座紅色的太鼓橋（反橋），象徵著跨過它就能淨化身心。你即將搭飛機回台灣，在這裡祈求旅途平安最適合不過。
-                            </p>
-                        </details>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Floating Action Button for AI -->
-    <div class="fixed bottom-6 right-6 z-50">
-        <button onclick="toggleAiModal()" class="ai-gradient-bg text-white rounded-full p-4 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center gap-2">
-            <i class="fas fa-robot text-xl"></i>
-            <span class="font-bold pr-1 hidden md:inline">AI 助手</span>
-        </button>
+<body>
+  <div id="app">
+    <h1>易經卦象輸入</h1>
+    <!-- 提示訊息 -->
+    <div class="hint">
+      提示：點選小圓圈可切換動爻狀態，點選爻線可切換陰陽狀態。
     </div>
-
-    <!-- AI Modal -->
-    <div id="aiModal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="toggleAiModal()"></div>
-        <div class="absolute bottom-0 md:bottom-20 md:right-6 w-full md:w-96 bg-white rounded-t-2xl md:rounded-2xl shadow-2xl flex flex-col h-[80vh] md:h-[600px] transition-transform duration-300 transform translate-y-full" id="aiModalContent">
-            
-            <!-- Modal Header -->
-            <div class="ai-gradient-bg p-4 rounded-t-2xl flex justify-between items-center text-white">
-                <div class="flex items-center gap-2">
-                    <i class="fas fa-sparkles"></i>
-                    <h3 class="font-bold">旅途 AI 夥伴</h3>
-                </div>
-                <button onclick="toggleAiModal()" class="hover:bg-white/20 rounded-full p-1 w-8 h-8 flex items-center justify-center transition">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <!-- Chat Area -->
-            <div id="chatContainer" class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-                <!-- Welcome Message -->
-                <div class="flex items-start gap-2">
-                    <div class="w-8 h-8 rounded-full ai-gradient-bg flex items-center justify-center text-white flex-shrink-0">
-                        <i class="fas fa-robot text-xs"></i>
-                    </div>
-                    <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm text-sm border border-gray-100">
-                        <p>嗨！我是你的獨旅 AI 助手。我可以幫你：</p>
-                        <ul class="list-disc list-inside mt-2 text-gray-600">
-                            <li>🇯🇵 翻譯對話 (說給店員聽)</li>
-                            <li>🆘 緊急求救指南</li>
-                            <li>🍱 解讀菜單或文化</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="px-4 py-2 bg-white border-t border-gray-100 flex gap-2 overflow-x-auto hide-scrollbar">
-                <button onclick="setPrompt('請幫我翻譯這句話成日文（給店員）：')" class="whitespace-nowrap px-3 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-xs font-medium border border-indigo-100 hover:bg-indigo-100 transition">
-                    <i class="fas fa-language mr-1"></i> 翻譯
-                </button>
-                <button onclick="setPrompt('我遇到緊急狀況：')" class="whitespace-nowrap px-3 py-1.5 bg-red-50 text-red-600 rounded-full text-xs font-medium border border-red-100 hover:bg-red-100 transition">
-                    <i class="fas fa-ambulance mr-1"></i> 求救
-                </button>
-                <button onclick="setPrompt('請問這個日文菜單/地名是什麼意思：')" class="whitespace-nowrap px-3 py-1.5 bg-amber-50 text-amber-600 rounded-full text-xs font-medium border border-amber-100 hover:bg-amber-100 transition">
-                    <i class="fas fa-book mr-1"></i> 解惑
-                </button>
-            </div>
-
-            <!-- Input Area -->
-            <div class="p-4 bg-white border-t border-gray-100 rounded-b-2xl">
-                <div class="flex gap-2 relative">
-                    <textarea id="userInput" rows="1" class="flex-1 bg-gray-100 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 resize-none" placeholder="輸入問題..."></textarea>
-                    <button onclick="sendMessage()" id="sendBtn" class="bg-indigo-600 text-white rounded-xl w-12 flex items-center justify-center hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-                <div class="text-[10px] text-center text-gray-400 mt-2">Powered by Google Gemini</div>
-            </div>
-        </div>
+    
+    
+    <div class="hint" v-if="lunarLibraryStatus === 'error'">
+      Lunar library failed to load. Check CDN access or local ./lunar.min.js.
     </div>
+<!-- 日期輸入與計算結果顯示區 -->
+    <div class="time-input">
+      <h3>選擇日期</h3>
 
-    <footer class="bg-gray-800 text-gray-400 text-center p-8 text-sm">
-        <p>旅途平安 Safe Travels.</p>
-        <p class="mt-2 text-xs">Based on user itinerary. Information subject to change.</p>
-    </footer>
+      <!-- 陽曆日期選擇器 -->
+      <div style="margin: 15px 0;">
+        <label style="font-weight: bold; margin-right: 10px;">陽曆日期：</label>
+        <input
+          type="date"
+          v-model="today.solarDateInput"
+          @change="updateFromSolarDate"
+          style="padding: 8px; font-size: 1em; border: 2px solid #555; border-radius: 4px; font-family: inherit;"
+        >
+      </div>
 
-    <script>
-        // AI Logic
-        const API_KEY = ''; // IMPORTANT: Put your Gemini API Key here
-        const chatContainer = document.getElementById('chatContainer');
-        const userInput = document.getElementById('userInput');
-        const sendBtn = document.getElementById('sendBtn');
-        const modalContent = document.getElementById('aiModalContent');
-        const modal = document.getElementById('aiModal');
+      <!-- 計算結果：干支顯示 -->
+      <div class="kongwang" v-if="today.yearTian">
+        <span style="font-weight: bold; color: #2c3e50;">
+          干支時辰：{{ today.yearTian }}{{ today.yearDi }}年
+          {{ today.monthTian }}{{ today.monthDi }}月
+          {{ today.dayTian }}{{ today.dayDi }}日
+        </span>
+      </div>
 
-        function toggleAiModal() {
-            if (modal.classList.contains('hidden')) {
-                modal.classList.remove('hidden');
-                // Small delay to allow display:block to apply before transform
-                setTimeout(() => {
-                    modalContent.classList.remove('translate-y-full');
-                }, 10);
+      <!-- 計算結果：農曆日期 -->
+      <div class="kongwang" v-if="today.lunarYear">
+        <span style="color: #2c3e50;">
+          農曆：{{ today.lunarYear }}年
+          {{ today.isLeapMonth ? '閏' : '' }}{{ getLunarMonthName(today.lunarMonth) }}月
+          {{ getLunarDayName(today.lunarDay) }}
+        </span>
+      </div>
+
+      <!-- 空亡顯示 -->
+      <div class="kongwang" v-if="today.dayDi">
+        <span v-if="today.monthDi && showMonthEmpty">月空亡：{{ monthKongWang }} </span>
+        <span>日空亡：{{ dayKongWang }}</span>
+      </div>
+
+      <!-- 月令轉土指示 -->
+      <div class="kongwang" v-if="today.isEarthPeriod" style="margin-top: 5px;">
+        <span style="color: #b8860b; font-weight: bold;">
+          ⚠️ {{ today.earthPeriodInfo }}
+        </span>
+      </div>
+    </div>
+    
+    <!-- 核對選項 -->
+    <div class="options">
+      <label>
+        <input type="checkbox" v-model="showMonthGround" /> 顯示月地支判定
+      </label>
+      <label>
+        <input type="checkbox" v-model="showDayGround" /> 顯示日地支判定
+      </label>
+      <label>
+        <input type="checkbox" v-model="showMonthFive" /> 顯示月五行判定
+      </label>
+      <label>
+        <input type="checkbox" v-model="showDayFive" /> 顯示日五行判定
+      </label>
+      <label>
+        <input type="checkbox" v-model="showMonthEmpty" /> 顯示月空亡判定
+      </label>
+    </div>
+    
+    <!-- 按鈕：轉成圖片 -->
+    <button class="btn-save" @click="saveImage">轉成圖片並下載</button>
+    
+    <div class="hexagrams-wrapper">
+      <!-- 本卦區塊 -->
+      <div class="hexagram">
+        <h2>本卦：{{ currentHexagram.name }}</h2>
+        <p>本宮：{{ currentHexagram.benGong }}</p>
+        <div class="lines-container">
+          <div v-for="(line, index) in lines" :key="index" class="line">
+            <!-- 六獸標籤 -->
+            <span class="beast-label">{{ sixBeasts[index] }}</span>
+            <span class="line-label">第{{ index + 1 }}爻</span>
+            <div :class="['circle', line.isMoving ? 'active' : '']" @click.stop="toggleMoving(index)"></div>
+            <div class="line-shape" @click="toggleLine(index)" :class="{ 'is-moving': line.isMoving }">
+              <div v-if="line.isYang" class="yang-line"></div>
+              <div v-else class="yin-line-container">
+                <div class="yin-line-rect"></div>
+                <div class="yin-line-rect"></div>
+              </div>
+              <div class="shiYing" v-if="currentHexagram.shiYing && currentHexagram.shiYing[index]">
+                {{ currentHexagram.shiYing[index] }}
+              </div>
+            </div>
+            <div class="liuQin-container" v-if="currentHexagram.liuQin && currentHexagram.liuQin[index]">
+              {{ currentHexagram.liuQin[index] }}
+            </div>
+            <!-- 伏神顯示：移到六親下方 -->
+            <div class="fuShen" v-if="currentHexagram.fuShen && currentHexagram.fuShen[index]">
+              伏神：{{ currentHexagram.fuShen[index] }}
+            </div>
+            <!-- 顯示月空判定在日空判定左側 -->
+            <span class="month-empty-label" v-if="showMonthEmpty && getMonthEmptyDescription(index)">
+              {{ getMonthEmptyDescription(index) }}
+            </span>
+            <!-- 顯示日空判定 -->
+            <span class="empty-label" v-if="getEmptyDescription(index)">
+              {{ getEmptyDescription(index) }}
+            </span>
+            <!-- 判定描述 -->
+            <span class="chongjian-label" v-if="getChongJian(index)">
+              {{ getChongJian(index) }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <!-- Prompt 文字框區塊 -->
+      <div class="prompt-container">
+        <h2>AI 問答 Prompt</h2>
+        <p style="font-size: 0.9em; color: #555; margin-bottom: 10px;">
+          以下是根據當前卦象與時辰自動生成的詳細描述，您可以直接複製貼上詢問 AI：
+        </p>
+        <textarea
+          class="prompt-textarea"
+          :value="hexagramPrompt"
+          readonly
+          @click="selectAllPrompt"
+        ></textarea>
+        <button class="btn-copy" @click="copyPrompt">📋 複製 Prompt</button>
+      </div>
+      <!-- 支卦區塊 -->
+      <div class="hexagram">
+        <h2>支卦：{{ supportHexagram.name }}</h2>
+        <p>本宮：{{ supportHexagram.benGong }}</p>
+        <div class="lines-container">
+          <div v-for="(line, index) in supportLines" :key="index" class="support-line">
+            <div class="line-shape" :class="{ 'is-moving': line.isMoving }">
+              <div v-if="line.isYang" class="yang-line"></div>
+              <div v-else class="yin-line-container">
+                <div class="yin-line-rect"></div>
+                <div class="yin-line-rect"></div>
+              </div>
+            </div>
+            <!-- 六親顯示（只顯示有動爻的） -->
+            <div class="liuQin-container" v-if="supportHexagramLiuQin[index]">
+              {{ supportHexagramLiuQin[index] }}
+            </div>
+            <!-- 月空判定 -->
+            <span class="month-empty-label" v-if="showMonthEmpty && getSupportMonthEmptyDescription(index)">
+              {{ getSupportMonthEmptyDescription(index) }}
+            </span>
+            <!-- 日空判定 -->
+            <span class="empty-label" v-if="getSupportEmptyDescription(index)">
+              {{ getSupportEmptyDescription(index) }}
+            </span>
+            <!-- 沖建判定 -->
+            <span class="chongjian-label" v-if="getSupportChongJian(index)">
+              {{ getSupportChongJian(index) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p>
+      ※ 本卦：依據用戶設定的六爻狀態，由下往上排列。<br>
+      ※ 支卦：對每一爻，若為動則反轉其狀態（顯示紅色），否則保持原樣。
+    </p>
+  </div>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        lunarLibraryStatus: "loading",
+
+        today: {
+          // 陽曆日期輸入
+          solarDateInput: "",    // HTML5 date input 綁定值 (YYYY-MM-DD 格式)
+
+          yearTian: "",
+          yearDi: "",
+          monthTian: "",
+          monthDi: "",
+          dayTian: "",
+          dayDi: "",
+
+          // 農曆日期欄位
+          lunarYear: 0,          // 農曆年份
+          lunarMonth: 0,         // 農曆月份 (1-12)
+          lunarDay: 0,           // 農曆日期 (1-30)
+          isLeapMonth: false,    // 是否閏月
+          lunarMonthDays: 0,     // 本月總天數 (29 或 30)
+
+          // 轉土期追蹤
+          isEarthPeriod: false,  // 是否處於轉土期
+          earthPeriodInfo: ""    // 轉土期說明文字
+        },
+        heavenlyStems: ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"],
+        earthlyBranches: ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"],
+        branchToElement: {
+          "子": "水", "丑": "土", "寅": "木", "卯": "木", "辰": "土",
+          "巳": "火", "午": "火", "未": "土", "申": "金", "酉": "金",
+          "戌": "土", "亥": "水"
+        },
+        // 卦宮五行對照表
+        gongToElement: {
+          "乾宮": "金",
+          "兌宮": "金",
+          "離宮": "火",
+          "震宮": "木",
+          "巽宮": "木",
+          "坎宮": "水",
+          "艮宮": "土",
+          "坤宮": "土"
+        },
+        // 日/月空亡對應表（合併後）
+        dayKongWangMap: {
+          "甲子": "戌亥",
+          "乙丑": "戌亥",
+          "丙寅": "戌亥",
+          "丁卯": "戌亥",
+          "戊辰": "戌亥",
+          "己巳": "戌亥",
+          "庚午": "戌亥",
+          "辛未": "戌亥",
+          "壬申": "戌亥",
+          "癸酉": "戌亥",
+          "甲戌": "申酉",
+          "乙亥": "申酉",
+          "丙子": "申酉",
+          "丁丑": "申酉",
+          "戊寅": "申酉",
+          "己卯": "申酉",
+          "庚辰": "申酉",
+          "辛巳": "申酉",
+          "壬午": "申酉",
+          "癸未": "申酉",
+          "甲申": "午未",
+          "乙酉": "午未",
+          "丙戌": "午未",
+          "丁亥": "午未",
+          "戊子": "午未",
+          "己丑": "午未",
+          "庚寅": "午未",
+          "辛卯": "午未",
+          "壬辰": "午未",
+          "癸巳": "午未",
+          "甲午": "辰巳",
+          "乙未": "辰巳",
+          "丙申": "辰巳",
+          "丁酉": "辰巳",
+          "戊戌": "辰巳",
+          "己亥": "辰巳",
+          "庚子": "辰巳",
+          "辛丑": "辰巳",
+          "壬寅": "辰巳",
+          "癸卯": "辰巳",
+          "甲辰": "寅卯",
+          "乙巳": "寅卯",
+          "丙午": "寅卯",
+          "丁未": "寅卯",
+          "戊申": "寅卯",
+          "己酉": "寅卯",
+          "庚戌": "寅卯",
+          "辛亥": "寅卯",
+          "壬子": "寅卯",
+          "癸丑": "寅卯",
+          "甲寅": "子丑",
+          "乙卯": "子丑",
+          "丙辰": "子丑",
+          "丁巳": "子丑",
+          "戊午": "子丑",
+          "己未": "子丑",
+          "庚申": "子丑",
+          "辛酉": "子丑",
+          "壬戌": "子丑",
+          "癸亥": "子丑"
+        },
+        lines: [
+          { isYang: true, isMoving: false },
+          { isYang: true, isMoving: false },
+          { isYang: true, isMoving: false },
+          { isYang: true, isMoving: false },
+          { isYang: true, isMoving: false },
+          { isYang: true, isMoving: false }
+        ],
+        hexagramMap: {
+          "111111": { 
+            name: "乾為天", 
+            benGong: "乾宮(本宮)", 
+            liuQin: ["子水子孫", "寅木妻財", "辰土父母", "午火官鬼", "申金兄弟", "戌土父母"],
+            shiYing: ["", "", "應", "", "", "世"],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "110111": { 
+            name: "天澤履", 
+            benGong: "艮宮(五世)", 
+            liuQin: ["巳火父母", "卯木官鬼", "丑土兄弟", "午火父母", "申金子孫", "戌土兄弟"],
+            shiYing: ["", "應", "", "", "世", ""],
+            fuShen: ["", "", "", "", "子水妻財", ""]
+          },
+          "101111": { 
+            name: "天火同人", 
+            benGong: "離宮(歸魂)", 
+            liuQin: ["卯木父母", "丑土子孫", "亥水官鬼", "午火兄弟", "申金妻財", "戌土子孫"],
+            shiYing: ["", "", "世", "", "", "應"],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "100111": { 
+            name: "天雷無妄", 
+            benGong: "巽宮(四世)", 
+            liuQin: ["子水父母", "寅木兄弟", "辰土妻財", "午火子孫", "申金官鬼", "戌土妻財"],
+            shiYing: ["應", "", "", "世", "", ""],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "011111": { 
+            name: "天風姤", 
+            benGong: "乾宮(一世)", 
+            liuQin: ["丑土父母", "亥水子孫", "酉金兄弟", "午火官鬼", "申金兄弟", "戌土父母"],
+            shiYing: ["世", "", "", "應", "", ""],
+            fuShen: ["", "寅木妻財", "", "", "", ""]
+          },
+          "010111": { 
+            name: "天水訟", 
+            benGong: "離宮(遊魂)", 
+            liuQin: ["寅木父母", "辰土子孫", "午火兄弟", "午火兄弟", "申金妻財", "戌土子孫"],
+            shiYing: ["應", "", "", "世", "", ""],
+            fuShen: ["", "", "亥水官鬼", "", "", ""]
+          },
+          "001111": { 
+            name: "天山遯", 
+            benGong: "乾宮(二世)", 
+            liuQin: ["辰土父母", "午火官鬼", "申金兄弟", "午火官鬼", "申金兄弟", "戌土父母"],
+            shiYing: ["", "世", "", "", "應", ""],
+            fuShen: ["子水子孫", "寅木妻財", "", "", "", ""]
+          },
+          "000111": { 
+            name: "天地否", 
+            benGong: "乾宮(三世)", 
+            liuQin: ["未土父母", "巳火官鬼", "卯木妻財", "午火官鬼", "申金兄弟", "戌土父母"],
+            shiYing: ["", "", "世", "", "", "應"],
+            fuShen: ["子水子孫", "", "", "", "", ""]
+          },
+          "111110": { 
+            name: "澤天夬", 
+            benGong: "坤宮(五世)", 
+            liuQin: ["子水妻財", "寅木官鬼", "辰土兄弟", "亥水妻財", "酉金子孫", "未土兄弟"],
+            shiYing: ["", "應", "", "", "世", ""],
+            fuShen: ["", "巳火父母", "", "", "", ""]
+          },
+          "110110": { 
+            name: "兌為澤", 
+            benGong: "兌宮(本宮)", 
+            liuQin: ["巳火官鬼", "卯木妻財", "丑土父母", "亥水子孫", "酉金兄弟", "未土父母"],
+            shiYing: ["", "", "應", "", "", "世"],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "101110": { 
+            name: "澤火革", 
+            benGong: "坎宮(四世)", 
+            liuQin: ["卯木子孫", "丑土官鬼", "亥水兄弟", "亥水兄弟", "酉金父母", "未土官鬼"],
+            shiYing: ["應", "", "", "世", "", ""],
+            fuShen: ["", "", "午火妻財", "", "", ""]
+          },
+          "100110": { 
+            name: "澤雷隨", 
+            benGong: "震宮(歸魂)", 
+            liuQin: ["子水父母", "寅木兄弟", "辰土妻財", "亥水父母", "酉金官鬼", "未土妻財"],
+            shiYing: ["", "", "世", "", "", "應"],
+            fuShen: ["", "", "", "午火子孫", "", ""]
+          },
+          "011110": { 
+            name: "澤風大過", 
+            benGong: "震宮(遊魂)", 
+            liuQin: ["丑土妻財", "亥水父母", "酉金官鬼", "亥水父母", "酉金官鬼", "未土妻財"],
+            shiYing: ["應", "", "", "世", "", ""],
+            fuShen: ["", "寅木兄弟", "", "午火子孫", "", ""]
+          },
+          "010110": { 
+            name: "澤水困", 
+            benGong: "兌宮(一世)", 
+            liuQin: ["寅木妻財", "辰土父母", "午火官鬼", "亥水子孫", "酉金兄弟", "未土父母"],
+            shiYing: ["世", "", "", "應", "", ""],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "001110": { 
+            name: "澤山咸", 
+            benGong: "兌宮(三世)", 
+            liuQin: ["辰土父母", "午火官鬼", "申金兄弟", "亥水子孫", "酉金兄弟", "未土父母"],
+            shiYing: ["", "", "世", "", "", "應"],
+            fuShen: ["", "卯木妻財", "", "", "", ""]
+          },
+          "000110": { 
+            name: "澤地萃", 
+            benGong: "兌宮(二世)", 
+            liuQin: ["未土父母", "巳火官鬼", "卯木妻財", "亥水子孫", "酉金兄弟", "未土父母"],
+            shiYing: ["", "世", "", "", "應", ""],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "111101": { 
+            name: "火天大有", 
+            benGong: "乾宮(歸魂)", 
+            liuQin: ["子水子孫", "寅木妻財", "辰土父母", "酉金兄弟", "未土父母", "巳火官鬼"],
+            shiYing: ["", "", "世", "", "", "應"],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "110101": { 
+            name: "火澤睽", 
+            benGong: "艮宮(四世)", 
+            liuQin: ["巳火父母", "卯木官鬼", "丑土兄弟", "酉金子孫", "未土兄弟", "巳火父母"],
+            shiYing: ["應", "", "", "世", "", ""],
+            fuShen: ["", "", "", "", "子水妻財", ""]
+          },
+          "101101": { 
+            name: "離為火", 
+            benGong: "離宮(本宮)", 
+            liuQin: ["卯木父母", "丑土子孫", "亥水官鬼", "酉金妻財", "未土子孫", "巳火兄弟"],
+            shiYing: ["", "", "應", "", "", "世"],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "100101": { 
+            name: "火雷噬嗑", 
+            benGong: "巽宮(五世)", 
+            liuQin: ["子水父母", "寅木兄弟", "辰土妻財", "酉金官鬼", "未土妻財", "巳火子孫"],
+            shiYing: ["", "應", "", "", "世", ""],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "011101": { 
+            name: "火風鼎", 
+            benGong: "離宮(二世)", 
+            liuQin: ["丑土子孫", "亥水官鬼", "酉金妻財", "酉金妻財", "未土子孫", "巳火兄弟"],
+            shiYing: ["", "世", "", "", "應", ""],
+            fuShen: ["卯木父母", "", "", "", "", ""]
+          },
+          "010101": { 
+            name: "火水未濟", 
+            benGong: "離宮(三世)", 
+            liuQin: ["寅木父母", "辰土子孫", "午火兄弟", "酉金妻財", "未土子孫", "巳火兄弟"],
+            shiYing: ["", "", "世", "", "", "應"],
+            fuShen: ["", "", "亥水官鬼", "", "", ""]
+          },
+          "001101": { 
+            name: "火山旅", 
+            benGong: "離宮(一世)", 
+            liuQin: ["辰土子孫", "午火兄弟", "申金妻財", "酉金妻財", "未土子孫", "巳火兄弟"],
+            shiYing: ["世", "", "", "應", "", ""],
+            fuShen: ["卯木父母", "", "亥水官鬼", "", "", ""]
+          },
+          "000101": { 
+            name: "火地晉", 
+            benGong: "乾宮(遊魂)", 
+            liuQin: ["未土父母", "巳火官鬼", "卯木妻財", "酉金兄弟", "未土父母", "巳火官鬼"],
+            shiYing: ["", "", "應", "", "", "世"],
+            fuShen: ["子水子孫", "", "", "", "", ""]
+          },
+          "111100": { 
+            name: "雷天大壯", 
+            benGong: "坤宮(四世)", 
+            liuQin: ["子水妻財", "寅木官鬼", "辰土兄弟", "午火父母", "申金子孫", "戌土兄弟"],
+            shiYing: ["應", "", "", "世", "", ""],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "110100": { 
+            name: "雷澤歸妹", 
+            benGong: "兌宮(歸魂)", 
+            liuQin: ["巳火官鬼", "卯木妻財", "丑土父母", "午火官鬼", "申金兄弟", "戌土兄弟"],
+            shiYing: ["", "", "世", "", "", "應"],
+            fuShen: ["", "", "", "亥水子孫", "", ""]
+          },
+          "101100": { 
+            name: "雷火豐", 
+            benGong: "坎宮(五世)", 
+            liuQin: ["卯木子孫", "丑土官鬼", "亥水兄弟", "午火妻財", "申金父母", "戌土官鬼"],
+            shiYing: ["", "世", "", "", "應", ""],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "100100": { 
+            name: "震為雷", 
+            benGong: "震宮(本宮)", 
+            liuQin: ["子水父母", "寅木兄弟", "辰土妻財", "午火子孫", "申金官鬼", "戌土妻財"],
+            shiYing: ["", "", "應", "", "", "世"],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "011100": { 
+            name: "雷風恆", 
+            benGong: "震宮(三世)", 
+            liuQin: ["丑土妻財", "亥水父母", "酉金官鬼", "午火子孫", "申金官鬼", "戌土妻財"],
+            shiYing: ["", "世", "", "應", "", ""],
+            fuShen: ["寅木妻財", "", "", "", "", ""]
+          },
+          "010100": { 
+            name: "雷水解", 
+            benGong: "震宮(二世)", 
+            liuQin: ["寅木兄弟", "辰土妻財", "午火子孫", "午火子孫", "申金官鬼", "戌土妻財"],
+            shiYing: ["", "世", "", "", "應", ""],
+            fuShen: ["子水父母", "", "", "", "", ""]
+          },
+          "001100": { 
+            name: "雷山小過", 
+            benGong: "兌宮(遊魂)", 
+            liuQin: ["辰土父母", "午火官鬼", "申金兄弟", "午火官鬼", "申金兄弟", "戌土父母"],
+            shiYing: ["卯木妻財", "亥水子孫", "應", "世", "", ""],
+            fuShen: ["", "卯木妻財", "", "亥水子孫", "", ""]
+          },
+          "000100": { 
+            name: "雷地豫", 
+            benGong: "震宮(一世)", 
+            liuQin: ["戌土妻財", "申金官鬼", "午火子孫", "卯木兄弟", "巳火子孫", "未土妻財"],
+            shiYing: ["", "", "應", "", "", "世"],
+            fuShen: ["子水父母", "", "", "", "", ""]
+          },
+          "111011": { 
+            name: "風天小畜", 
+            benGong: "巽宮(一世)", 
+            liuQin: ["卯木兄弟", "巳火子孫", "未土妻財", "辰土妻財", "寅木兄弟", "子水父母"],
+            shiYing: ["世", "", "", "應", "", ""],
+            fuShen: ["", "", "酉金官鬼", "", "", ""]
+          },
+          "110011": { 
+            name: "風澤中孚", 
+            benGong: "艮宮(遊魂)", 
+            liuQin: ["巳火父母", "卯木官鬼", "丑土兄弟", "未土兄弟", "巳火父母", "卯木官鬼"],
+            shiYing: ["應", "", "", "世", "", ""],
+            fuShen: ["", "", "申金子孫", "", "子水妻財", ""]
+          },
+          "101011": { 
+            name: "風火家人", 
+            benGong: "巽宮(二世)", 
+            liuQin: ["卯木兄弟", "丑土妻財", "亥水父母", "未土妻財", "巳火子孫", "卯木兄弟"],
+            shiYing: ["", "世", "", "", "應", ""],
+            fuShen: ["", "", "酉金官鬼", "", "", ""]
+          },
+          "100011": { 
+            name: "風雷益", 
+            benGong: "巽宮(三世)", 
+            liuQin: ["卯木兄弟", "巳火子孫", "未土妻財", "辰土妻財", "寅木兄弟", "子水父母"],
+            shiYing: ["", "", "世", "", "", "應"],
+            fuShen: ["", "", "酉金官鬼", "", "", ""]
+          },
+          "011011": { 
+            name: "巽為風", 
+            benGong: "巽宮(本宮)", 
+            liuQin: ["丑土妻財", "亥水父母", "酉金官鬼", "未土妻財", "巳火子孫", "卯木兄弟"],
+            shiYing: ["", "", "應", "", "", "世"],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "010011": { 
+            name: "風水渙", 
+            benGong: "離宮(五世)", 
+            liuQin: ["寅木父母", "辰土子孫", "午火兄弟", "未土子孫", "巳火兄弟", "卯木父母"],
+            shiYing: ["", "應", "", "", "世", ""],
+            fuShen: ["", "", "亥水官鬼", "酉金妻財", "", ""]
+          },
+          "001011": { 
+            name: "風山漸", 
+            benGong: "艮宮(歸魂)", 
+            liuQin: ["辰土兄弟", "午火父母", "申金子孫", "未土兄弟", "巳火父母", "卯木官鬼"],
+            shiYing: ["", "", "世", "", "", "應"],
+            fuShen: ["", "", "", "", "子水妻財", ""]
+          },
+          "000011": { 
+            name: "風地觀", 
+            benGong: "乾宮(四世)", 
+            liuQin: ["未土父母", "巳火官鬼", "卯木妻財", "未土父母", "巳火官鬼", "卯木妻財"],
+            shiYing: ["應", "", "", "世", "", ""],
+            fuShen: ["子水子孫", "", "", "", "申金兄弟", ""]
+          },
+          "111010": { 
+            name: "水天需", 
+            benGong: "坤宮(遊魂)", 
+            liuQin: ["子水妻財", "寅木官鬼", "辰土兄弟", "申金子孫", "戌土兄弟", "子水妻財"],
+            shiYing: ["應", "", "", "世", "", ""],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "110010": { 
+            name: "水澤節", 
+            benGong: "坎宮(一世)", 
+            liuQin: ["巳火妻財", "卯木子孫", "丑土官鬼", "申金父母", "戌土官鬼", "子水兄弟"],
+            shiYing: ["世", "", "", "應", "", ""],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "101010": { 
+            name: "水火既濟", 
+            benGong: "坎宮(三世)", 
+            liuQin: ["卯木子孫", "丑土官鬼", "亥水兄弟", "申金父母", "戌土官鬼", "子水兄弟"],
+            shiYing: ["", "", "世", "", "", "應"],
+            fuShen: ["", "", "午火妻財", "", "", ""]
+          },
+          "100010": { 
+            name: "水雷屯", 
+            benGong: "坎宮(二世)", 
+            liuQin: ["子水兄弟", "寅木子孫", "辰土官鬼", "申金父母", "戌土官鬼", "子水兄弟"],
+            shiYing: ["", "世", "", "", "應", ""],
+            fuShen: ["", "", "午火妻財", "", "", ""]
+          },
+          "011010": { 
+            name: "水風井", 
+            benGong: "震宮(五世)", 
+            liuQin: ["丑土妻財", "亥水父母", "酉金官鬼", "申金官鬼", "戌土妻財", "子水父母"],
+            shiYing: ["", "應", "", "", "世", ""],
+            fuShen: ["", "寅木兄弟", "", "午火子孫", "", ""]
+          },
+          "010010": { 
+            name: "坎為水", 
+            benGong: "坎宮(本宮)", 
+            liuQin: ["寅木子孫", "辰土官鬼", "午火妻財", "申金父母", "戌土官鬼", "子水兄弟"],
+            shiYing: ["", "", "應", "", "", "世"],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "001010": { 
+            name: "水山蹇", 
+            benGong: "兌宮(四世)", 
+            liuQin: ["辰土父母", "午火官鬼", "申金兄弟", "申金兄弟", "戌土官鬼", "子水子孫"],
+            shiYing: ["應", "", "", "世", "", ""],
+            fuShen: ["", "卯木妻財", "", "", "", ""]
+          },
+          "000010": { 
+            name: "水地比", 
+            benGong: "坤宮(歸魂)", 
+            liuQin: ["未土兄弟", "巳火父母", "卯木官鬼", "申金子孫", "戌土兄弟", "子水妻財"],
+            shiYing: ["", "", "世", "", "", "應"],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "111001": { 
+            name: "山天大畜", 
+            benGong: "艮宮(二世)", 
+            liuQin: ["子水妻財", "寅木官鬼", "辰土兄弟", "戌土兄弟", "子水妻財", "寅木官鬼"],
+            shiYing: ["", "世", "", "", "應", ""],
+            fuShen: ["", "午火父母", "申金子孫", "", "", ""]
+          },
+          "110001": { 
+            name: "山澤損", 
+            benGong: "艮宮(三世)", 
+            liuQin: ["巳火父母", "卯木官鬼", "丑土兄弟", "戌土兄弟", "子水妻財", "寅木官鬼"],
+            shiYing: ["", "", "世", "", "", "應"],
+            fuShen: ["", "", "申金子孫", "", "", ""]
+          },
+          "101001": { 
+            name: "山火賁", 
+            benGong: "艮宮(一世)", 
+            liuQin: ["卯木官鬼", "丑土兄弟", "亥水妻財", "戌土兄弟", "子水妻財", "寅木官鬼"],
+            shiYing: ["世", "", "", "應", "", ""],
+            fuShen: ["", "午火父母", "申金子孫", "", "", ""]
+          },
+          "100001": { 
+            name: "山雷頤", 
+            benGong: "巽宮(遊魂)", 
+            liuQin: ["子水父母", "寅木兄弟", "辰土妻財", "戌土妻財", "子水父母", "寅木兄弟"],
+            shiYing: ["應", "", "", "世", "", ""],
+            fuShen: ["", "", "酉金官鬼", "", "巳火子孫", ""]
+          },
+          "011001": { 
+            name: "山風蠱", 
+            benGong: "巽宮(歸魂)", 
+            liuQin: ["丑土妻財", "亥水父母", "酉金官鬼", "戌土妻財", "子水父母", "寅木兄弟"],
+            shiYing: ["", "", "世", "", "", "應"],
+            fuShen: ["", "", "", "", "巳火子孫", ""]
+          },
+          "010001": { 
+            name: "山水蒙", 
+            benGong: "離宮(四世)", 
+            liuQin: ["寅木父母", "辰土子孫", "午火兄弟", "戌土子孫", "子水官鬼", "寅木父母"],
+            shiYing: ["應", "", "", "世", "", ""],
+            fuShen: ["", "", "", "酉金妻財", "", ""]
+          },
+          "001001": { 
+            name: "艮為山", 
+            benGong: "艮宮(本宮)", 
+            liuQin: ["辰土兄弟", "午火父母", "申金子孫", "戌土兄弟", "子水妻財", "寅木官鬼"],
+            shiYing: ["", "", "應", "", "", "世"],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "000001": { 
+            name: "山地剝", 
+            benGong: "乾宮(五世)", 
+            liuQin: ["未土父母", "巳火官鬼", "卯木妻財", "戌土父母", "子水子孫", "寅木妻財"],
+            shiYing: ["", "應", "", "", "世", ""],
+            fuShen: ["", "", "", "", "申金兄弟", ""]
+          },
+          "111000": { 
+            name: "地天泰", 
+            benGong: "坤宮(三世)", 
+            liuQin: ["子水妻財", "寅木官鬼", "戌土兄弟", "丑土兄弟", "亥水妻財", "酉金子孫"],
+            shiYing: ["", "", "世", "", "", "應"],
+            fuShen: ["", "巳火父母", "", "", "", ""]
+          },
+          "110000": { 
+            name: "地澤臨", 
+            benGong: "坤宮(二世)", 
+            liuQin: ["巳火父母", "卯木官鬼", "丑土兄弟", "丑土兄弟", "亥水妻財", "酉金子孫"],
+            shiYing: ["", "世", "", "", "應", ""],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "101000": { 
+            name: "地火明夷", 
+            benGong: "坎宮(遊魂)", 
+            liuQin: ["卯木子孫", "丑土官鬼", "亥水兄弟", "丑土官鬼", "亥水兄弟", "酉金父母"],
+            shiYing: ["應", "", "", "世", "", ""],
+            fuShen: ["", "", "午火妻財", "", "", ""]
+          },
+          "100000": { 
+            name: "地雷復", 
+            benGong: "坤宮(一世)", 
+            liuQin: ["子水妻財", "寅木官鬼", "辰土兄弟", "丑土兄弟", "亥水妻財", "酉金子孫"],
+            shiYing: ["世", "", "", "應", "", ""],
+            fuShen: ["", "巳火父母", "", "", "", ""]
+          },
+          "011000": { 
+            name: "地風升", 
+            benGong: "震宮(四世)", 
+            liuQin: ["丑土妻財", "亥水父母", "酉金官鬼", "丑土妻財", "亥水父母", "酉金官鬼"],
+            shiYing: ["應", "", "", "世", "", ""],
+            fuShen: ["", "寅木兄弟", "", "午火子孫", "", ""]
+          },
+          "010000": { 
+            name: "地水師", 
+            benGong: "坎宮(歸魂)", 
+            liuQin: ["寅木子孫", "辰土官鬼", "午火妻財", "丑土官鬼", "亥水兄弟", "酉金父母"],
+            shiYing: ["", "", "世", "", "", "應"],
+            fuShen: ["", "", "", "", "", ""]
+          },
+          "001000": { 
+            name: "地山謙", 
+            benGong: "兌宮(五世)", 
+            liuQin: ["辰土父母", "午火官鬼", "申金兄弟", "丑土父母", "亥水子孫", "酉金兄弟"],
+            shiYing: ["", "應", "", "", "世", ""],
+            fuShen: ["", "卯木妻財", "", "", "", ""]
+          },
+          "000000": { 
+            name: "坤為地", 
+            benGong: "坤宮(本宮)", 
+            liuQin: ["未土兄弟", "巳火父母", "卯木官鬼", "丑土兄弟", "亥水妻財", "酉金子孫"],
+            shiYing: ["", "", "應", "", "", "世"],
+            fuShen: ["", "", "", "", "", ""]
+          }
+        },
+        // 核對選項預設
+        showMonthGround: true,
+        showDayGround: true,
+        showMonthFive: true,
+        showDayFive: true,
+        showMonthEmpty: true
+      },
+      computed: {
+        currentPattern() {
+          return this.lines.map(line => line.isYang ? "1" : "0").join('');
+        },
+        currentHexagram() {
+          return this.hexagramMap[this.currentPattern] || { 
+            name: "未知卦象", 
+            benGong: "未知", 
+            liuQin: ["", "", "", "", "", ""],
+            shiYing: ["", "", "", "", "", ""],
+            fuShen: ["", "", "", "", "", ""]
+          };
+        },
+        supportLines() {
+          return this.lines.map(line => ({
+            isYang: line.isMoving ? !line.isYang : line.isYang,
+            isMoving: line.isMoving
+          }));
+        },
+        supportPattern() {
+          return this.supportLines.map(line => line.isYang ? "1" : "0").join('');
+        },
+        supportHexagram() {
+          return this.hexagramMap[this.supportPattern] || { 
+            name: "未知卦象", 
+            benGong: "未知" 
+          };
+        },
+        dayKongWang() {
+          const gz = this.today.dayTian + this.today.dayDi;
+          return this.dayKongWangMap[gz] || "";
+        },
+        monthKongWang() {
+          const gz = this.today.monthTian + this.today.monthDi;
+          return this.dayKongWangMap[gz] || "";
+        },
+        sixBeasts() {
+          let stem = this.today.dayTian;
+          if (!stem) return ["", "", "", "", "", ""];
+          if (stem === "甲" || stem === "乙") {
+            return ["青龍", "朱雀", "勾陳", "騰蛇", "白虎", "玄武"];
+          } else if (stem === "丙" || stem === "丁") {
+            return ["朱雀", "勾陳", "騰蛇", "白虎", "玄武", "青龍"];
+          } else if (stem === "戊") {
+            return ["勾陳", "騰蛇", "白虎", "玄武", "青龍", "朱雀"];
+          } else if (stem === "己") {
+            return ["騰蛇", "白虎", "玄武", "青龍", "朱雀", "勾陳"];
+          } else if (stem === "庚" || stem === "辛") {
+            return ["白虎", "玄武", "青龍", "朱雀", "勾陳", "騰蛇"];
+          } else if (stem === "壬" || stem === "癸") {
+            return ["玄武", "青龍", "朱雀", "勾陳", "騰蛇", "白虎"];
+          } else {
+            return ["", "", "", "", "", ""];
+          }
+        },
+        hexagramPrompt() {
+          let prompt = "";
+
+          // 卦象資訊：本卦化支卦
+          prompt += `卦：${this.currentHexagram.name}（${this.currentHexagram.benGong}）`;
+          if (this.supportHexagram.name !== this.currentHexagram.name) {
+            prompt += `化成 ${this.supportHexagram.name}（${this.supportHexagram.benGong}）`;
+          }
+          prompt += `\n`;
+
+          // 當前時辰
+          let yearStr = this.today.yearTian + this.today.yearDi;
+          let monthStr = this.today.monthTian + this.today.monthDi;
+          let dayStr = this.today.dayTian + this.today.dayDi;
+          prompt += `當前時辰：${yearStr}年 ${monthStr}月 ${dayStr}日\n`;
+
+          // 農曆日期信息
+          if (this.today.lunarYear) {
+            const leapText = this.today.isLeapMonth ? '閏' : '';
+            const monthName = this.getLunarMonthName(this.today.lunarMonth);
+            const dayName = this.getLunarDayName(this.today.lunarDay);
+            prompt += `農曆日期：${this.today.lunarYear}年${leapText}${monthName}月${dayName}\n`;
+          }
+
+          // 轉土期狀態
+          if (this.today.isEarthPeriod) {
+            prompt += `月令狀態：${this.today.earthPeriodInfo}（月五行轉為土）\n`;
+          }
+
+          // 空亡資訊
+          if (this.dayKongWang || this.monthKongWang) {
+            prompt += `空亡：`;
+            if (this.dayKongWang) prompt += `日空亡${this.dayKongWang}`;
+            if (this.monthKongWang && this.dayKongWang) prompt += `  `;
+            if (this.monthKongWang) prompt += `月空亡${this.monthKongWang}`;
+            prompt += `\n`;
+          }
+
+          prompt += `\n`;
+
+          // 六爻詳細資訊
+          for (let i = 0; i < 6; i++) {
+            let line = this.lines[i];
+            let lineNum = i + 1;
+
+            // 爻位與陰陽
+            if (line.isMoving) {
+              // 動爻：顯示變化
+              let fromYinYang = line.isYang ? "陽爻" : "陰爻";
+              let toYinYang = this.supportLines[i].isYang ? "陽爻" : "陰爻";
+              prompt += `第${lineNum}爻：${fromYinYang}變${toYinYang}`;
             } else {
-                modalContent.classList.add('translate-y-full');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                }, 300);
+              // 靜爻
+              let yinYang = line.isYang ? "陽爻" : "陰爻";
+              prompt += `第${lineNum}爻：${yinYang}靜止`;
             }
-        }
 
-        function setPrompt(text) {
-            userInput.value = text;
-            userInput.focus();
-        }
+            // 六獸
+            if (this.sixBeasts[i]) {
+              prompt += `，${this.sixBeasts[i]}`;
+            }
 
-        function addMessage(text, isUser) {
-            const div = document.createElement('div');
-            div.className = isUser ? 'flex justify-end' : 'flex items-start gap-2';
-            
-            if (isUser) {
-                div.innerHTML = `
-                    <div class="bg-indigo-600 text-white p-3 rounded-2xl rounded-tr-none shadow-sm text-sm max-w-[80%]">
-                        ${text}
-                    </div>
-                `;
+            // 六親
+            if (this.currentHexagram.liuQin && this.currentHexagram.liuQin[i]) {
+              prompt += `持${this.currentHexagram.liuQin[i]}`;
+
+              // 如果是動爻，加入「化」支卦六親
+              if (line.isMoving && this.supportHexagramLiuQin[i]) {
+                prompt += `化${this.supportHexagramLiuQin[i]}`;
+              }
+            }
+
+            // 世應
+            if (this.currentHexagram.shiYing && this.currentHexagram.shiYing[i]) {
+              prompt += `（${this.currentHexagram.shiYing[i]}位）`;
+            }
+
+            // 伏神
+            if (this.currentHexagram.fuShen && this.currentHexagram.fuShen[i]) {
+              prompt += `，伏神${this.currentHexagram.fuShen[i]}`;
+            }
+
+            // 時辰判定
+            let judgments = [];
+
+            // 月空
+            let monthEmpty = this.getMonthEmptyDescription(i);
+            if (monthEmpty) judgments.push(monthEmpty);
+
+            // 日空
+            let dayEmpty = this.getEmptyDescription(i);
+            if (dayEmpty) judgments.push(dayEmpty);
+
+            // 沖建與五行
+            let chongJian = this.getChongJian(i);
+            if (chongJian) {
+              judgments.push(chongJian);
+            }
+
+            if (judgments.length > 0) {
+              prompt += `，受${judgments.join("、")}影響`;
+            }
+
+            prompt += `\n`;
+          }
+
+          return prompt;
+        },
+        supportHexagramLiuQin() {
+          // 為支卦計算六親（只為有動爻的爻位計算）
+          let result = [];
+
+          // 取得本卦卦宮名稱並解析出純卦宮名
+          let benGong = this.currentHexagram.benGong || "";
+          // 從 "乾宮(本宮)" 或 "離宮(歸魂)" 中提取卦宮名稱：優先取括弧前的卦宮，若無再取括弧內，再退回第一個含「宮」的片段
+          let gongMatch =
+            benGong.match(/^\s*([^（()]+?宮)/) ||
+            benGong.match(/[（(]([^（）()]+?宮)[）)]/) ||
+            benGong.match(/([^（）()]+?宮)/);
+          if (!gongMatch || !gongMatch[1]) {
+            return ["", "", "", "", "", ""];
+          }
+          let gongName = gongMatch[1];
+
+          // 取得卦宮五行
+          let gongElement = this.gongToElement[gongName];
+          if (!gongElement) {
+            return ["", "", "", "", "", ""];
+          }
+
+          // 為每一爻計算六親
+          for (let i = 0; i < 6; i++) {
+            // 只為動爻計算
+            if (!this.lines[i].isMoving) {
+              result.push("");
+              continue;
+            }
+
+            // 從支卦的六親資料中取得地支
+            let supportLiuQin = this.supportHexagram.liuQin && this.supportHexagram.liuQin[i];
+            if (!supportLiuQin) {
+              result.push("");
+              continue;
+            }
+
+            // 提取地支（第一個字）
+            let branch = supportLiuQin.charAt(0);
+
+            // 取得地支對應的五行
+            let lineElement = this.branchToElement[branch];
+            if (!lineElement) {
+              result.push("");
+              continue;
+            }
+
+            // 計算六親關係
+            let relation = this.getLiuQinRelation(gongElement, lineElement);
+
+            // 組合完整字串：地支 + 五行 + 六親
+            result.push(branch + lineElement + relation);
+          }
+
+          return result;
+        }
+      },
+      methods: {
+        toggleLine(index) {
+          this.lines[index].isYang = !this.lines[index].isYang;
+        },
+        toggleMoving(index) {
+          this.lines[index].isMoving = !this.lines[index].isMoving;
+        },
+        getOpposite(branch) {
+          const opposites = {
+            "子": "午", "午": "子",
+            "丑": "未", "未": "丑",
+            "寅": "申", "申": "寅",
+            "卯": "酉", "酉": "卯",
+            "辰": "戌", "戌": "辰",
+            "巳": "亥", "亥": "巳"
+          };
+          return opposites[branch] || "";
+        },
+        produces(x, y) {
+          const produceMap = {
+            "金": "水",
+            "水": "木",
+            "木": "火",
+            "火": "土",
+            "土": "金"
+          };
+          return produceMap[x] === y;
+        },
+        overcomes(x, y) {
+          const overcomeMap = {
+            "金": "木",
+            "木": "土",
+            "土": "水",
+            "水": "火",
+            "火": "金"
+          };
+          return overcomeMap[x] === y;
+        },
+        getChongJian(index) {
+          let liu = this.currentHexagram.liuQin[index] || "";
+          if (!liu) return "";
+          let lineBranch = liu.charAt(0);
+          let resultsGround = [];
+          let resultsFive = [];
+          let dayBranch = this.today.dayDi;
+          let monthBranch = this.today.monthDi;
+          if (dayBranch) {
+            if (this.getOpposite(dayBranch) === lineBranch) {
+              if(this.showDayGround) resultsGround.push("日沖");
+            } else if (dayBranch === lineBranch) {
+              if(this.showDayGround) resultsGround.push("日建");
+            }
+          }
+          if (monthBranch) {
+            if (this.getOpposite(monthBranch) === lineBranch) {
+              if(this.showMonthGround) resultsGround.push("月沖");
+            } else if (monthBranch === lineBranch) {
+              if(this.showMonthGround) resultsGround.push("月建");
+            }
+          }
+          let dayElem = this.branchToElement[dayBranch] || "";
+          // 如果處於轉土期，強制使用土元素
+          let monthElem;
+          if (this.today.isEarthPeriod) {
+            monthElem = "土";  // 轉土期間，月五行為土
+          } else {
+            monthElem = this.branchToElement[monthBranch] || "";
+          }
+          let lineElem = this.branchToElement[lineBranch] || "";
+          if (dayBranch) {
+            if (dayElem === lineElem) {
+              if(this.showDayFive) resultsFive.push("日旺");
+            } else if (this.produces(dayElem, lineElem)) {
+              if(this.showDayFive) resultsFive.push("日相");
+            } else if (this.produces(lineElem, dayElem)) {
+              if(this.showDayFive) resultsFive.push("日休");
+            } else if (this.overcomes(dayElem, lineElem)) {
+              if(this.showDayFive) resultsFive.push("日囚");
+            }
+          }
+          if (monthBranch) {
+            if (monthElem === lineElem) {
+              if(this.showMonthFive) resultsFive.push("月旺");
+            } else if (this.produces(monthElem, lineElem)) {
+              if(this.showMonthFive) resultsFive.push("月相");
+            } else if (this.produces(lineElem, monthElem)) {
+              if(this.showMonthFive) resultsFive.push("月休");
+            } else if (this.overcomes(monthElem, lineElem)) {
+              if(this.showMonthFive) resultsFive.push("月囚");
+            }
+          }
+          return resultsGround.concat(resultsFive).join("/");
+        },
+        getEmptyDescription(index) {
+          let liu = this.currentHexagram.liuQin[index] || "";
+          if (!liu) return "";
+          let lineBranch = liu.charAt(0);
+          let kong = this.dayKongWang;
+          if (kong && kong.indexOf(lineBranch) !== -1) {
+            return "日空";
+          }
+          return "";
+        },
+        getMonthEmptyDescription(index) {
+          let liu = this.currentHexagram.liuQin[index] || "";
+          if (!liu) return "";
+          let lineBranch = liu.charAt(0);
+          let kong = this.monthKongWang;
+          if (kong && kong.indexOf(lineBranch) !== -1) {
+            return "月空";
+          }
+          return "";
+        },
+        getGanzhi(index) {
+          return this.heavenlyStems[index % 10] + this.earthlyBranches[index % 12];
+        },
+        getYearGanzhi(date) {
+          const solar = Solar.fromYmd(date.getFullYear(), date.getMonth() + 1, date.getDate());
+          const lunar = solar.getLunar();
+          return lunar.getYearInGanZhi();
+        },
+        getMonthGanzhi(date) {
+          const solar = Solar.fromYmd(date.getFullYear(), date.getMonth() + 1, date.getDate());
+          const lunar = solar.getLunar();
+          return lunar.getMonthInGanZhi();
+        },
+        getDayGanzhi(date) {
+          const solar = Solar.fromYmd(date.getFullYear(), date.getMonth() + 1, date.getDate());
+          const lunar = solar.getLunar();
+          return lunar.getDayInGanZhi();
+        },
+        getLunarDate(date) {
+          const solar = Solar.fromYmd(date.getFullYear(), date.getMonth() + 1, date.getDate());
+          const lunar = solar.getLunar();
+          const isLeap = (typeof lunar.isLeap === 'function') ? lunar.isLeap() : lunar.isLeap;
+
+          return {
+            year: lunar.getYear(),
+            month: lunar.getMonth(),
+            day: lunar.getDay(),
+            isLeapMonth: isLeap,
+            monthDays: this.getLunarMonthDaysCount(lunar)
+          };
+        },
+        getLunarMonthDaysCount(lunar) {
+          // 通過嘗試創建日期來判斷月份天數
+          const year = lunar.getYear();
+          const month = lunar.getMonth();
+          const isLeap = (typeof lunar.isLeap === 'function') ? lunar.isLeap() : lunar.isLeap;
+
+          try {
+            Lunar.fromYmd(year, month, 30, isLeap ? 1 : 0);
+            return 30;
+          } catch (e) {
+            return 29;
+          }
+        },
+        isInEarthTransformationPeriod(lunarMonth, lunarDay, monthDays) {
+          // 只適用於 3、6、9、12 月
+          const earthMonths = [3, 6, 9, 12];
+          if (!earthMonths.includes(lunarMonth)) {
+            return { isEarth: false, info: "" };
+          }
+
+          // 最後 18 天 = 從第 (monthDays - 17) 天到第 monthDays 天
+          // 例如：30 天的月份 → 13-30 日（18 天）
+          //       29 天的月份 → 12-29 日（18 天）
+          const startDay = monthDays - 17;
+          const isEarth = lunarDay >= startDay;
+
+          if (isEarth) {
+            const daysRemaining = monthDays - lunarDay + 1;
+            return {
+              isEarth: true,
+              info: `月令轉土（農曆${lunarMonth}月後18天，還剩${daysRemaining}天）`
+            };
+          }
+
+          return { isEarth: false, info: "" };
+        },
+        getLunarMonthName(month) {
+          const monthNames = ['正', '二', '三', '四', '五', '六',
+                              '七', '八', '九', '十', '十一', '十二'];
+          return monthNames[month - 1] || month;
+        },
+        getLunarDayName(day) {
+          const dayNames = {
+            1: '初一', 2: '初二', 3: '初三', 4: '初四', 5: '初五',
+            6: '初六', 7: '初七', 8: '初八', 9: '初九', 10: '初十',
+            11: '十一', 12: '十二', 13: '十三', 14: '十四', 15: '十五',
+            16: '十六', 17: '十七', 18: '十八', 19: '十九', 20: '二十',
+            21: '廿一', 22: '廿二', 23: '廿三', 24: '廿四', 25: '廿五',
+            26: '廿六', 27: '廿七', 28: '廿八', 29: '廿九', 30: '三十'
+          };
+          return dayNames[day] || day;
+        },
+        waitForLunarLibrary(retries = 10, delayMs = 300) {
+          if (typeof Solar !== 'undefined') {
+            this.lunarLibraryStatus = 'ready';
+            this.initializeDate();
+            return;
+          }
+
+          if (retries <= 0) {
+            this.lunarLibraryStatus = 'error';
+            console.error('lunar-javascript failed to load after retries.');
+            return;
+          }
+
+          this.lunarLibraryStatus = 'loading';
+          setTimeout(() => {
+            this.waitForLunarLibrary(retries - 1, delayMs);
+          }, delayMs);
+        },
+
+        initializeDate() {
+          // ?å??–ï?è¨­ç½®ä»Šå¤©?„æ—¥??
+          this.today.solarDateInput = this.getTodayDateString();
+
+          // è¨ˆç?ä»Šå¤©?„æ??‰ä¿¡??
+          const todayDate = new Date();
+          this.calculateAllFromDate(todayDate);
+
+          // èª¿è©¦è¼¸å‡º
+          console.log('Mounted - Solar Date:', this.today.solarDateInput);
+          console.log('Mounted - Year Ganzhi:', this.today.yearTian + this.today.yearDi);
+          console.log('Mounted - Lunar Year:', this.today.lunarYear);
+        },
+        updateFromSolarDate() {
+          // 當用戶選擇陽曆日期時觸發
+          console.log('updateFromSolarDate called, value:', this.today.solarDateInput);
+
+          if (!this.today.solarDateInput) {
+            // 如果清空日期，使用今天
+            this.today.solarDateInput = this.getTodayDateString();
+          }
+
+          // 解析日期字符串
+          const parts = this.today.solarDateInput.split('-');
+          const year = parseInt(parts[0]);
+          const month = parseInt(parts[1]);
+          const day = parseInt(parts[2]);
+
+          // 創建 Date 對象
+          const selectedDate = new Date(year, month - 1, day);
+
+          // 更新所有計算結果
+          this.calculateAllFromDate(selectedDate);
+
+          console.log('After update - Year:', this.today.yearTian + this.today.yearDi);
+        },
+        getTodayDateString() {
+          // 返回 YYYY-MM-DD 格式的今天日期字符串
+          const today = new Date();
+          const year = today.getFullYear();
+          const month = String(today.getMonth() + 1).padStart(2, '0');
+          const day = String(today.getDate()).padStart(2, '0');
+          return `${year}-${month}-${day}`;
+        },
+        calculateAllFromDate(date) {
+          // 統一的計算邏輯，從 Date 對象更新所有欄位
+
+          // 1. 計算干支
+          let yearGZ = this.getYearGanzhi(date);
+          let monthGZ = this.getMonthGanzhi(date);
+          let dayGZ = this.getDayGanzhi(date);
+
+          this.today.yearTian = yearGZ.charAt(0);
+          this.today.yearDi = yearGZ.charAt(1);
+          this.today.monthTian = monthGZ.charAt(0);
+          this.today.monthDi = monthGZ.charAt(1);
+          this.today.dayTian = dayGZ.charAt(0);
+          this.today.dayDi = dayGZ.charAt(1);
+
+          // 2. 計算農曆
+          const lunarInfo = this.getLunarDate(date);
+          this.today.lunarYear = lunarInfo.year;
+          this.today.lunarMonth = lunarInfo.month;
+          this.today.lunarDay = lunarInfo.day;
+          this.today.isLeapMonth = lunarInfo.isLeapMonth;
+          this.today.lunarMonthDays = lunarInfo.monthDays;
+
+          // 3. 檢查轉土期
+          const earthCheck = this.isInEarthTransformationPeriod(
+            lunarInfo.month,
+            lunarInfo.day,
+            lunarInfo.monthDays
+          );
+          this.today.isEarthPeriod = earthCheck.isEarth;
+          this.today.earthPeriodInfo = earthCheck.info;
+        },
+        saveImage() {
+          html2canvas(document.querySelector("#app")).then(canvas => {
+            let link = document.createElement('a');
+            link.download = '易經卦象.png';
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+          });
+        },
+        copyPrompt() {
+          const promptText = this.hexagramPrompt;
+
+          // 嘗試使用現代 Clipboard API
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(promptText).then(() => {
+              alert('✓ Prompt 已複製到剪貼簿！');
+            }).catch(err => {
+              console.error('複製失敗:', err);
+              this.copyPromptFallback(promptText);
+            });
+          } else {
+            // 降級方案
+            this.copyPromptFallback(promptText);
+          }
+        },
+        copyPromptFallback(text) {
+          // 使用傳統方法複製
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+
+          try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+              alert('✓ Prompt 已複製到剪貼簿！');
             } else {
-                // Parse Markdown for AI response
-                const parsedText = marked.parse(text);
-                div.innerHTML = `
-                    <div class="w-8 h-8 rounded-full ai-gradient-bg flex items-center justify-center text-white flex-shrink-0">
-                        <i class="fas fa-robot text-xs"></i>
-                    </div>
-                    <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm text-sm border border-gray-100 max-w-[90%] prose prose-sm prose-indigo">
-                        ${parsedText}
-                    </div>
-                `;
+              alert('✗ 複製失敗，請手動選取文字複製');
             }
-            chatContainer.appendChild(div);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
+          } catch (err) {
+            console.error('複製失敗:', err);
+            alert('✗ 複製失敗，請手動選取文字複製');
+          }
 
-        function showTyping() {
-            const div = document.createElement('div');
-            div.id = 'typingIndicator';
-            div.className = 'flex items-start gap-2';
-            div.innerHTML = `
-                <div class="w-8 h-8 rounded-full ai-gradient-bg flex items-center justify-center text-white flex-shrink-0">
-                    <i class="fas fa-robot text-xs"></i>
-                </div>
-                <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border border-gray-100">
-                    <div class="typing-indicator">
-                        <span></span><span></span><span></span>
-                    </div>
-                </div>
-            `;
-            chatContainer.appendChild(div);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
+          document.body.removeChild(textarea);
+        },
+        selectAllPrompt(event) {
+          // 點擊時自動全選文字
+          event.target.select();
+        },
+        getLiuQinRelation(gongElement, lineElement) {
+          // 根據卦宮五行和爻五行判定六親關係
+          if (!gongElement || !lineElement) return "";
 
-        function removeTyping() {
-            const el = document.getElementById('typingIndicator');
-            if (el) el.remove();
-        }
+          if (gongElement === lineElement) {
+            // 同五行為兄弟
+            return "兄弟";
+          } else if (this.overcomes(gongElement, lineElement)) {
+            // 我克者為妻財
+            return "妻財";
+          } else if (this.overcomes(lineElement, gongElement)) {
+            // 克我者為官鬼
+            return "官鬼";
+          } else if (this.produces(gongElement, lineElement)) {
+            // 我生者為子孫
+            return "子孫";
+          } else if (this.produces(lineElement, gongElement)) {
+            // 生我者為父母
+            return "父母";
+          }
 
-        async function sendMessage() {
-            const text = userInput.value.trim();
-            if (!text) return;
+          return "";
+        },
+        // 支卦專用判定方法
+        getSupportChongJian(index) {
+          // 只對動爻進行判定
+          if (!this.lines[index].isMoving) {
+            return "";
+          }
 
-            if (!API_KEY) {
-                alert('請先在程式碼中填入您的 Google Gemini API Key 才能使用此功能！');
-                return;
+          let liu = this.supportHexagram.liuQin[index] || "";
+          if (!liu) return "";
+          let lineBranch = liu.charAt(0);
+          let resultsGround = [];
+          let resultsFive = [];
+          let dayBranch = this.today.dayDi;
+          let monthBranch = this.today.monthDi;
+          if (dayBranch) {
+            if (this.getOpposite(dayBranch) === lineBranch) {
+              if(this.showDayGround) resultsGround.push("日沖");
+            } else if (dayBranch === lineBranch) {
+              if(this.showDayGround) resultsGround.push("日建");
             }
-
-            addMessage(text, true);
-            userInput.value = '';
-            userInput.style.height = 'auto';
-            sendBtn.disabled = true;
-            showTyping();
-
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{
-                                text: `你是一位專業的日本旅遊助手。使用者正在日本獨旅。
-                                請根據使用者的輸入提供簡短、實用的協助。
-                                如果是翻譯請求，請提供日文原文、羅馬拼音(Romaji)和中文意思。
-                                如果是緊急狀況，請優先提供日文求助短句。
-                                使用繁體中文回答。
-                                
-                                使用者輸入: ${text}`
-                            }]
-                        }]
-                    })
-                });
-
-                const data = await response.json();
-                removeTyping();
-
-                if (data.candidates && data.candidates[0].content) {
-                    const aiResponse = data.candidates[0].content.parts[0].text;
-                    addMessage(aiResponse, false);
-                } else {
-                    addMessage('抱歉，我現在無法連線。請檢查網路或稍後再試。', false);
-                }
-            } catch (error) {
-                removeTyping();
-                addMessage('發生錯誤，請稍後再試。', false);
-                console.error('Error:', error);
-            } finally {
-                sendBtn.disabled = false;
-                userInput.focus();
+          }
+          if (monthBranch) {
+            if (this.getOpposite(monthBranch) === lineBranch) {
+              if(this.showMonthGround) resultsGround.push("月沖");
+            } else if (monthBranch === lineBranch) {
+              if(this.showMonthGround) resultsGround.push("月建");
             }
+          }
+          let dayElem = this.branchToElement[dayBranch] || "";
+          // 如果處於轉土期，強制使用土元素
+          let monthElem;
+          if (this.today.isEarthPeriod) {
+            monthElem = "土";  // 轉土期間，月五行為土
+          } else {
+            monthElem = this.branchToElement[monthBranch] || "";
+          }
+          let lineElem = this.branchToElement[lineBranch] || "";
+          if (dayBranch) {
+            if (dayElem === lineElem) {
+              if(this.showDayFive) resultsFive.push("日旺");
+            } else if (this.produces(dayElem, lineElem)) {
+              if(this.showDayFive) resultsFive.push("日相");
+            } else if (this.produces(lineElem, dayElem)) {
+              if(this.showDayFive) resultsFive.push("日休");
+            } else if (this.overcomes(dayElem, lineElem)) {
+              if(this.showDayFive) resultsFive.push("日囚");
+            }
+          }
+          if (monthBranch) {
+            if (monthElem === lineElem) {
+              if(this.showMonthFive) resultsFive.push("月旺");
+            } else if (this.produces(monthElem, lineElem)) {
+              if(this.showMonthFive) resultsFive.push("月相");
+            } else if (this.produces(lineElem, monthElem)) {
+              if(this.showMonthFive) resultsFive.push("月休");
+            } else if (this.overcomes(monthElem, lineElem)) {
+              if(this.showMonthFive) resultsFive.push("月囚");
+            }
+          }
+          return resultsGround.concat(resultsFive).join("/");
+        },
+        getSupportEmptyDescription(index) {
+          // 只對動爻進行判定
+          if (!this.lines[index].isMoving) {
+            return "";
+          }
+
+          let liu = this.supportHexagram.liuQin[index] || "";
+          if (!liu) return "";
+          let lineBranch = liu.charAt(0);
+          let kong = this.dayKongWang;
+          if (kong && kong.indexOf(lineBranch) !== -1) {
+            return "日空";
+          }
+          return "";
+        },
+        getSupportMonthEmptyDescription(index) {
+          // 只對動爻進行判定
+          if (!this.lines[index].isMoving) {
+            return "";
+          }
+
+          let liu = this.supportHexagram.liuQin[index] || "";
+          if (!liu) return "";
+          let lineBranch = liu.charAt(0);
+          let kong = this.monthKongWang;
+          if (kong && kong.indexOf(lineBranch) !== -1) {
+            return "月空";
+          }
+          return "";
         }
-
-        // Auto-resize textarea
-        userInput.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight) + 'px';
-            if(this.value === '') this.style.height = 'auto';
-        });
-
-        // Enter to send
-        userInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
-    </script>
-
+      },
+      mounted() {
+        this.waitForLunarLibrary();
+      }
+    });
+  </script>
 </body>
 </html>
